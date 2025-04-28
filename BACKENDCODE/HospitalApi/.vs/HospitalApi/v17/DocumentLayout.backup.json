@@ -1,0 +1,221 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "E:\\AHospitalApp\\HospitalCode\\BACKENDCODE\\HospitalApi\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|e:\\ahospitalapp\\hospitalcode\\backendcode\\hospitalapi\\hospitalapi\\models\\hospital.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|solutionrelative:hospitalapi\\models\\hospital.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|e:\\ahospitalapp\\hospitalcode\\backendcode\\hospitalapi\\hospitalapi\\services\\hospitalservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|solutionrelative:hospitalapi\\services\\hospitalservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|e:\\ahospitalapp\\hospitalcode\\backendcode\\hospitalapi\\hospitalapi\\repositaries\\hospitalrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|solutionrelative:hospitalapi\\repositaries\\hospitalrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|e:\\ahospitalapp\\hospitalcode\\backendcode\\hospitalapi\\hospitalapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|solutionrelative:hospitalapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|e:\\ahospitalapp\\hospitalcode\\backendcode\\hospitalapi\\hospitalapi\\hospitalapi.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|solutionrelative:hospitalapi\\hospitalapi.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|e:\\ahospitalapp\\hospitalcode\\backendcode\\hospitalapi\\hospitalapi\\data\\hospitalcontextfactory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|solutionrelative:hospitalapi\\data\\hospitalcontextfactory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|e:\\ahospitalapp\\hospitalcode\\backendcode\\hospitalapi\\hospitalapi\\data\\hospitalcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|solutionrelative:hospitalapi\\data\\hospitalcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|e:\\ahospitalapp\\hospitalcode\\backendcode\\hospitalapi\\hospitalapi\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|solutionrelative:hospitalapi\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|e:\\ahospitalapp\\hospitalcode\\backendcode\\hospitalapi\\hospitalapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|solutionrelative:hospitalapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|e:\\ahospitalapp\\hospitalcode\\backendcode\\hospitalapi\\hospitalapi\\migrations\\hospitalcontextmodelsnapshot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|solutionrelative:hospitalapi\\migrations\\hospitalcontextmodelsnapshot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|e:\\ahospitalapp\\hospitalcode\\backendcode\\hospitalapi\\hospitalapi\\migrations\\20250427192216_createhospitaltable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|solutionrelative:hospitalapi\\migrations\\20250427192216_createhospitaltable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|e:\\ahospitalapp\\hospitalcode\\backendcode\\hospitalapi\\hospitalapi\\controllers\\hospitalscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|solutionrelative:hospitalapi\\controllers\\hospitalscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 6,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d84ee353-0bef-5a41-a649-8f89aca5d84d}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "launchSettings.json",
+              "DocumentMoniker": "E:\\AHospitalApp\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Properties\\launchSettings.json",
+              "RelativeDocumentMoniker": "HospitalApi\\Properties\\launchSettings.json",
+              "ToolTip": "E:\\AHospitalApp\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Properties\\launchSettings.json",
+              "RelativeToolTip": "HospitalApi\\Properties\\launchSettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-04-27T19:47:58.417Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Program.cs",
+              "DocumentMoniker": "E:\\AHospitalApp\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Program.cs",
+              "RelativeDocumentMoniker": "HospitalApi\\Program.cs",
+              "ToolTip": "E:\\AHospitalApp\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Program.cs",
+              "RelativeToolTip": "HospitalApi\\Program.cs",
+              "ViewState": "AgIAACcAAAAAAAAAAAAAAC4AAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-27T18:36:22.605Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "HospitalContext.cs",
+              "DocumentMoniker": "E:\\AHospitalApp\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Data\\HospitalContext.cs",
+              "RelativeDocumentMoniker": "HospitalApi\\Data\\HospitalContext.cs",
+              "ToolTip": "E:\\AHospitalApp\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Data\\HospitalContext.cs",
+              "RelativeToolTip": "HospitalApi\\Data\\HospitalContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-27T18:35:32.994Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "HospitalsController.cs",
+              "DocumentMoniker": "E:\\AHospitalApp\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Controllers\\HospitalsController.cs",
+              "RelativeDocumentMoniker": "HospitalApi\\Controllers\\HospitalsController.cs",
+              "ToolTip": "E:\\AHospitalApp\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Controllers\\HospitalsController.cs",
+              "RelativeToolTip": "HospitalApi\\Controllers\\HospitalsController.cs",
+              "ViewState": "AgIAACUAAAAAAAAAAAAwwCkAAABQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-28T07:20:59.152Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Hospital.cs",
+              "DocumentMoniker": "E:\\AHospitalApp\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Models\\Hospital.cs",
+              "RelativeDocumentMoniker": "HospitalApi\\Models\\Hospital.cs",
+              "ToolTip": "E:\\AHospitalApp\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Models\\Hospital.cs",
+              "RelativeToolTip": "HospitalApi\\Models\\Hospital.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-27T18:44:49.128Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "HospitalService.cs",
+              "DocumentMoniker": "E:\\AHospitalApp\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Services\\HospitalService.cs",
+              "RelativeDocumentMoniker": "HospitalApi\\Services\\HospitalService.cs",
+              "ToolTip": "E:\\AHospitalApp\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Services\\HospitalService.cs",
+              "RelativeToolTip": "HospitalApi\\Services\\HospitalService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-28T07:18:49.971Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "HospitalRepository.cs",
+              "DocumentMoniker": "E:\\AHospitalApp\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Repositaries\\HospitalRepository.cs",
+              "RelativeDocumentMoniker": "HospitalApi\\Repositaries\\HospitalRepository.cs",
+              "ToolTip": "E:\\AHospitalApp\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Repositaries\\HospitalRepository.cs",
+              "RelativeToolTip": "HospitalApi\\Repositaries\\HospitalRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-28T07:15:52.386Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "HospitalContextFactory.cs",
+              "DocumentMoniker": "E:\\AHospitalApp\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Data\\HospitalContextFactory.cs",
+              "RelativeDocumentMoniker": "HospitalApi\\Data\\HospitalContextFactory.cs",
+              "ToolTip": "E:\\AHospitalApp\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Data\\HospitalContextFactory.cs",
+              "RelativeToolTip": "HospitalApi\\Data\\HospitalContextFactory.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-28T06:21:41.114Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "HospitalApi.csproj",
+              "DocumentMoniker": "E:\\AHospitalApp\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\HospitalApi.csproj",
+              "RelativeDocumentMoniker": "HospitalApi\\HospitalApi.csproj",
+              "ToolTip": "E:\\AHospitalApp\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\HospitalApi.csproj",
+              "RelativeToolTip": "HospitalApi\\HospitalApi.csproj",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAwwAsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-04-28T07:18:21.226Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "20250427192216_CreateHospitalTable.cs",
+              "DocumentMoniker": "E:\\AHospitalApp\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Migrations\\20250427192216_CreateHospitalTable.cs",
+              "RelativeDocumentMoniker": "HospitalApi\\Migrations\\20250427192216_CreateHospitalTable.cs",
+              "ToolTip": "E:\\AHospitalApp\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Migrations\\20250427192216_CreateHospitalTable.cs",
+              "RelativeToolTip": "HospitalApi\\Migrations\\20250427192216_CreateHospitalTable.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAzwA4AAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-27T19:22:34.173Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "E:\\AHospitalApp\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\appsettings.json",
+              "RelativeDocumentMoniker": "HospitalApi\\appsettings.json",
+              "ToolTip": "E:\\AHospitalApp\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\appsettings.json",
+              "RelativeToolTip": "HospitalApi\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-04-27T18:23:37.964Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "HospitalContextModelSnapshot.cs",
+              "DocumentMoniker": "E:\\AHospitalApp\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Migrations\\HospitalContextModelSnapshot.cs",
+              "RelativeDocumentMoniker": "HospitalApi\\Migrations\\HospitalContextModelSnapshot.cs",
+              "ToolTip": "E:\\AHospitalApp\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Migrations\\HospitalContextModelSnapshot.cs",
+              "RelativeToolTip": "HospitalApi\\Migrations\\HospitalContextModelSnapshot.cs",
+              "ViewState": "AgIAACsAAAAAAAAAAAAQwD0AAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-27T19:22:39.738Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
