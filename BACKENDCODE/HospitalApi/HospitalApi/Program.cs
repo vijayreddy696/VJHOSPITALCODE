@@ -26,7 +26,8 @@ builder.Services.AddDbContext<HospitalContext>(options =>
 // Add repositories and services
 builder.Services.AddScoped<IHospitalRepository, HospitalRepository>();
 builder.Services.AddScoped<IHospitalService, HospitalService>();
-
+builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 // Add controllers for API endpoints
 builder.Services.AddControllers()
     .AddNewtonsoftJson(options =>

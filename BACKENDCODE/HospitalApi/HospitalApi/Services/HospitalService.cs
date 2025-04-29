@@ -46,15 +46,7 @@ namespace HospitalApi.Services
             }
             else
             {
-                var existingHospital = await _hospitalRepository.GetHospitalByIdAsync(hospital.Id);
-                if (existingHospital != null)
-                {
-                    result = await _hospitalRepository.UpdateHospitalAsync(hospital); // Update existing hospital
-                }
-                else
-                {
-                    throw new Exception("Hospital not found for update.");
-                }
+                result = await _hospitalRepository.UpdateHospitalAsync(hospital); // Update existing hospital
             }
 
             return result; // <=== return the saved/updated hospital

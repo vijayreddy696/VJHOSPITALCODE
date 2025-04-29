@@ -22,6 +22,7 @@
         public DateTime? FirstModifiedDate { get; set; }
         public DateTime? LastModifiedDate { get; set; }
         public bool FullTextSearch { get; set; } = false;
+        public int? HospitalId { get; set; }
     }
 
 

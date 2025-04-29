@@ -9,6 +9,9 @@ namespace HospitalApi.Data
             : base(options) { }
 
         public DbSet<Hospital> Hospitals { get; set; }
+
+        public DbSet<Department> Departments { get; set; }
+
         // Add other entities here
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
@@ -26,6 +29,7 @@ namespace HospitalApi.Data
                 {
                     entry.Entity.ModifiedDate = DateTime.UtcNow;
                 }
+
             }
 
             return await base.SaveChangesAsync(cancellationToken);
