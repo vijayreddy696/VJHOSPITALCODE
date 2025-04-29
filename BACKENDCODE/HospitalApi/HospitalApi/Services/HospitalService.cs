@@ -5,7 +5,8 @@ namespace HospitalApi.Services
 {
     public interface IHospitalService
     {
-        Task<IEnumerable<Hospital>> GetAllHospitalsAsync();
+        Task<PagedResult<Hospital>> GetHospitalsWithPaginationAsync(PaginationRequest paginationRequest);
+
         Task<Hospital> GetHospitalByIdAsync(int id);
         Task<Hospital> AddOrUpdateHospitalAsync(Hospital hospital);
         Task DeleteHospitalAsync(int id);
@@ -19,10 +20,11 @@ namespace HospitalApi.Services
             _hospitalRepository = hospitalRepository;
         }
 
-        public async Task<IEnumerable<Hospital>> GetAllHospitalsAsync()
+        public async Task<PagedResult<Hospital>> GetHospitalsWithPaginationAsync(PaginationRequest paginationRequest)
         {
-            return await _hospitalRepository.GetAllHospitalsAsync();
+            return await _hospitalRepository.GetHospitalsWithPaginationAsync(paginationRequest);
         }
+
 
         public async Task<Hospital> GetHospitalByIdAsync(int id)
         {

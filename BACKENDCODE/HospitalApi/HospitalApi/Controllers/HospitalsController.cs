@@ -18,12 +18,15 @@ namespace HospitalApi.Controllers
             _hospitalService = hospitalService;
         }
         // GET: api/hospitals
-        [HttpGet("gethospitals")]
-        public async Task<IActionResult> GetHospitals()
+        [HttpPost("gethospitals")]
+        public async Task<IActionResult> GetHospitals([FromBody] PaginationRequest paginationRequest)
         {
-            var hospitals = await _hospitalService.GetAllHospitalsAsync();
+            var hospitals = await _hospitalService.GetHospitalsWithPaginationAsync(paginationRequest);
             return Ok(hospitals);
         }
+
+
+
 
         // GET: api/hospitals/5
         [HttpGet("gethospitalbyid/{id}")]

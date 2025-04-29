@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace HospitalApi.Migrations
 {
     /// <inheritdoc />
-    public partial class CreateHospitalTable : Migration
+    public partial class asdf : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -21,7 +22,9 @@ namespace HospitalApi.Migrations
                     HospitalEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     OwnerName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     OwnerPhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    OwnerEmail = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    OwnerEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
