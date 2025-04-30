@@ -1,0 +1,92 @@
+﻿using HospitalApi.Models;
+using HospitalApi.Services;
+using Microsoft.AspNetCore.Mvc;
+
+namespace HospitalApi.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class UsersController : ControllerBase
+    {
+        private readonly IUserService _userService;
+
+        public UsersController(IUserService userService)
+        {
+            _userService = userService;
+        }
+
+        // POST: api/users/getusers
+        [HttpPost("getusers")]
+        public async Task<IActionResult> GetUsers([FromBody] PaginationRequest paginationRequest)
+        {
+            try
+            {
+                var users = await _userService.GetUsersWithPaginationAsync(paginationRequest);
+                return Ok(users);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error retrieving users: {ex.Message}");
+            }
+        }
+
+        // GET: api/users/getuserbyid/{hospitalId}/{id}
+        [HttpGet("getuserbyid/{hospitalId}/{id}")]
+        public async Task<IActionResult> GetUser(int hospitalId, int id)
+        {
+            try
+            {
+                var user = await _userService.GetUserByIdAsync(id);
+                if (user == null)
+                {
+                    return NotFound("User not found.");
+                }
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error retrieving user: {ex.Message}");
+            }
+        }
+
+        // POST: api/users/addorupdateuser
+        [HttpPost("addorupdateuser")]
+        public async Task<IActionResult> AddOrUpdateUser([FromBody] User user)
+        {
+            try
+            {
+                if (user == null)
+                {
+                    return BadRequest("User data is required.");
+                }
+
+                User result = await _userService.AddOrUpdateUserAsync(user);
+                if (result == null)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while saving the user data.");
+                }
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error saving user: {ex.Message}");
+            }
+        }
+
+        // DELETE: api/users/deleteuserbyid/{hospitalId}/{userId}
+        [HttpDelete("deleteuserbyid/{hospitalId}/{userId}")]
+        public async Task<IActionResult> DeleteUser(int hospitalId, int userId)
+        {
+            try
+            {
+                await _userService.DeleteUserAsync( userId);
+                return Ok(new { message = "User deleted successfully." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error deleting user: {ex.Message}");
+            }
+        }
+    }
+}

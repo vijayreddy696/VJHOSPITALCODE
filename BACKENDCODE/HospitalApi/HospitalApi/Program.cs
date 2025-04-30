@@ -1,14 +1,41 @@
 using HospitalApi.Data;
+using HospitalApi.Models;
 using HospitalApi.Repositaries;
 using HospitalApi.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using System.Text;
 
 
 var builder = WebApplication.CreateSlimBuilder(args);
 
+
+var jwtSettings = builder.Configuration.GetSection("JWT");
+var secretKey = jwtSettings["JWT_SECRET_KEY"];
+var issuer = jwtSettings["JWT_ISSUER"];
+var audience = jwtSettings["JWT_AUDIENCE"];
+
+
+builder.Services.AddAuthentication("Bearer")
+    .AddJwtBearer("Bearer", options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateIssuerSigningKey = true,
+            ValidateLifetime = true,
+            ValidIssuer = issuer,
+            ValidAudience = audience,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
+        };
+    });
+
+builder.Services.AddAuthorization();
 // Configure the DB context for SQL Server
 builder.Services.AddDbContext<HospitalContext>(options =>
 {
@@ -24,13 +51,22 @@ builder.Services.AddDbContext<HospitalContext>(options =>
 });
 
 // Add repositories and services
+builder.Services.AddScoped<JwtTokenService>();
 builder.Services.AddScoped<IHospitalRepository, HospitalRepository>();
 builder.Services.AddScoped<IHospitalService, HospitalService>();
 builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+
+
 // Add controllers for API endpoints
-builder.Services.AddControllers()
-    .AddNewtonsoftJson(options =>
+builder.Services.AddControllers(options =>
+{
+    // Apply global authorization to all controllers
+    options.Filters.Add(new Microsoft.AspNetCore.Mvc.Authorization.AuthorizeFilter());
+}).AddNewtonsoftJson(options =>
     {
         // Customize the options if necessary
         options.SerializerSettings.Formatting = Formatting.Indented; // Example: Pretty print
@@ -60,9 +96,11 @@ if (app.Environment.IsDevelopment())
         c.RoutePrefix = "swagger"; // Swagger UI will be served at the '/swagger' path
     });
 }
-
-// Set up routing for the API controllers
 app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
+// Set up routing for the API controllers
 
 // Map controllers to their respective endpoints
 app.UseEndpoints(endpoints =>

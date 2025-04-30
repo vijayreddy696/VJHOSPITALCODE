@@ -7,9 +7,9 @@ namespace HospitalApi.Services
     public interface IDepartmentService
     {
         Task<PagedResult<Department>> GetDepartmentsWithPaginationAsync(PaginationRequest paginationRequest);
-        Task<Department> GetDepartmentByIdAsync(int id, int hospitalId);
+        Task<Department> GetDepartmentByIdAsync(int id);
         Task<Department> AddOrUpdateDepartmentAsync(Department department);
-        Task DeleteDepartmentAsync(int hospitalId, int departmentId);
+        Task DeleteDepartmentAsync(int departmentId);
     }
     public class DepartmentService : IDepartmentService
     {
@@ -33,11 +33,11 @@ namespace HospitalApi.Services
             }
         }
 
-        public async Task<Department> GetDepartmentByIdAsync(int id, int hospitalId)
+        public async Task<Department> GetDepartmentByIdAsync(int id)
         {
             try
             {
-                return await _departmentRepository.GetDepartmentByIdAsync(id, hospitalId);
+                return await _departmentRepository.GetDepartmentByIdAsync(id);
             }
             catch (Exception ex)
             {
@@ -73,14 +73,14 @@ namespace HospitalApi.Services
             }
         }
 
-        public async Task DeleteDepartmentAsync(int hospitalId, int departmentId)
+        public async Task DeleteDepartmentAsync(int departmentId)
         {
             try
             {
-                var existingDepartment = await _departmentRepository.GetDepartmentByIdAsync(departmentId, hospitalId);
+                var existingDepartment = await _departmentRepository.GetDepartmentByIdAsync(departmentId);
                 if (existingDepartment != null)
                 {
-                    await _departmentRepository.DeleteDepartmentAsync(hospitalId, departmentId);
+                    await _departmentRepository.DeleteDepartmentAsync( departmentId);
                 }
                 else
                 {

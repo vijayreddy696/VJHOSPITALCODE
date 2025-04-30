@@ -12,6 +12,9 @@ namespace HospitalApi.Data
 
         public DbSet<Department> Departments { get; set; }
 
+        public DbSet<User> Users { get; set; }
+
+
         // Add other entities here
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

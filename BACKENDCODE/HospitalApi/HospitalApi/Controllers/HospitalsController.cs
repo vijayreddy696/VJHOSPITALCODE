@@ -1,5 +1,7 @@
-﻿using HospitalApi.Models;
+﻿using HospitalApi.HardCodeValues;
+using HospitalApi.Models;
 using HospitalApi.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -18,13 +20,14 @@ namespace HospitalApi.Controllers
             _hospitalService = hospitalService;
         }
         // GET: api/hospitals
+        [Authorize(Roles = Roles.Owner)]
+
         [HttpPost("gethospitals")]
         public async Task<IActionResult> GetHospitals([FromBody] PaginationRequest paginationRequest)
         {
             var hospitals = await _hospitalService.GetHospitalsWithPaginationAsync(paginationRequest);
             return Ok(hospitals);
         }
-
 
 
 

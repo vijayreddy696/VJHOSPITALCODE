@@ -8,11 +8,11 @@ namespace HospitalApi.Repositaries
     public interface IDepartmentRepository
     {
         Task<PagedResult<Department>> GetDepartmentsWithPaginationAsync(PaginationRequest paginationRequest);
-        Task<Department> GetDepartmentByIdAsync(int id, int hospitalId);
+        Task<Department> GetDepartmentByIdAsync(int id);
 
         Task<Department> AddDepartmentAsync(Department department);
         Task<Department> UpdateDepartmentAsync(Department department);
-        Task DeleteDepartmentAsync(int hospitalId, int departmentId);
+        Task DeleteDepartmentAsync(int departmentId);
 
     }
     public class DepartmentRepository : IDepartmentRepository
@@ -97,9 +97,9 @@ namespace HospitalApi.Repositaries
             return null;
         }
 
-        public async Task<Department> GetDepartmentByIdAsync(int id, int hospitalId)
+        public async Task<Department> GetDepartmentByIdAsync(int id)
         {
-            return await _context.Departments.Where(d => d.Id == id && d.HospitalId == hospitalId).FirstOrDefaultAsync();
+            return await _context.Departments.Where(d => d.Id == id).FirstOrDefaultAsync();
         }
 
         public async Task<Department> AddDepartmentAsync(Department department)
@@ -116,10 +116,10 @@ namespace HospitalApi.Repositaries
             return department; // Return the updated department
         }
 
-        public async Task DeleteDepartmentAsync(int hospitalId, int departmentId)
+        public async Task DeleteDepartmentAsync(int departmentId)
         {
             var department = await _context.Departments
-                                           .FirstOrDefaultAsync(d => d.HospitalId == hospitalId && d.Id == departmentId);
+                                           .FirstOrDefaultAsync(d => d.Id == departmentId);
 
             if (department != null)
             {
