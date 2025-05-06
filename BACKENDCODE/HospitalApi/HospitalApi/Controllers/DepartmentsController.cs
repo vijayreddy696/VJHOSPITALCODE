@@ -38,7 +38,7 @@ namespace HospitalApi.Controllers
         {
             try
             {
-                var department = await _departmentService.GetDepartmentByIdAsync(id, hospitalId);
+                var department = await _departmentService.GetDepartmentByIdAsync(id);
                 if (department == null)
                 {
                     return NotFound("Department not found.");
@@ -82,7 +82,7 @@ namespace HospitalApi.Controllers
         {
             try
             {
-                await _departmentService.DeleteDepartmentAsync(hospitalId, departmentId);
+                await _departmentService.DeleteDepartmentAsync(departmentId);
                 return Ok(new { message = "Department deleted successfully." });
             }
             catch (Exception ex)
