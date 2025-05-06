@@ -28,12 +28,12 @@
               <div class="row">
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
                   <mat-form-field class="example-full-width" appearance="outline">
-                    <mat-label>Username</mat-label>
-                    <input matInput formControlName="username" />
+                    <mat-label>Email</mat-label>
+                    <input matInput formControlName="email" />
                     <mat-icon class="material-icons-outlined p-3" matSuffix>face</mat-icon>
-                    @if (authForm.get('username')!.hasError('required')) {
+                    @if (authForm.get('email')!.hasError('required')) {
                     <mat-error>
-                      Username is required
+                      Email is required
                     </mat-error>
                     }
                   </mat-form-field>
@@ -85,11 +85,15 @@
               } -->
               <div class="container-auth-form-btn"> 
                 <div style="text-align:center">
-                  <button mat-flat-button color="accent" [disabled]="false"
-                    class="auth-form-btn" [disabled]="false" type="submit">Login</button>
-                    <mat-spinner class="preloader pl-size-xs"></mat-spinner>
+                  <button mat-flat-button color="accent" 
+                    class="auth-form-btn" [disabled]="loading" type="submit">
+                    <ng-container *ngIf="!loading; else spinner" (click)="onSubmit()">Login</ng-container>
+                    </button>
                 </div>
               </div>
+              <ng-template #spinner>
+                <mat-spinner class="preloader pl-size-xs" diameter="20"></mat-spinner>
+              </ng-template>
             </form>
             <h6 class="social-login-title">OR</h6>
             <ul class="list-unstyled social-icon mb-0 mt-3">

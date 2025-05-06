@@ -60,6 +60,15 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins", policy =>
+    {
+        policy.AllowAnyOrigin()  // Allows all origins (replace with specific domains for security)
+              .AllowAnyMethod()  // Allow GET, POST, PUT, DELETE
+              .AllowAnyHeader(); // Allow any headers
+    });
+});
 
 // Add controllers for API endpoints
 builder.Services.AddControllers(options =>
@@ -85,6 +94,7 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 var app = builder.Build();
+app.UseCors("AllowAllOrigins"); // Apply the CORS policy globally
 
 // Enable middleware to serve generated Swagger as a JSON endpoint
 if (app.Environment.IsDevelopment())

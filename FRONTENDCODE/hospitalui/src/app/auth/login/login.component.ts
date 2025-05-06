@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -17,36 +19,47 @@ export class LoginComponent implements OnInit {
   RememberMe:any;
 
 constructor(
-  private formBuilder: UntypedFormBuilder
+  private formBuilder: UntypedFormBuilder,
+  private authService: AuthService,
+  private router: Router
 ){
-
 }
 
 
 
   ngOnInit() {
     this.authForm = this.formBuilder.group({
-      username: ['admin@hospital.org', Validators.required],
-      password: ['admin@123', Validators.required],
-      confirmPassword: ['admin@', Validators.required],
+      email: ['vijju7259@gmail.com', Validators.required],
+      password: ['Vijayreddy696@', Validators.required],
+      confirmPassword: ['Vijayreddy696@', Validators.required],
+    });
+  }
+  onSubmit() {
+    debugger;
+    if (this.authForm.invalid) return;
+
+    this.loading = true;
+
+    const loginData = {
+      email: this.authForm.value.email,
+      password: this.authForm.value.password,
+      hospitalId: 6,
+    };
+
+    this.authService.login(loginData).subscribe({
+      next: (res) => {
+        debugger;
+        localStorage.setItem('token', res.token);
+        this.router.navigate(['/dashboard']);
+      },
+      error: () => {
+        this.error = 'Invalid email or password';
+        this.loading = false;
+      }
     });
   }
 
 
 
-  adminSet(){
-
-  }
-
-  doctorSet(){
-    
-  }
-  patientSet(){
-    
-  }
-
-  onSubmit(){
-
-  }
 
 }
