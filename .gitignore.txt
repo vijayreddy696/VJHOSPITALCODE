@@ -1,0 +1,79 @@
+# Build results
+[Bb]in/
+[Oo]bj/
+[Dd]ebug*/
+[Rr]elease*/
+x64/
+x86/
+build/
+*.dll
+*.exe
+*.log
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.VC.db
+*.VC.VC.opendb
+
+# Visual Studio folders
+.vs/
+
+# Azure & publish settings
+*.publishsettings
+*.azurePubxml
+*.pubxml
+*.pfx
+*.key
+Properties/PublishProfiles/
+
+# Web config transforms
+web.*.config
+
+# NuGet
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Entity Framework
+*.sql
+*.cache
+*_migrations/
+
+# ASP.NET temporary files
+App_Data/
+App_Code/
+App_Browsers/
+App_GlobalResources/
+App_LocalResources/
+App_Themes/
+aspnet_client/
+
+# Logs and crash reports
+*.log
+*.tlog
+
+# Angular frontend (if applicable)
+node_modules/
+dist/
+.tmp/
+angular.json
+package-lock.json
+yarn.lock
+
+# IDEs
+.idea/
+.vscode/
+*.code-workspace
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+ehthumbs.db
