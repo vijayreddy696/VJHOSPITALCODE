@@ -5,19 +5,22 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { authInterceptor } from './auth/auth.interceptor';
-import { AppLayoutComponent } from './layout/app-layout/app-layout.component';
 import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
+import { LayoutModule } from './layout/layout.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
     AppComponent,
-    AppLayoutComponent,
-    MainLayoutComponent
   ],
   imports: [
+    TranslateModule.forRoot({
+      // your TranslateLoader config
+    }),
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    LayoutModule
   ],
   providers: [
     {

@@ -35,7 +35,7 @@ constructor(
     });
   }
   onSubmit() {
-    debugger;
+    
     if (this.authForm.invalid) return;
 
     this.loading = true;
@@ -48,7 +48,7 @@ constructor(
 
     this.authService.login(loginData).subscribe({
       next: (res) => {
-        debugger;
+        
         localStorage.setItem('token', res.token);
         this.router.navigate(['/dashboard']);
       },

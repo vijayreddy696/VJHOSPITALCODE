@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "E:\\AHospitalApp\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\HospitalApi.csproj": {}
+    "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\HospitalApi.csproj": {}
   },
   "projects": {
-    "E:\\AHospitalApp\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\HospitalApi.csproj": {
+    "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\HospitalApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\AHospitalApp\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\HospitalApi.csproj",
+        "projectUniqueName": "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\HospitalApi.csproj",
         "projectName": "HospitalApi",
-        "projectPath": "E:\\AHospitalApp\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\HospitalApi.csproj",
-        "packagesPath": "C:\\Users\\vijju\\.nuget\\packages\\",
-        "outputPath": "E:\\AHospitalApp\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\obj\\",
+        "projectPath": "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\HospitalApi.csproj",
+        "packagesPath": "C:\\Users\\vijayreddy\\.nuget\\packages\\",
+        "outputPath": "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\vijju\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\vijayreddy\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
