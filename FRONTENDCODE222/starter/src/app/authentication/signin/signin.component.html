@@ -62,7 +62,7 @@
             } -->
             <div class="container-auth-form-btn">
               <div style="text-align:center">
-                <button mat-flat-button color="accent" [class.auth-spinner]="loading" [disabled]="loading"
+                <button mat-flat-button color="accent" [disabled]="loading"
                   class="auth-form-btn" [disabled]="!authForm.valid " type="submit">
                   <ng-container *ngIf="!loading; else spinner" (click)="onSubmit()">Login</ng-container>
                   </button>

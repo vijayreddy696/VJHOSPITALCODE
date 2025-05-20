@@ -94,7 +94,6 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 var app = builder.Build();
-app.UseCors("AllowAllOrigins"); // Apply the CORS policy globally
 
 // Enable middleware to serve generated Swagger as a JSON endpoint
 if (app.Environment.IsDevelopment())
@@ -107,6 +106,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 app.UseRouting();
+app.UseCors("AllowAllOrigins"); // Apply the CORS policy globally
 
 app.UseAuthentication();
 app.UseAuthorization();

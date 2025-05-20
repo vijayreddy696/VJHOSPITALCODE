@@ -70,7 +70,7 @@ namespace HospitalApi.Repositaries
             }
             else
             {
-                // If no full-text search, fall back to simple matching for FullName and Email
+                // If  full-text search only fro fullname , fall back to simple matching for FullName and Email
                 return query.Where(u =>
                     EF.Functions.Contains(u.FullName, $"\"{request.SearchValue}*\"") ||
                     EF.Functions.Contains(u.Email, $"\"{request.SearchValue}*\"")
