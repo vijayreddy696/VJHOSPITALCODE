@@ -304,8 +304,10 @@
   text-align: center;
   width: 100%;
   img {
-    /*float: left;*/
+    float: left;
+    width: 20%;
     vertical-align: top;
+    
   }
   span {
     line-height: 32px;

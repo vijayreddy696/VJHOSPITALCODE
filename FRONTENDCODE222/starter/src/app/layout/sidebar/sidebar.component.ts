@@ -90,12 +90,11 @@ export class SidebarComponent
     }
   }
   ngOnInit() {
+    debugger;
     if (this.authService.currentUserValue) {
       const userRole = this.authService.currentUserValue.role;
       this.userFullName =
-        this.authService.currentUserValue.firstName +
-        ' ' +
-        this.authService.currentUserValue.lastName;
+        this.authService.currentUserValue.fullName;
       this.userImg = this.authService.currentUserValue.img;
 
       // this.sidebarItems = ROUTES.filter(
@@ -110,15 +109,19 @@ export class SidebarComponent
               x.role.indexOf(userRole) !== -1 || x.role.indexOf('All') !== -1
           );
         });
-      if (userRole === Role.Admin) {
+      if (userRole === Role.Admin) 
         this.userType = Role.Admin;
-      } else if (userRole === Role.Patient) {
+      else if (userRole === Role.All) 
+        this.userType = Role.All;      
+      else if (userRole === Role.SuperAdmin) 
+          this.userType = Role.SuperAdmin;
+       else if (userRole === Role.Patient) 
         this.userType = Role.Patient;
-      } else if (userRole === Role.Doctor) {
+       else if (userRole === Role.Doctor) 
         this.userType = Role.Doctor;
-      } else {
+      else 
         this.userType = Role.Admin;
-      }
+      
     }
 
     // this.sidebarItems = ROUTES.filter((sidebarItem) => sidebarItem);
@@ -149,20 +152,20 @@ export class SidebarComponent
       this.renderer.removeClass(this.document.body, 'ls-closed');
     }
   }
-  mouseHover() {
-    const body = this.elementRef.nativeElement.closest('body');
-    if (body.classList.contains('submenu-closed')) {
-      this.renderer.addClass(this.document.body, 'side-closed-hover');
-      this.renderer.removeClass(this.document.body, 'submenu-closed');
-    }
-  }
-  mouseOut() {
-    const body = this.elementRef.nativeElement.closest('body');
-    if (body.classList.contains('side-closed-hover')) {
-      this.renderer.removeClass(this.document.body, 'side-closed-hover');
-      this.renderer.addClass(this.document.body, 'submenu-closed');
-    }
-  }
+  // mouseHover() {
+  //   const body = this.elementRef.nativeElement.closest('body');
+  //   if (body.classList.contains('submenu-closed')) {
+  //     this.renderer.addClass(this.document.body, 'side-closed-hover');
+  //     this.renderer.removeClass(this.document.body, 'submenu-closed');
+  //   }
+  // }
+  // mouseOut() {
+  //   const body = this.elementRef.nativeElement.closest('body');
+  //   if (body.classList.contains('side-closed-hover')) {
+  //     this.renderer.removeClass(this.document.body, 'side-closed-hover');
+  //     this.renderer.addClass(this.document.body, 'submenu-closed');
+  //   }
+  // }
   logout() {
     this.subs.sink = this.authService.logout().subscribe((res) => {
       if (!res.success) {

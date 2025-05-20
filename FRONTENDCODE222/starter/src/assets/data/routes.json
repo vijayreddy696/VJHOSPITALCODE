@@ -9,7 +9,7 @@
       "groupTitle": true,
       "badge": "",
       "badgeClass": "",
-      "role": ["All"],
+      "role": ["All","SuperAdmin"],
       "submenu": []
     },
 
@@ -22,7 +22,7 @@
       "groupTitle": false,
       "badge": "",
       "badgeClass": "",
-      "role": ["Admin"],
+      "role": ["Admin","SuperAdmin"],
       "submenu": [
         {
           "path": "/admin/dashboard/main",
@@ -60,7 +60,7 @@
       "groupTitle": false,
       "badge": "",
       "badgeClass": "",
-      "role": ["Doctor"],
+      "role": ["Doctor","SuperAdmin"],
       "submenu": []
     },
 
@@ -73,7 +73,7 @@
       "groupTitle": false,
       "badge": "",
       "badgeClass": "",
-      "role": ["Patient"],
+      "role": ["Patient","SuperAdmin"],
       "submenu": []
     },
 
@@ -86,7 +86,7 @@
       "groupTitle": false,
       "badge": "",
       "badgeClass": "",
-      "role": ["Admin"],
+      "role": ["Admin","SuperAdmin"],
       "submenu": [
         {
           "path": "/authentication/signin",
@@ -171,7 +171,7 @@
       "groupTitle": false,
       "badge": "",
       "badgeClass": "",
-      "role": ["Admin"],
+      "role": ["Admin","SuperAdmin"],
       "submenu": [
         {
           "path": "/extra-pages/blank",
@@ -196,7 +196,7 @@
       "groupTitle": false,
       "badge": "",
       "badgeClass": "",
-      "role": ["Admin"],
+      "role": ["Admin","SuperAdmin"],
       "submenu": [
         {
           "path": "/multilevel/first1",

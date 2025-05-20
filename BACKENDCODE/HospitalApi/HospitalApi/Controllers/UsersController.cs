@@ -1,5 +1,6 @@
 ﻿using HospitalApi.Models;
 using HospitalApi.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalApi.Controllers
@@ -30,7 +31,9 @@ namespace HospitalApi.Controllers
             }
         }
 
+
         // GET: api/users/getuserbyid/{hospitalId}/{id}
+        [AllowAnonymous]
         [HttpGet("getuserbyid/{hospitalId}/{id}")]
         public async Task<IActionResult> GetUser(int hospitalId, int id)
         {
@@ -50,6 +53,7 @@ namespace HospitalApi.Controllers
         }
 
         // POST: api/users/addorupdateuser
+        [AllowAnonymous]
         [HttpPost("addorupdateuser")]
         public async Task<IActionResult> AddOrUpdateUser([FromBody] User user)
         {

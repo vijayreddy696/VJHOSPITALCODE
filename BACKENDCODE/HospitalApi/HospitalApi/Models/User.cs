@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
 
 namespace HospitalApi.Models
 {
@@ -8,7 +8,8 @@ namespace HospitalApi.Models
         public string FullName { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
-        public string Role { get; set; }
+
+        public Role Role { get; set; }
         public int HospitalId { get; set; }
 
         [JsonIgnore]
@@ -16,4 +17,16 @@ namespace HospitalApi.Models
         public Hospital? Hospital { get; set; }
 
     }
+
+    public enum Role
+    {
+        All = 1,
+        Owner =2,
+        Admin = 3,
+        SuperAdmin = 4,
+        Doctor = 5,
+        Nurse = 6,
+        Receptionist = 7,
+    }
+
 }

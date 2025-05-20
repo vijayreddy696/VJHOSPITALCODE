@@ -7,11 +7,11 @@
     <div class="col-sm-6 auth-form-section">
       <div class="form-section">
         <div class="auth-wrapper">
-          <h6 class="welcome-msg"> Welcome to Cliniva </h6>
+          <h6 class="welcome-msg"> Welcome to VJ Hospitals </h6>
           <p class="auth-signup-text text-muted">Need an account?<a routerLink="/authentication/signup"
               class="sign-up-link">Sign Up
             </a></p>
-          <div class="d-flex justify-content-between lbl-alert mb-3">
+          <!-- <div class="d-flex justify-content-between lbl-alert mb-3">
             <div>
               <button mat-flat-button class="adminBtn" (click)="adminSet();">Admin</button>
             </div>
@@ -21,18 +21,18 @@
             <div>
               <button mat-flat-button class="patientBtn" (click)="patientSet();">Patient</button>
             </div>
-          </div>
+          </div> -->
           <h6 class="login-title">Sign in</h6>
           <form class="validate-form" [formGroup]="authForm" (ngSubmit)="onSubmit()">
             <div class="row">
               <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
                 <mat-form-field class="example-full-width" appearance="outline">
-                  <mat-label>Username</mat-label>
-                  <input matInput formControlName="username" />
+                  <mat-label>Email</mat-label>
+                  <input matInput formControlName="email" />
                   <mat-icon class="material-icons-outlined p-3" matSuffix>face</mat-icon>
-                  @if (authForm.get('username')!.hasError('required')) {
+                  @if (authForm.get('email')!.hasError('required')) {
                   <mat-error>
-                    Username is required
+                    Email is required
                   </mat-error>
                   }
                 </mat-form-field>
@@ -57,9 +57,7 @@
               <mat-checkbox class="example-margin">Remember Me</mat-checkbox>
               <a class="txt1" routerLink="/authentication/forgot-password">Forgot Password?</a>
             </div>
-            <!-- @if (error) {
-            <div class="alert alert-danger mt-3 mb-0">{{error}}</div>
-            } -->
+         {{error}}
             <div class="container-auth-form-btn">
               <div style="text-align:center">
                 <button mat-flat-button color="accent" [disabled]="loading"

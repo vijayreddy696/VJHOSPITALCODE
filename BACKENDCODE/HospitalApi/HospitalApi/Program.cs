@@ -80,6 +80,7 @@ builder.Services.AddControllers(options =>
         // Customize the options if necessary
         options.SerializerSettings.Formatting = Formatting.Indented; // Example: Pretty print
         options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver(); // Example: Camel case for JSON
+        options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
     });
 
 // Add Swagger for API documentation

@@ -22,8 +22,10 @@ namespace HospitalApi.Services
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Role, user.Role)
+                new Claim("id", user.Id.ToString()),
+                new Claim("role", user.Role.ToString()),
+                new Claim("email", user.Email),
+                new Claim("fullName", user.FullName)
             };
             var token = new JwtSecurityToken(
                 issuer: _configuration["JWT:JWT_ISSUER"],

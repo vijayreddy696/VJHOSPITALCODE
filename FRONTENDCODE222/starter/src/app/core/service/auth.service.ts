@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, of, throwError } from 'rxjs';
 import { User } from '../models/user';
 import { Role } from '@core/models/role';
-
+import {jwtDecode} from 'jwt-decode';
 @Injectable({
   providedIn: 'root',
 })
@@ -11,38 +11,7 @@ export class AuthService {
   private currentUserSubject: BehaviorSubject<User>;
   public currentUser: Observable<User>;
 
-  private users = [
-    {
-      id: 1,
-      img: 'assets/images/user/admin.jpg',
-      username: 'admin@hospital.org',
-      password: 'admin@123',
-      firstName: 'Sarah',
-      lastName: 'Smith',
-      role: Role.Admin,
-      token: 'admin-token',
-    },
-    {
-      id: 2,
-      img: 'assets/images/user/doctor.jpg',
-      username: 'doctor@hospital.org',
-      password: 'doctor@123',
-      firstName: 'Ashton',
-      lastName: 'Cox',
-      role: Role.Doctor,
-      token: 'doctor-token',
-    },
-    {
-      id: 3,
-      img: 'assets/images/user/patient.jpg',
-      username: 'patient@hospital.org',
-      password: 'patient@123',
-      firstName: 'Cara',
-      lastName: 'Stevens',
-      role: Role.Patient,
-      token: 'patient-token',
-    },
-  ];
+ 
 
   constructor(private http: HttpClient) {
     this.currentUserSubject = new BehaviorSubject<User>(
@@ -55,38 +24,41 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
-  login(username: string, password: string) {
-
-    const user = this.users.find((u) => u.username === username && u.password === password);
-
-    if (!user) {
-      return this.error('Username or password is incorrect');
-    } else {
-      localStorage.setItem('currentUser', JSON.stringify(user));
-      this.currentUserSubject.next(user);
-      return this.ok({
-        id: user.id,
-        img: user.img,
-        username: user.username,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        token: user.token,
-      });
-    }
+  login(email: string, password: string, hospitalId: number = 6): Observable<User> {
+    const loginPayload = { hospitalId, email, password };
+  
+    return this.http.post<{ token: string }>("http://localhost:5068/api/Auth/login", loginPayload).pipe(
+      map(response => {
+        const token = response.token;
+  
+        // decode JWT token (using jwt-decode library)
+        const decoded: any = jwtDecode(token);
+  
+        // Create user object from claims in decoded token
+        const user: User = {
+          id: decoded.id,
+          email: decoded.email,
+          fullName: decoded.fullName,
+          role: decoded.role,
+          token: token,
+          img: "assets/images/hospitallogos/vj_hospitals_logo.jpg", // helper method to assign user image if needed
+        };
+  
+        // Store user info with token in localStorage
+        localStorage.setItem('currentUser', JSON.stringify(user));
+  
+        // update current user observable
+        this.currentUserSubject.next(user);
+  
+        return user;
+      }),
+      catchError(error => {
+        console.error('Login failed:', error);
+        return throwError(() => error);
+      })
+    );
   }
-  ok(body?: {
-    id: number;
-    img: string;
-    username: string;
-    firstName: string;
-    lastName: string;
-    token: string;
-  }) {
-    return of(new HttpResponse({ status: 200, body }));
-  }
-  error(message: string) {
-    return throwError(message);
-  }
+  
 
   logout() {
     // remove user from local storage to log user out
