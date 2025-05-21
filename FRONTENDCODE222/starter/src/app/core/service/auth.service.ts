@@ -38,9 +38,11 @@ export class AuthService {
         const user: User = {
           id: decoded.id,
           email: decoded.email,
+          phoneNumber:decoded.phoneNumber,
           fullName: decoded.fullName,
           role: decoded.role,
           token: token,
+          lastModifiedDate:decoded.lastModifiedDate,
           img: "assets/images/hospitallogos/vj_hospitals_logo.jpg", // helper method to assign user image if needed
         };
   

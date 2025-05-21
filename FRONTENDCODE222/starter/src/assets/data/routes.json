@@ -50,6 +50,44 @@
         }
       ]
     },
+	{
+      "path": "",
+      "title": "User",
+      "iconType": "material-icons-outlined",
+      "icon": "space_dashboard",
+      "class": "menu-toggle",
+      "groupTitle": false,
+      "badge": "",
+      "badgeClass": "",
+      "role": ["SuperAdmin"],
+      "submenu": [
+        {
+          "path": "/user/add-user",
+          "title": "Add User",
+          "iconType": "",
+          "icon": "",
+          "class": "ml-menu",
+          "groupTitle": false,
+          "badge": "",
+          "badgeClass": "",
+          "role": [""],
+          "submenu": []
+        },
+        {
+          "path": "/user/userslist",
+          "title": "All Users",
+          "iconType": "",
+          "icon": "",
+          "class": "ml-menu",
+          "groupTitle": false,
+          "badge": "",
+          "badgeClass": "",
+          "role": [""],
+          "submenu": []
+        }
+        
+      ]
+    },
 
     {
       "path": "/doctor/dashboard",

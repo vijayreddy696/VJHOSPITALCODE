@@ -90,7 +90,7 @@ export class SidebarComponent
     }
   }
   ngOnInit() {
-    debugger;
+    
     if (this.authService.currentUserValue) {
       const userRole = this.authService.currentUserValue.role;
       this.userFullName =

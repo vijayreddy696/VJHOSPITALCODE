@@ -1,4 +1,5 @@
 using HospitalApi.Data;
+using HospitalApi.Helper;
 using HospitalApi.Models;
 using HospitalApi.Repositaries;
 using HospitalApi.Services;
@@ -59,6 +60,8 @@ builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<ClaimsHelper>();
 
 builder.Services.AddCors(options =>
 {

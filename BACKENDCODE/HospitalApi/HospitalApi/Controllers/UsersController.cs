@@ -1,4 +1,5 @@
-﻿using HospitalApi.Models;
+﻿using HospitalApi.Helper;
+using HospitalApi.Models;
 using HospitalApi.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,13 +11,16 @@ namespace HospitalApi.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly ClaimsHelper _claimsHelper;
 
-        public UsersController(IUserService userService)
+        public UsersController(IUserService userService, ClaimsHelper claimsHelper)
         {
             _userService = userService;
+            _claimsHelper = claimsHelper;
         }
 
         // POST: api/users/getusers
+
         [HttpPost("getusers")]
         public async Task<IActionResult> GetUsers([FromBody] PaginationRequest paginationRequest)
         {
@@ -33,7 +37,6 @@ namespace HospitalApi.Controllers
 
 
         // GET: api/users/getuserbyid/{hospitalId}/{id}
-        [AllowAnonymous]
         [HttpGet("getuserbyid/{hospitalId}/{id}")]
         public async Task<IActionResult> GetUser(int hospitalId, int id)
         {
@@ -53,7 +56,6 @@ namespace HospitalApi.Controllers
         }
 
         // POST: api/users/addorupdateuser
-        [AllowAnonymous]
         [HttpPost("addorupdateuser")]
         public async Task<IActionResult> AddOrUpdateUser([FromBody] User user)
         {
@@ -63,6 +65,7 @@ namespace HospitalApi.Controllers
                 {
                     return BadRequest("User data is required.");
                 }
+                user.HospitalId = int.Parse(_claimsHelper.GetHospitalId());
 
                 User result = await _userService.AddOrUpdateUserAsync(user);
                 if (result == null)

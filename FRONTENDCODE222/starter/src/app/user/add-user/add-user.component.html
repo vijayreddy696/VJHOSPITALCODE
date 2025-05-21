@@ -1,0 +1,141 @@
+<section class="content">
+    <div class="content-block">
+      <div class="block-header">
+        <!-- breadcrumb -->
+        <app-breadcrumb [title]="'Add User'" [items]="['Users']" [active_item]="'Add User'"></app-breadcrumb>
+      </div>
+      <div class="row clearfix">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+          <div class="card">
+            <div class="header">
+              <h2>Add Doctor</h2>
+  
+            </div>
+            <div class="body">
+              <form class="m-4" [formGroup]="docForm" (ngSubmit)="onSubmit()">
+                <div class="row">
+                  <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                      <mat-label>Full Name</mat-label>
+                      <input matInput formControlName="fullName" required>
+                      <mat-error>
+                        {{getErrorMessage('fullName')}}
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                      <mat-label>Gender</mat-label>
+                      <mat-select formControlName="gender" required>
+                        <mat-option [value]="'Male'">
+                          Male
+                        </mat-option>
+                        <mat-option [value]="'Female'">
+                          Female
+                        </mat-option>
+                      </mat-select>
+                      <mat-error>
+                       {{ getErrorMessage('gender')}}
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="row">
+                 
+                  <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 ">
+                    <mat-form-field class="example-full-width " appearance="outline">
+                      <mat-label>phoneNumber</mat-label>
+                      <input matInput formControlName="phoneNumber" required>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 ">
+                    <mat-form-field class="example-full-width " appearance="outline">
+                      <mat-label>Select Role</mat-label>
+                      <mat-select formControlName="role" required>
+                        <mat-option *ngFor="let role of roles" [value]="role">
+                            {{ role }}
+                          </mat-option>
+                      </mat-select>
+                      <mat-error>
+                        {{getErrorMessage('role')}}
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 ">
+                    <mat-form-field class="example-full-width " appearance="outline">
+                      <mat-label>Password</mat-label>
+                      <input matInput formControlName="password" type="password" required>
+                      <mat-error>
+                        {{getErrorMessage('password')}}
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 ">
+                    <mat-form-field class="example-full-width " appearance="outline">
+                      <mat-label>Re-Enter Password</mat-label>
+                      <input matInput formControlName="conformPassword" type="password" required>
+                      <mat-error>
+                        {{getErrorMessage('conformPassword')}}
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+               
+                <div class="row">
+                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
+                    <mat-form-field class="example-full-width " appearance="outline">
+                      <mat-label>Address</mat-label>
+                      <textarea matInput formControlName="address"></textarea>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 ">
+                    <mat-form-field class="example-full-width " appearance="outline">
+                      <mat-label>Email</mat-label>
+                      <input matInput formControlName="email" required>
+                      <mat-error>
+                        {{getErrorMessage('email')}}
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 ">
+                    <mat-form-field class="example-full-width " appearance="outline">
+                      <mat-label>Date Of Birth</mat-label>
+                      <input matInput [matDatepicker]="picker" formControlName="dateOfBirth" required>
+                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                      <mat-datepicker #picker></mat-datepicker>
+                      <mat-error>
+                        {{getErrorMessage('dateOfBirth')}}
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+              
+                <div class="row">
+                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-5">
+                    <label>Upload</label>
+                    <app-file-upload formControlName="uploadFile"></app-file-upload>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
+                    <button type="submit" [disabled]="loading" class="btn-space" mat-flat-button>
+
+                  <ng-container *ngIf="!loading; else spinner">Submit</ng-container>
+                    </button>
+                    <ng-template #spinner>
+                        <mat-spinner class="preloader pl-size-xs" diameter="20"></mat-spinner>
+                      </ng-template>
+                    <button type="button" [disabled]="loading" mat-stroked-button>Cancel</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>

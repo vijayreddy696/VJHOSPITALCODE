@@ -25,7 +25,9 @@ namespace HospitalApi.Services
                 new Claim("id", user.Id.ToString()),
                 new Claim("role", user.Role.ToString()),
                 new Claim("email", user.Email),
-                new Claim("fullName", user.FullName)
+                new Claim("fullName", user.FullName),
+                new Claim("hospitalId", user.HospitalId.ToString())
+
             };
             var token = new JwtSecurityToken(
                 issuer: _configuration["JWT:JWT_ISSUER"],
