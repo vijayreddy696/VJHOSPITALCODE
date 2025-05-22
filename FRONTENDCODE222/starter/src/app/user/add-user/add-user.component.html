@@ -120,20 +120,21 @@
                     <app-file-upload formControlName="uploadFile"></app-file-upload>
                   </div>
                 </div>
-                <div class="row">
-                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
-                    <button type="submit" [disabled]="loading" class="btn-space" mat-flat-button>
-
-                  <ng-container *ngIf="!loading; else spinner">Submit</ng-container>
-                    </button>
-                    <ng-template #spinner>
-                        <mat-spinner class="preloader pl-size-xs" diameter="20"></mat-spinner>
-                      </ng-template>
-                    <button type="button" [disabled]="loading" mat-stroked-button>Cancel</button>
-                  </div>
-                </div>
+              
               </form>
             </div>
+            <div class="m-4">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
+                  <button type="submit" [disabled]="loading" class="btn-space" mat-flat-button>
+
+                <ng-container *ngIf="!loading; else spinner">Submit</ng-container>
+                  </button>
+                  <ng-template #spinner>
+                      <mat-spinner class="preloader pl-size-xs" diameter="20"></mat-spinner>
+                    </ng-template>
+                  <button type="button" [disabled]="loading" mat-stroked-button>Cancel</button>
+                </div>
+              </div>
           </div>
         </div>
       </div>

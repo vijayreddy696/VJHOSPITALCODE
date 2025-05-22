@@ -16,7 +16,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { rowsAnimation, TableExportUtil } from '@shared';
 import { FeatherIconsComponent } from '@shared/components/feather-icons/feather-icons.component';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { HttpClientModule } from '@angular/common/module.d-CnjH8Dlt';
 import { UserService } from '../user.service';
 import { SelectionModel } from '@angular/cdk/collections';
@@ -30,6 +30,10 @@ import {
 import { CommondeleteComponent } from '@shared/components/commondelete/commondelete.component';
 import { BreadcrumbComponent } from '@shared/components/breadcrumb/breadcrumb.component';
 import { User } from '@core/models/user';
+import { PagedRequest } from '@core/models/pagedrequest';
+import { PagedResult } from '@core/models/pagedresult';
+import { DialogComponent } from '../dialog/dialog.component';
+import { Direction } from '@angular/cdk/bidi';
 
 
 @Component({
@@ -71,6 +75,8 @@ export class UserslistComponent implements OnInit ,OnDestroy{
   @ViewChild(MatSort) sort!: MatSort;
   // @ViewChild('filter') filter!: ElementRef;
   @ViewChild(MatMenuTrigger) contextMenu?: MatMenuTrigger;
+  totalCount:any;
+  pageSize:any;
 
 
   columnDefinitions = [
@@ -88,6 +94,9 @@ export class UserslistComponent implements OnInit ,OnDestroy{
   contextMenuPosition = { x: '0px', y: '0px' };
   isLoading = true;
   private destroy$ = new Subject<void>();
+  filterValue: string | undefined;
+  lastItem: Date|undefined;
+  firstItem:Date|undefined;
   constructor(private userservice:UserService,
     public dialog: MatDialog,
     private snackBar: MatSnackBar
@@ -102,33 +111,32 @@ export class UserslistComponent implements OnInit ,OnDestroy{
   }
 
 
-  loadData() {
-    const paginationRequest = {
-      pageNumber: 1,
-      pageSize: 10,
-      searchValue: null,
-      firstModifiedDate: null,
-      lastModifiedDate: null,
-      fullTextSearch: false,
-      hospitalId: 6
-    };
-    debugger;
+  loadData(paginationRequest: PagedRequest = {} as PagedRequest): void {
+    this.isLoading = true;
+  
     this.userservice.getusers(paginationRequest).subscribe({
-      next: (data:any) => {
-        const updatedData = data.items.map((user:any) => ({
+      next: (data: PagedResult<User>) => {
+        const items = data.items || [];
+  
+        this.dataSource.data = items.map((user: User) => ({
           ...user,
-          img: "assets/images/user/doctor.jpg"
+          img: 'assets/images/user/doctor.jpg'
         }));
-        this.dataSource.data = updatedData;
-        this.paginator.length = data.totalCount;
-        this.paginator.pageSize = data.pageSize;
+  
+        this.firstItem = items[0]?.modifiedDate;
+        this.lastItem = items[items.length - 1]?.modifiedDate;
+  
+        this.totalCount = data.totalCount;
+        this.pageSize = data.pageSize;
         this.isLoading = false;
-        // this.refreshTable();
-        
       },
-      error: (err) => console.error(err),
+      error: (err) => {
+        console.error('Error loading users:', err);
+        this.isLoading = false;
+      }
     });
   }
+  
 
   private refreshTable() {
     this.paginator.pageIndex = 0;
@@ -148,52 +156,58 @@ export class UserslistComponent implements OnInit ,OnDestroy{
 
 
   applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value
+    const input = (event.target as HTMLInputElement).value
       .trim()
       .toLowerCase();
-    this.dataSource.filter = filterValue;
+      if (this.filterValue === input) return;
+      this.filterValue = input;
+    const pagedrequest:PagedRequest={
+      searchValue:this.filterValue
+    }
+    this.paginator.pageIndex = 0; // Reset to first page on filter
+    this.loadData(pagedrequest)
   }
 
   addNew() {
-    // this.openDialog('add');
+    this.openDialog('add');
   }
 
   editCall(row: User) {
     // this.openDialog('edit', row);
   }
 
-  // openDialog(action: 'add' | 'edit', data?: User) {
-  //   let varDirection: Direction;
-  //   if (localStorage.getItem('isRtl') === 'true') {
-  //     varDirection = 'rtl';
-  //   } else {
-  //     varDirection = 'ltr';
-  //   }
-  //   const dialogRef = this.dialog.open(AllDoctorsFormComponent, {
-  //     width: '60vw',
-  //     maxWidth: '100vw',
-  //     data: { doctors: data, action },
-  //     direction: varDirection,
-  //     autoFocus: false,
-  //   });
+  openDialog(action: 'add' | 'edit', data?: User) {
+    let varDirection: Direction;
+    if (localStorage.getItem('isRtl') === 'true') {
+      varDirection = 'rtl';
+    } else {
+      varDirection = 'ltr';
+    }
+    const dialogRef = this.dialog.open(DialogComponent, {
+      width: '60vw',
+      maxWidth: '100vw',
+      data: { doctors: data, action },
+      direction: varDirection,
+      autoFocus: false,
+    });
 
-  //   dialogRef.afterClosed().subscribe((result) => {
-  //     if (result) {
-  //       if (action === 'add') {
-  //         this.dataSource.data = [result, ...this.dataSource.data];
-  //       } else {
-  //         this.updateRecord(result);
-  //       }
-  //       this.refreshTable();
-  //       this.showNotification(
-  //         action === 'add' ? 'snackbar-success' : 'black',
-  //         `${action === 'add' ? 'Add' : 'Edit'} Record Successfully...!!!`,
-  //         'bottom',
-  //         'center'
-  //       );
-  //     }
-  //   });
-  // }
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        if (action === 'add') {
+          this.dataSource.data = [result, ...this.dataSource.data];
+        } else {
+          this.updateRecord(result);
+        }
+        this.refreshTable();
+        this.showNotification(
+          action === 'add' ? 'snackbar-success' : 'black',
+          `${action === 'add' ? 'Add' : 'Edit'} Record Successfully...!!!`,
+          'bottom',
+          'center'
+        );
+      }
+    });
+  }
 
   private updateRecord(updatedRecord: User) {
     const index = this.dataSource.data.findIndex(
@@ -243,7 +257,7 @@ export class UserslistComponent implements OnInit ,OnDestroy{
     const exportData = this.dataSource.filteredData.map((x) => ({
       Name: x.fullName,
       Email: x.email,
-      Date: formatDate(new Date(x.lastModifiedDate), 'yyyy-MM-dd', 'en') || '',
+      Date: formatDate(new Date(x.modifiedDate), 'yyyy-MM-dd', 'en') || '',
       phoneNumber: x.phoneNumber,
       Role:x.role
     }));
@@ -285,6 +299,31 @@ export class UserslistComponent implements OnInit ,OnDestroy{
       this.contextMenu.menu?.focusFirstItem('mouse');
       this.contextMenu.openMenu();
     }
+  }
+
+  onPageChange(event: PageEvent) {
+    if(event.pageSize !== this.pageSize){
+      this.paginator.pageIndex=0;
+      var pagedrequest:PagedRequest={
+      pageSize:event.pageSize,
+      searchValue:this.filterValue,
+      fullTextSearch:!!this.filterValue,
+    }
+  }
+  else{
+    const isNextPage = event.previousPageIndex !== undefined && event.pageIndex > event.previousPageIndex;
+    const isPreviousPage = event.previousPageIndex !== undefined && event.pageIndex < event.previousPageIndex;
+    var pagedrequest:PagedRequest={
+      pageNumber:event.pageIndex,
+      pageSize:event.pageSize,
+      searchValue:this.filterValue,
+      fullTextSearch:!!this.filterValue,
+      lastModifiedDate:isNextPage?this.lastItem:undefined,
+      firstModifiedDate:isPreviousPage?this.firstItem:undefined
+    }
+  }
+    this.loadData(pagedrequest)
+    // Fetch data for the new page
   }
 
 }

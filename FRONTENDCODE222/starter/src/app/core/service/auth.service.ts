@@ -41,8 +41,11 @@ export class AuthService {
           phoneNumber:decoded.phoneNumber,
           fullName: decoded.fullName,
           role: decoded.role,
+          gender:decoded.gender,
+          dateOfBirth:decoded.dateOfBirth,
+          address:decoded.address,
           token: token,
-          lastModifiedDate:decoded.lastModifiedDate,
+          modifiedDate:decoded.modifiedDate,
           img: "assets/images/hospitallogos/vj_hospitals_logo.jpg", // helper method to assign user image if needed
         };
   

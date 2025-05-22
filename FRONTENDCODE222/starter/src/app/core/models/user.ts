@@ -8,7 +8,10 @@ export class User {
   fullName!: string;
   role!: Role;
   token!: string;
-  lastModifiedDate!:Date
+  address!:string
+  dateOfBirth!:Date;
+  gender!:string;
+  modifiedDate!:Date
 }
 
 export class AddUser {
