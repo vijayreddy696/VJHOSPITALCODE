@@ -1,6 +1,6 @@
 import { CommonModule, DatePipe, formatDate, NgClass } from '@angular/common';
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -17,10 +17,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { rowsAnimation, TableExportUtil } from '@shared';
 import { FeatherIconsComponent } from '@shared/components/feather-icons/feather-icons.component';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
-import { HttpClientModule } from '@angular/common/module.d-CnjH8Dlt';
 import { UserService } from '../user.service';
 import { SelectionModel } from '@angular/cdk/collections';
-import { Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import {
   MatSnackBar,
@@ -34,6 +33,8 @@ import { PagedRequest } from '@core/models/pagedrequest';
 import { PagedResult } from '@core/models/pagedresult';
 import { DialogComponent } from '../dialog/dialog.component';
 import { Direction } from '@angular/cdk/bidi';
+import { ReloadService } from '@shared/services/reload.service';
+import { getUserFormFields } from '@shared/form-fields/user-form-fields.config';
 
 
 @Component({
@@ -73,7 +74,6 @@ export class UserslistComponent implements OnInit ,OnDestroy{
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  // @ViewChild('filter') filter!: ElementRef;
   @ViewChild(MatMenuTrigger) contextMenu?: MatMenuTrigger;
   totalCount:any;
   pageSize:any;
@@ -81,38 +81,58 @@ export class UserslistComponent implements OnInit ,OnDestroy{
 
   columnDefinitions = [
     { def: 'select', label: 'Checkbox', type: 'check', visible: true },
-    { def: 'fullName', label: 'Full Name', type: 'text', visible: true },
+    { def: 'fullName', label: 'Full Name', type: 'fullName', visible: true },
     { def: 'email', label: 'Email', type: 'email', visible: true },
     { def: 'phoneNumber', label: 'Phone Number', type: 'phone', visible: true },
     { def: 'role', label: 'Role', type: 'text', visible: true },
-    { def: 'hospitalId', label: 'Hospital ID', type: 'number', visible: true },
+    { def: 'gender', label: 'Gender', type: 'gender', visible: true },
+    { def: 'modifiedDate', label: 'Last Modified ON', type: 'date', visible: true },
     { def: 'actions', label: 'Actions', type: 'actionBtn', visible: true },
   ];
+
+  formFields = getUserFormFields(this.reloadService);
+
 
   dataSource = new MatTableDataSource<User>([]);
   selection = new SelectionModel<User>(true, []);
   contextMenuPosition = { x: '0px', y: '0px' };
-  isLoading = true;
+  isLoading = false;
   private destroy$ = new Subject<void>();
   filterValue: string | undefined;
   lastItem: Date|undefined;
   firstItem:Date|undefined;
-  constructor(private userservice:UserService,
+  constructor(private userservice:UserService,private reloadservice:ReloadService,
     public dialog: MatDialog,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private reloadService:ReloadService
   ){
   }
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+   
+  
   }
   ngOnInit(): void {
     this.loadData();
+    // this.reloadService.reloadUsersList$
+    // .pipe(takeUntil(this.destroy$))  // <-- listens to destroy$
+    // .subscribe(() => {
+    //   this.loadData();
+    // }); 
   }
+
+
+  getColumnTypeTemplate(column:any): string {
+    return column.type; // You can adjust for fullName, gender, etc.
+  }
+  
+ 
 
 
   loadData(paginationRequest: PagedRequest = {} as PagedRequest): void {
     this.isLoading = true;
+
   
     this.userservice.getusers(paginationRequest).subscribe({
       next: (data: PagedResult<User>) => {
@@ -173,7 +193,7 @@ export class UserslistComponent implements OnInit ,OnDestroy{
   }
 
   editCall(row: User) {
-    // this.openDialog('edit', row);
+    this.openDialog('edit', row);
   }
 
   openDialog(action: 'add' | 'edit', data?: User) {
@@ -186,38 +206,40 @@ export class UserslistComponent implements OnInit ,OnDestroy{
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '60vw',
       maxWidth: '100vw',
-      data: { doctors: data, action },
+      data: { data, action ,title:"Doctor",formFields:this.formFields},
       direction: varDirection,
       autoFocus: false,
     });
+    const dialogComponent = dialogRef.componentInstance;
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        if (action === 'add') {
-          this.dataSource.data = [result, ...this.dataSource.data];
-        } else {
-          this.updateRecord(result);
-        }
-        this.refreshTable();
-        this.showNotification(
-          action === 'add' ? 'snackbar-success' : 'black',
-          `${action === 'add' ? 'Add' : 'Edit'} Record Successfully...!!!`,
-          'bottom',
-          'center'
-        );
-      }
+    dialogComponent.formemitter.subscribe((formData: any) => {
+      dialogComponent.loading = true;
+      this.userservice.adduser(formData).subscribe({
+        next: () => {
+          this.paginator.pageIndex = 0; // Reset to first page on filter
+          this.loadData(); // Refresh user list
+          dialogRef.close(); // Close dialog after successful addition
+          this.showNotification(
+            'snackbar-success',
+            'Add Record Successfully...!!!',
+            'top',
+            'center'
+          );
+        },
+        error: (err) => {
+          dialogComponent.loading = false;
+          console.error('Error adding user:', err);
+          this.showNotification(
+            'snackbar-danger',
+            'Error IN upadiitng...!!!',
+            'top',
+            'center'
+          );
+        },
+      });
     });
   }
 
-  private updateRecord(updatedRecord: User) {
-    const index = this.dataSource.data.findIndex(
-      (record) => record.id === updatedRecord.id
-    );
-    if (index !== -1) {
-      this.dataSource.data[index] = updatedRecord;
-      this.dataSource._updateChangeSubscription();
-    }
-  }
 
   deleteItem(row: User) {
     const dialogRef = this.dialog.open(CommondeleteComponent, {

@@ -71,7 +71,7 @@ namespace HospitalApi.Services
                 {
                     if (user.HospitalId == null)
                         throw new Exception("Hospital id is required");
-
+                    user.Password = _passwordHasher.HashPassword(user, user.Password);
                     return await _userRepository.UpdateUserAsync(user);
                 }
             }

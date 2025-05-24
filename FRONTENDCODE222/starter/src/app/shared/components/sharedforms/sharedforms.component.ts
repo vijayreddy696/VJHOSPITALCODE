@@ -1,0 +1,79 @@
+import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatOptionModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
+import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
+import { FileUploadComponent } from '../file-upload/file-upload.component';
+
+@Component({
+  selector: 'app-sharedforms',
+  imports: [
+    CommonModule,
+    BreadcrumbComponent,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatOptionModule,
+    MatDatepickerModule,
+    FileUploadComponent,
+    MatButtonModule,
+    MatProgressSpinnerModule
+  ],
+  templateUrl: './sharedforms.component.html',
+  styleUrl: './sharedforms.component.scss'
+})
+export class SharedformsComponent implements OnInit{
+  @Input() loading:boolean =false;
+
+  docForm!: FormGroup;
+
+  @Input() formFields:any[]  = [];
+  @Output() formemitter = new EventEmitter<any>();
+  constructor(private fb: UntypedFormBuilder)
+  {
+
+  } 
+  ngOnInit(): void {
+    this.docForm = this.fb.group({});
+this.formFields.forEach(field => {
+  if (field?.name === 'id') {
+    this.docForm.addControl(field?.name, new FormControl(0, [...field.validators || []]));
+  } else {
+    this.docForm.addControl(field?.name, new FormControl('', field.validators || []));
+  }
+});
+  }
+
+
+  getErrorMessage(controlName: string): string | null {
+    const control = this.docForm.get(controlName);
+    if (!control || !control.errors) {
+      return null; // no error or not touched yet
+    }
+  
+    if (control.hasError('required')) 
+          return 'This field is required';
+  
+    if (controlName === 'email' && control.hasError('email')) 
+      return 'Please enter a valid email address';
+  
+    if (controlName === 'conformPassword' && control.hasError('passwordMismatch')) 
+      return 'Passwords do not match';
+  
+    return null;
+  }
+
+  onSubmit() {
+    if(this.docForm.invalid)
+      return;
+    this.formemitter.emit(this.docForm.value)
+  }
+}

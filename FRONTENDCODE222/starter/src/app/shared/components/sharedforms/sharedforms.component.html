@@ -1,0 +1,100 @@
+<form class="m-4" [formGroup]="docForm" (ngSubmit)="onSubmit()">
+
+    <section class="content">
+        <div class="content-block">
+          <div class="block-header">
+            <!-- breadcrumb -->
+            <app-breadcrumb [title]="'Add User'" [items]="['Users']" [active_item]="'Add User'"></app-breadcrumb>
+          </div>
+          <div class="row clearfix">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+              <div class="card">
+                <div class="header">
+                  <h2>Add Doctor</h2>
+      
+                </div>
+                <div class="body">
+                    <div class="row">
+                        <div
+                          *ngFor="let field of formFields"
+                          [ngClass]="{
+                            'col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-5': field.type === 'file' || field.type === 'textarea',
+                            'col-xl-6 col-lg-6 col-md-12 col-sm-12': field.type !== 'file' && field.type !== 'textarea'
+                          }"
+                        >
+                          <ng-container [ngSwitch]="field.type">
+                          
+                            <!-- Text -->
+                            <mat-form-field *ngSwitchCase="'text'" class="example-full-width" appearance="outline">
+                              <mat-label>{{ field.label }}</mat-label>
+                              <input matInput [formControlName]="field.name" />
+                              <mat-error>{{ getErrorMessage(field.name) }}</mat-error>
+                            </mat-form-field>
+                      
+                            <!-- Password -->
+                            <mat-form-field *ngSwitchCase="'password'" class="example-full-width" appearance="outline">
+                              <mat-label>{{ field.label }}</mat-label>
+                              <input matInput type="password" [formControlName]="field.name" />
+                              <mat-error>{{ getErrorMessage(field.name) }}</mat-error>
+                            </mat-form-field>
+                      
+                            <!-- Textarea -->
+                            <mat-form-field *ngSwitchCase="'textarea'" class="example-full-width" appearance="outline">
+                              <mat-label>{{ field.label }}</mat-label>
+                              <textarea matInput [formControlName]="field.name"></textarea>
+                            </mat-form-field>
+                      
+                            <!-- Dropdown -->
+                            <mat-form-field *ngSwitchCase="'dropdown'" class="example-full-width" appearance="outline">
+                              <mat-label>{{ field.label }}</mat-label>
+                              <mat-select [formControlName]="field.name">
+                                <mat-option *ngFor="let option of field.options" [value]="option">
+                                  {{ option }}
+                                </mat-option>
+                              </mat-select>
+                              <mat-error>{{ getErrorMessage(field.name) }}</mat-error>
+                            </mat-form-field>
+                      
+                            <!-- Date -->
+                            <mat-form-field *ngSwitchCase="'date'" class="example-full-width" appearance="outline">
+                              <mat-label>{{ field.label }}</mat-label>
+                              <input matInput [matDatepicker]="picker" [formControlName]="field.name" />
+                              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                              <mat-datepicker #picker></mat-datepicker>
+                              <mat-error>{{ getErrorMessage(field.name) }}</mat-error>
+                            </mat-form-field>
+                      
+                            <!-- File Upload -->
+                            <div *ngSwitchCase="'file'">
+                              <label>{{ field.label }}</label>
+                              <app-file-upload [formControlName]="field.name"></app-file-upload>
+                            </div>
+                      
+                          </ng-container>
+                        </div>
+                      </div>
+                      
+                      
+                  
+                </div>
+                <div class="m-4">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
+                      <button type="submit" [disabled]="loading" class="btn-space" mat-flat-button>
+    
+                    <ng-container *ngIf="!loading; else spinner">Submit</ng-container>
+                      </button>
+                      <ng-template #spinner>
+                          <mat-spinner class="preloader pl-size-xs" diameter="20"></mat-spinner>
+                        </ng-template>
+                      <button type="button" [disabled]="loading" mat-stroked-button>Cancel</button>
+                    </div>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    
+    </form>
+    
+    

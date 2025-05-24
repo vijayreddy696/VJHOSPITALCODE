@@ -1,35 +1,18 @@
 import { Component } from '@angular/core';
-import { AbstractControl, FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatOptionModule } from '@angular/material/core';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { BreadcrumbComponent } from '@shared/components/breadcrumb/breadcrumb.component';
-import { FileUploadComponent } from '@shared/components/file-upload/file-upload.component';
-import { MatDatepickerModule } from '@angular/material/datepicker';
+import { AbstractControl,ValidationErrors, Validators } from '@angular/forms';
 import { UserService } from '../user.service';
 import { Role } from '@core/models/role';
-import { CommonModule } from '@angular/common';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router } from '@angular/router';
+import { SharedformsComponent } from '@shared/components/sharedforms/sharedforms.component';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { ReloadService } from '@shared/services/reload.service';
+import { getUserFormFields } from '@shared/form-fields/user-form-fields.config';
 
 
 @Component({
   selector: 'app-add-user',
   imports: [
-    CommonModule,
-    BreadcrumbComponent,
-    FormsModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatOptionModule,
-    MatDatepickerModule,
-    FileUploadComponent,
-    MatButtonModule,
-    MatProgressSpinnerModule
+    SharedformsComponent
 ],
   templateUrl: './add-user.component.html',
   styleUrl: './add-user.component.scss'
@@ -39,80 +22,52 @@ import { Router } from '@angular/router';
 
 export class AddUserComponent {
   loading:boolean =false;
-  docForm: UntypedFormGroup;
   roles!:string[] ;
-  constructor(private fb: UntypedFormBuilder,private userservice:UserService,private router:Router) {
-    debugger;
-this.roles = Object.values(Role)
-    this.docForm = this.fb.group({
-      fullName: ['', [Validators.required, Validators.pattern('[a-zA-Z]+')]],
-      gender: ['', [Validators.required]],
-      phoneNumber: ['', [Validators.required]],
-      password: ['', [Validators.required]],
-      conformPassword: ['', [Validators.required,this.confirmPasswordValidator]],
-      role: [''],
-      address: [null],
-      email: [
-        '',
-        [Validators.required, Validators.email, Validators.minLength(5)],
-      ],
-      dateOfBirth: ['', [Validators.required]],
-      uploadFile: [null],
+  
+  constructor(private userservice:UserService,private router:Router,private reloadService:ReloadService,
+    private snackBar: MatSnackBar,
+
+  ) {
+
+  }
+  formFields = getUserFormFields(this.reloadService);
+
+  showNotification(
+    colorName: string,
+    text: string,
+    placementFrom: MatSnackBarVerticalPosition,
+    placementAlign: MatSnackBarHorizontalPosition
+  ) {
+    this.snackBar.open(text, '', {
+      duration: 2000,
+      verticalPosition: placementFrom,
+      horizontalPosition: placementAlign,
+      panelClass: colorName,
     });
   }
 
- 
-  confirmPasswordValidator(control: AbstractControl): ValidationErrors | null {
-    if (!control || !control.parent) {
-      return null;
-    }
-  
-    const password = control.parent.get('password')?.value;
-    const confirmPassword = control.value;
-  
-    if (password !== confirmPassword) {
-      return { passwordMismatch: true };
-    }
-  
-    return null;
-  }
-
-
-  getErrorMessage(controlName: string): string | null {
-    const control = this.docForm.get(controlName);
-    if (!control || !control.errors) {
-      return null; // no error or not touched yet
-    }
-  
-    if (control.hasError('required')) 
-          return 'This field is required';
-  
-    if (controlName === 'email' && control.hasError('email')) 
-      return 'Please enter a valid email address';
-  
-    if (controlName === 'conformPassword' && control.hasError('passwordMismatch')) 
-      return 'Passwords do not match';
-  
-    return null;
-  }
-  
-  
-
-
-
-  onSubmit() {
-
-    if(this.docForm.invalid)
-      return;
+  onSubmit(formValue:any) {
     this.loading = true;
-    console.log('Form Value', this.docForm.value);
-    this.userservice.adduser(this.docForm.value).subscribe({
+    console.log('Form Value', formValue);
+    this.userservice.adduser(formValue).subscribe({
       next:(response)=>{
         console.log(response)
         this.loading = false;
+        this.showNotification(
+          'snackbar-success',
+          'Added Record Successfully...!!!',
+          'top',
+          'center'
+        );
         this.router.navigate(["/user/userslist"]);
       },
       error:(error)=>{
+        this.showNotification(
+          'snackbar-danger',
+          'Error IN adding...!!!',
+          'top',
+          'center'
+        );
         console.log(error)
         this.loading = false;
       }

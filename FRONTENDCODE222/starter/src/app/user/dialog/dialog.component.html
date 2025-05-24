@@ -1,4 +1,6 @@
 <div class="addContainer">
+    <form class="register-form m-4" [formGroup]="docForm" (ngSubmit)="onSubmit()">
+
     <div class="modalHeader">
       <div class="avatarDetails">
         <label class="hoverable" for="tableFileInput">
@@ -13,124 +15,74 @@
       </button>
     </div>
     <div mat-dialog-content>
-      <form class="register-form m-4" [formGroup]="docForm" (ngSubmit)="submit()">
         <div class="row">
-            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
-              <mat-form-field class="example-full-width" appearance="outline">
-                <mat-label>Full Name</mat-label>
-                <input matInput formControlName="fullName" required>
-                <mat-error>
-                  {{getErrorMessage('fullName')}}
-                </mat-error>
-              </mat-form-field>
-            </div>
-            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
-              <mat-form-field class="example-full-width" appearance="outline">
-                <mat-label>Gender</mat-label>
-                <mat-select formControlName="gender" required>
-                  <mat-option [value]="'Male'">
-                    Male
-                  </mat-option>
-                  <mat-option [value]="'Female'">
-                    Female
-                  </mat-option>
-                </mat-select>
-                <mat-error>
-                 {{ getErrorMessage('gender')}}
-                </mat-error>
-              </mat-form-field>
-            </div>
-          </div>
-          <div class="row">
-           
-            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 ">
-              <mat-form-field class="example-full-width " appearance="outline">
-                <mat-label>phoneNumber</mat-label>
-                <input matInput formControlName="phoneNumber" required>
-              </mat-form-field>
-            </div>
-            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 ">
-              <mat-form-field class="example-full-width " appearance="outline">
-                <mat-label>Select Role</mat-label>
-                <mat-select formControlName="role" required>
-                  <mat-option *ngFor="let role of roles" [value]="role">
-                      {{ role }}
+            <div
+              *ngFor="let field of formFields"
+              [ngClass]="{
+                'col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-5': field.type === 'file' || field.type === 'textarea',
+                'col-xl-6 col-lg-6 col-md-12 col-sm-12': field.type !== 'file' && field.type !== 'textarea'
+              }"
+            >
+              <ng-container [ngSwitch]="field.type">
+              
+                <!-- Text -->
+                <mat-form-field *ngSwitchCase="'text'" class="example-full-width" appearance="outline">
+                  <mat-label>{{ field.label }}</mat-label>
+                  <input matInput [formControlName]="field.name" />
+                  <mat-error>{{ getErrorMessage(field.name) }}</mat-error>
+                </mat-form-field>
+          
+                <!-- Password -->
+                <mat-form-field *ngSwitchCase="'password'" class="example-full-width" appearance="outline">
+                  <mat-label>{{ field.label }}</mat-label>
+                  <input matInput type="password" [formControlName]="field.name" />
+                  <mat-error>{{ getErrorMessage(field.name) }}</mat-error>
+                </mat-form-field>
+          
+                <!-- Textarea -->
+                <mat-form-field *ngSwitchCase="'textarea'" class="example-full-width" appearance="outline">
+                  <mat-label>{{ field.label }}</mat-label>
+                  <textarea matInput [formControlName]="field.name"></textarea>
+                </mat-form-field>
+          
+                <!-- Dropdown -->
+                <mat-form-field *ngSwitchCase="'dropdown'" class="example-full-width" appearance="outline">
+                  <mat-label>{{ field.label }}</mat-label>
+                  <mat-select [formControlName]="field.name">
+                    <mat-option *ngFor="let option of field.options" [value]="option">
+                      {{ option }}
                     </mat-option>
-                </mat-select>
-                <mat-error>
-                  {{getErrorMessage('role')}}
-                </mat-error>
-              </mat-form-field>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 ">
-              <mat-form-field class="example-full-width " appearance="outline">
-                <mat-label>Password</mat-label>
-                <input matInput formControlName="password" type="password" required>
-                <mat-error>
-                  {{getErrorMessage('password')}}
-                </mat-error>
-              </mat-form-field>
-            </div>
-            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 ">
-              <mat-form-field class="example-full-width " appearance="outline">
-                <mat-label>Re-Enter Password</mat-label>
-                <input matInput formControlName="conformPassword" type="password" required>
-                <mat-error>
-                  {{getErrorMessage('conformPassword')}}
-                </mat-error>
-              </mat-form-field>
-            </div>
-          </div>
-         
-          <div class="row">
-            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
-              <mat-form-field class="example-full-width " appearance="outline">
-                <mat-label>Address</mat-label>
-                <textarea matInput formControlName="address"></textarea>
-              </mat-form-field>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 ">
-              <mat-form-field class="example-full-width " appearance="outline">
-                <mat-label>Email</mat-label>
-                <input matInput formControlName="email" required>
-                <mat-error>
-                  {{getErrorMessage('email')}}
-                </mat-error>
-              </mat-form-field>
-            </div>
-            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 ">
-              <mat-form-field class="example-full-width " appearance="outline">
-                <mat-label>Date Of Birth</mat-label>
-                <input matInput [matDatepicker]="picker" formControlName="dateOfBirth" required>
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-                <mat-error>
-                  {{getErrorMessage('dateOfBirth')}}
-                </mat-error>
-              </mat-form-field>
-            </div>
-          </div>
-        
-          <div class="row">
-            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-5">
-              <label>Upload</label>
-              <app-file-upload formControlName="uploadFile"></app-file-upload>
+                  </mat-select>
+                  <mat-error>{{ getErrorMessage(field.name) }}</mat-error>
+                </mat-form-field>
+          
+                <!-- Date -->
+                <mat-form-field *ngSwitchCase="'date'" class="example-full-width" appearance="outline">
+                  <mat-label>{{ field.label }}</mat-label>
+                  <input matInput [matDatepicker]="picker" [formControlName]="field.name" />
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                  <mat-error>{{ getErrorMessage(field.name) }}</mat-error>
+                </mat-form-field>
+          
+                <!-- File Upload -->
+                <div *ngSwitchCase="'file'">
+                  <label>{{ field.label }}</label>
+                  <app-file-upload [formControlName]="field.name"></app-file-upload>
+                </div>
+          
+              </ng-container>
             </div>
           </div>
          
         
-      </form>
       
     </div>
     <div class="m-4">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
           <button type="submit" [disabled]="loading" class="btn-space" mat-flat-button>
 
-        <ng-container *ngIf="!loading; else spinner">Submit</ng-container>
+        <ng-container *ngIf="!loading; else spinner">  {{ action === 'edit' ? 'Update' : 'Add' }}</ng-container>
           </button>
           <ng-template #spinner>
               <mat-spinner class="preloader pl-size-xs" diameter="20"></mat-spinner>
@@ -138,4 +90,5 @@
           <button type="button" mat-dialog-close [disabled]="loading" mat-stroked-button>Cancel</button>
         </div>
       </div>
+    </form>
   </div>
