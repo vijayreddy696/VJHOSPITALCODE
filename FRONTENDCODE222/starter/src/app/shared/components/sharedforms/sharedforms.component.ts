@@ -10,6 +10,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
 import { FileUploadComponent } from '../file-upload/file-upload.component';
+import { Observable } from 'rxjs';
+import { ReloadService } from '@shared/services/reload.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sharedforms',
@@ -32,12 +35,17 @@ import { FileUploadComponent } from '../file-upload/file-upload.component';
 })
 export class SharedformsComponent implements OnInit{
   @Input() loading:boolean =false;
+  @Input() formFields:any[]  = [];
+  @Input() title:any;
+  @Input() navigateUrl!: string;
+
 
   docForm!: FormGroup;
 
-  @Input() formFields:any[]  = [];
-  @Output() formemitter = new EventEmitter<any>();
-  constructor(private fb: UntypedFormBuilder)
+
+  @Input() onSubmitFn!: (formData: any) => Observable<any>;
+
+  constructor(private fb: UntypedFormBuilder,private reloadService:ReloadService,private router:Router)
   {
 
   } 
@@ -71,9 +79,34 @@ this.formFields.forEach(field => {
     return null;
   }
 
+ 
+
+
   onSubmit() {
-    if(this.docForm.invalid)
-      return;
-    this.formemitter.emit(this.docForm.value)
+    if (this.docForm.invalid) return;
+  
+    this.loading = true;
+    const formValue = this.docForm.value;
+  
+    this.onSubmitFn(formValue).subscribe({
+      next: (response) => {
+        console.log('Response:', response);
+        this.loading = false;
+        this.reloadService.showNotification(
+          'snackbar-success',
+          this.title + ' Added Successfully...!!!'
+        );
+        this.router.navigate([this.navigateUrl]);
+      },
+      error: (error) => {
+        console.error('Error:', error);
+        this.reloadService.showNotification(
+          'snackbar-danger',
+          'Error IN adding '+this.title +'...!!!'
+        );
+        this.loading = false;
+      }
+    });
   }
+  
 }

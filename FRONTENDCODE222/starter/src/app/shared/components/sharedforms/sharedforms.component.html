@@ -4,13 +4,17 @@
         <div class="content-block">
           <div class="block-header">
             <!-- breadcrumb -->
-            <app-breadcrumb [title]="'Add User'" [items]="['Users']" [active_item]="'Add User'"></app-breadcrumb>
+            <app-breadcrumb
+            [title]="'All ' + title + 's'"
+            [items]="[title + 's']"
+            [active_item]="'All ' + title + 's'">
+          </app-breadcrumb>
           </div>
           <div class="row clearfix">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
               <div class="card">
                 <div class="header">
-                  <h2>Add Doctor</h2>
+                  <h2>Add {{title}}</h2>
       
                 </div>
                 <div class="body">

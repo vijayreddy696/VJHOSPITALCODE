@@ -65,7 +65,7 @@ namespace HospitalApi.Migrations
 
                     b.HasIndex("HospitalId");
 
-                    b.ToTable("Departments");
+                    b.ToTable("Departments", (string)null);
                 });
 
             modelBuilder.Entity("HospitalApi.Models.Hospital", b =>
@@ -108,7 +108,7 @@ namespace HospitalApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Hospitals");
+                    b.ToTable("Hospitals", (string)null);
                 });
 
             modelBuilder.Entity("HospitalApi.Models.User", b =>
@@ -157,11 +157,14 @@ namespace HospitalApi.Migrations
                     b.Property<int>("Role")
                         .HasColumnType("int");
 
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
                     b.HasIndex("HospitalId");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("HospitalApi.Models.Department", b =>

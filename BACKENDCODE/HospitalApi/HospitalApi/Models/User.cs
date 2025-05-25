@@ -15,8 +15,7 @@ namespace HospitalApi.Models
 
         public Role Role { get; set; }
         public int? HospitalId { get; set; }
-
-     
+        public bool Status { get; set; } = true;
         public string Password { get; set; }
         public Hospital? Hospital { get; set; }
 

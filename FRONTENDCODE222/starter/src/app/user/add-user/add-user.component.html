@@ -1,1 +1,1 @@
-<app-sharedforms [formFields]="formFields" [loading]="loading" (formemitter)="onSubmit($event)"></app-sharedforms>
+<app-sharedforms [formFields]="formFields" [title]="title" [navigateUrl]="'/user/userslist'" [onSubmitFn]="addUser.bind(this)"></app-sharedforms>

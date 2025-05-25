@@ -28,9 +28,14 @@ namespace HospitalApi.Repositaries
         {
             IQueryable<Department> query = _context.Departments.AsNoTracking();
 
+           
+
+
             if (paginationRequest.HospitalId > 0)
             {
                 query = query.Where(d => d.HospitalId == paginationRequest.HospitalId);
+                // Always filter by Status == true
+                query = query.Where(d => d.Status == true);
             }
             else
             {

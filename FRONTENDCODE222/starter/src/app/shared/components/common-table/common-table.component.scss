@@ -1,0 +1,10 @@
+.overflow-auto{
+    height: 400px; /* Or whatever you want */
+    overflow-y: auto;
+}
+
+mat-paginator {
+    position: sticky;
+    bottom: 0;
+  }
+

@@ -31,6 +31,8 @@ namespace HospitalApi.Repositaries
             if (paginationRequest.HospitalId > 0)
             {
                 query = query.Where(u => u.HospitalId == paginationRequest.HospitalId);
+                // Always filter by Status == true
+                query = query.Where(d => d.Status == true);
             }
             else
             {
@@ -120,12 +122,13 @@ namespace HospitalApi.Repositaries
 
         public async Task DeleteUserAsync(int id)
         {
-            var user = await _context.Users
-                                      .FirstOrDefaultAsync(u => u.Id == id);
+            User user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
 
             if (user != null)
             {
-                _context.Users.Remove(user);
+                user.Status = false;
+                _context.Users.Update(user);
+                //_context.Users.Remove(user);
                 await _context.SaveChangesAsync();
             }
         }

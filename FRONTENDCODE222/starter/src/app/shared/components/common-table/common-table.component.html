@@ -2,7 +2,11 @@
     <div class="content-block">
       <div class="block-header">
         <!-- breadcrumb -->
-        <app-breadcrumb [title]="'All Users'" [items]="['Users']" [active_item]="'All Users'"></app-breadcrumb>
+        <app-breadcrumb
+        [title]="'All ' + title + 's'"
+        [items]="[title + 's']"
+        [active_item]="'All ' + title + 's'">
+      </app-breadcrumb>
       </div>
       <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -11,7 +15,7 @@
               <div class="left">
                 <ul class="header-buttons-left ms-0">
                   <li class="tbl-title">
-                    <h2>Doctors</h2>
+                    <h2>{{title}}s</h2>
                   </li>
                   <li class="tbl-search-box">
                     <label for="search-input"><i class="material-icons search-icon">search</i></label>
@@ -26,7 +30,7 @@
                   <li class="tbl-header-btn">
                     <div class="m-l-10">
                       <button type="button" class="btn btn-outline-default" (click)="addNew()" matTooltip="Add">
-                        Add User
+                        Add {{title}}
                       </button>
 
                     </div>
@@ -58,6 +62,11 @@
             </div>
             <div class="overflow-auto">
               <div class="responsive_table">
+                <!-- Loading spinner -->
+                @if (isLoading) {
+                    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                    <mat-progress-bar mode="buffer"></mat-progress-bar>
+                    }
                 <table mat-table [dataSource]="dataSource" matSort class="mat-cell advance-table">
                   <!-- Checkbox Column -->
                   <ng-container matColumnDef="select">
@@ -205,13 +214,7 @@
                     (click)="editCall(row)" [style.cursor]="'pointer'" matRipple>
                   </mat-row>
                 </table>
-                <!-- Loading spinner -->
-                @if (isLoading) {
-                <div class="tbl-spinner">
-                  <mat-progress-spinner color="primary" [diameter]="40" mode="indeterminate">
-                  </mat-progress-spinner>
-                </div>
-                }
+                
                 <!-- context menu start -->
                 <div style="visibility: hidden; position: fixed" [style.left]="contextMenuPosition.x"
                   [style.top]="contextMenuPosition.y" [matMenuTriggerFor]="contextMenu">

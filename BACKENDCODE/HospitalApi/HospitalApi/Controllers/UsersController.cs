@@ -68,7 +68,9 @@ namespace HospitalApi.Controllers
                     return BadRequest("User data is required.");
                 }
                 user.HospitalId = int.Parse(_claimsHelper.GetHospitalId());
-
+                User existingUser = await _userService.GetUserByEmailAsync(user.HospitalId.Value,user.Email);
+                if(existingUser != null) 
+                    return Conflict(existingUser);
                 User result = await _userService.AddOrUpdateUserAsync(user);
                 if (result == null)
                 {

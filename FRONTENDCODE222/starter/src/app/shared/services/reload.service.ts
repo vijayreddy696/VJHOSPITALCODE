@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AbstractControl, ValidationErrors } from '@angular/forms';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { Subject } from 'rxjs';
 
 @Injectable({
@@ -7,7 +8,7 @@ import { Subject } from 'rxjs';
 })
 export class ReloadService {
 
-  constructor() { }
+  constructor( private snackBar: MatSnackBar) { }
 
   private reloadUsersList = new Subject<void>();
 
@@ -31,4 +32,19 @@ export class ReloadService {
   
     return null;
   }
+
+  showNotification(
+    colorName: string,
+    text: string,
+    placementFrom: MatSnackBarVerticalPosition='top',
+    placementAlign: MatSnackBarHorizontalPosition='center'
+  ) {
+    this.snackBar.open(text, '', {
+      duration: 2000,
+      verticalPosition: placementFrom,
+      horizontalPosition: placementAlign,
+      panelClass: colorName,
+    });
+  }
+
 }
