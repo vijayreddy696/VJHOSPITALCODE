@@ -39,8 +39,8 @@ namespace HospitalApi.Controllers
 
 
         // GET: api/users/getuserbyid/{hospitalId}/{id}
-        [HttpGet("getuserbyid/{hospitalId}/{id}")]
-        public async Task<IActionResult> GetUser(int hospitalId, int id)
+        [HttpGet("getuserbyid/{id}")]
+        public async Task<IActionResult> GetUser(int id)
         {
             try
             {
@@ -49,6 +49,23 @@ namespace HospitalApi.Controllers
                 {
                     return NotFound("User not found.");
                 }
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error retrieving user: {ex.Message}");
+            }
+        }
+
+
+        [HttpGet("getuserbyemail/{email}")]
+        public async Task<IActionResult> GetUser(string email)
+        {
+            try
+            {
+                int HospitalId = int.Parse(_claimsHelper.GetHospitalId());
+
+                User user = await _userService.GetUserByEmailAsync(HospitalId, true,email);
                 return Ok(user);
             }
             catch (Exception ex)
@@ -68,9 +85,12 @@ namespace HospitalApi.Controllers
                     return BadRequest("User data is required.");
                 }
                 user.HospitalId = int.Parse(_claimsHelper.GetHospitalId());
-                User existingUser = await _userService.GetUserByEmailAsync(user.HospitalId.Value,user.Email);
-                if(existingUser != null) 
-                    return Conflict(existingUser);
+                if (user.Id == 0)
+                {
+                    User existingUser = await _userService.GetUserByEmailAsync(user.HospitalId.Value, false, user.Email);
+                    if (existingUser != null)
+                        return Conflict(existingUser);
+                }
                 User result = await _userService.AddOrUpdateUserAsync(user);
                 if (result == null)
                 {
@@ -86,12 +106,14 @@ namespace HospitalApi.Controllers
         }
 
         // DELETE: api/users/deleteuserbyid/{hospitalId}/{userId}
-        [HttpDelete("deleteuserbyid/{hospitalId}/{userId}")]
-        public async Task<IActionResult> DeleteUser(int hospitalId, int userId)
+        [HttpDelete("deleteuserbyid/{id}")]
+        public async Task<IActionResult> DeleteUser(int id)
         {
             try
             {
-                await _userService.DeleteUserAsync( userId);
+                int HospitalId = int.Parse(_claimsHelper.GetHospitalId());
+
+                await _userService.DeleteUserAsync(id);
                 return Ok(new { message = "User deleted successfully." });
             }
             catch (Exception ex)

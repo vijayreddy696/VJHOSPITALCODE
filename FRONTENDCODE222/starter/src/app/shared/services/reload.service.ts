@@ -1,14 +1,15 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AbstractControl, ValidationErrors } from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
-import { Subject } from 'rxjs';
+import { catchError, first, map, Observable, of, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ReloadService {
 
-  constructor( private snackBar: MatSnackBar) { }
+  constructor( private snackBar: MatSnackBar,private http:HttpClient) { }
 
   private reloadUsersList = new Subject<void>();
 
@@ -45,6 +46,19 @@ export class ReloadService {
       horizontalPosition: placementAlign,
       panelClass: colorName,
     });
+  }
+
+  emailExistsValidator(): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<{ emailExists: boolean } | null> => {
+      const email = control.value;
+      if (!email) return of(null);
+
+      return this.http.get<boolean>(`http://localhost:5068/api/Users/getuserbyemail/${email}`).pipe(
+        map((exists) => (exists ? { emailExists: true } : null)),
+        catchError(() => of(null)), // Fail silently
+        first()
+      );
+    };
   }
 
 }

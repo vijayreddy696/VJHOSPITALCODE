@@ -32,7 +32,7 @@ namespace HospitalApi.Controllers
                 return BadRequest(new { message = "Invalid login request." });
             }
 
-            User user = await _userService.GetUserByEmailAsync(request.HospitalId, request.Email);
+            User user = await _userService.GetUserByEmailAsync(request.HospitalId,true, request.Email);
             if (user == null)
             {
                 return Unauthorized(new { message = "User not found." });

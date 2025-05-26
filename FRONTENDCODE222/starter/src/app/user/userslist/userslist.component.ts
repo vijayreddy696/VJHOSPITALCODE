@@ -38,13 +38,14 @@ export class UserslistComponent {
   ];
   readonly title = "User";
 
-  readonly formFields = getUserFormFields(this.reloadService);
+  readonly formFields = (params: any) => getUserFormFields(this.reloadService, params);
+
   
   
   constructor(private userservice:UserService,private reloadService:ReloadService ){ }
  
   loadUsers(paginationRequest: PagedRequest): Observable<PagedResult<User>> {
-    return this.userservice.getusers(paginationRequest).pipe(
+    return this.userservice.getUsers(paginationRequest).pipe(
       map(data => ({
         ...data,
         items: (data.items || []).map((user: User) => ({
@@ -56,7 +57,12 @@ export class UserslistComponent {
   }
   
   addUser(formData: any): Observable<any> {
-    return this.userservice.adduser(formData);
+    return this.userservice.addUser(formData);
+  }
+
+
+  deleteUser(id: number): Observable<any> {
+    return this.userservice.deleteUser(id);
   }
   
  

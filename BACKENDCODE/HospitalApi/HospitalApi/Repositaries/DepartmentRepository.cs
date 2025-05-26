@@ -83,19 +83,19 @@ namespace HospitalApi.Repositaries
 
         private IQueryable<Department> ApplyDatePagination(IQueryable<Department> query, PaginationRequest request)
         {
-            if (request.LastModifiedDate == null && request.FirstModifiedDate == null)
+            if (request.LastCreatedDate == null && request.FirstCreatedDate == null)
             {
                 return query.OrderByDescending(d => d.ModifiedDate).Take(request.PageSize);
             }
-            else if (request.LastModifiedDate != null)
+            else if (request.LastCreatedDate != null)
             {
-                return query.Where(d => d.ModifiedDate < request.LastModifiedDate)
+                return query.Where(d => d.ModifiedDate < request.LastCreatedDate)
                             .OrderByDescending(d => d.ModifiedDate)
                             .Take(request.PageSize);
             }
-            else if (request.FirstModifiedDate != null)
+            else if (request.FirstCreatedDate != null)
             {
-                return query.Where(d => d.ModifiedDate > request.FirstModifiedDate)
+                return query.Where(d => d.ModifiedDate > request.FirstCreatedDate)
                             .OrderBy(d => d.ModifiedDate).Take(request.PageSize)
                             .OrderByDescending(d => d.ModifiedDate);
             }

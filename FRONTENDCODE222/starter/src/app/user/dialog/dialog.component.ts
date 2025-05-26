@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, UntypedFormGroup, UntypedFormBuilder, Validators, UntypedFormControl, AbstractControl, ValidationErrors, FormControl } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -13,10 +13,11 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FileUploadComponent } from '@shared/components/file-upload/file-upload.component';
 import { Router } from '@angular/router';
 import { ReloadService } from '@shared/services/reload.service';
+import { genericFormField } from '@core/models/genericformfields.interface';
 
 
 export interface DialogData {
-  formFields:[],
+  formFieldsFn: (param: any) => genericFormField[],
   title:string,
   action: 'add' | 'edit';
   data:any;
@@ -42,7 +43,7 @@ export interface DialogData {
   templateUrl: './dialog.component.html',
   styleUrl: './dialog.component.scss'
 })
-export class DialogComponent {
+export class DialogComponent implements OnInit {
 
   action: string;
   dialogTitle: string;
@@ -51,7 +52,7 @@ export class DialogComponent {
   @Input() loading: boolean = false;
   title!:string;
   @Output() formemitter = new EventEmitter<any>();
-  formFields :any;
+  formFields :genericFormField[]=[];
 
   constructor(
     public dialogRef: MatDialogRef<DialogComponent>,
@@ -62,18 +63,32 @@ export class DialogComponent {
     this.action = data.action;
     this.formValue = data.data;
     this.title = data.title;
-    this.formFields = data.formFields;
     this.dialogTitle = this.action === 'edit' ? 'Update '+this.title : 'New '+this.title;
     this.docForm = this.fb.group({});
     this.docForm.addControl(
       'id',
       new FormControl(0) // Add validators here manually if needed
     );
-    this.formFields.forEach((field:any) => {
-        this.docForm.addControl(field?.name, new FormControl('', field.validators || []));
-    });
-    if(this.formValue)
-      this.docForm.patchValue(this.formValue)
+    
+   
+  }
+  ngOnInit(): void {
+    this.formFields = this.data.formFieldsFn(this.action === 'edit');
+    this.formFields.forEach(field => {
+      const controlOptions: any = {
+        validators: field.validators || [],
+        asyncValidators: field.asyncValidators || [],
+      };
+
+      //  Only add `updateOn: 'blur'` if field.blur === true
+      if (field.blur) {
+        controlOptions.updateOn = 'blur';
+      }
+      this.docForm.addControl(field.name, new FormControl('', controlOptions));
+  });
+  if(this.formValue)
+    this.docForm.patchValue(this.formValue)
+
   }
 
   
@@ -84,6 +99,9 @@ export class DialogComponent {
     const control = this.docForm.get(controlName);
     if (!control || !control.errors) {
       return null; // no error or not touched yet
+    }
+    if (control.hasError('emailExists')) {
+      return 'Email already exists';
     }
   
     if (control.hasError('required')) 

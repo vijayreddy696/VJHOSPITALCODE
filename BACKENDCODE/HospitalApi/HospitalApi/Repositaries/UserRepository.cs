@@ -10,8 +10,8 @@ namespace HospitalApi.Repositaries
         Task<User> GetUserByIdAsync(int id);
         Task<User> AddUserAsync(User user);
         Task<User> UpdateUserAsync(User user);
-        Task DeleteUserAsync(int userId);
-        Task<User?> GetUserByEmailAsync(int hospitalId , string email);
+        Task DeleteUserAsync(User user);
+        Task<User?> GetUserByEmailAsync(int hospitalId , bool status, string email);
 
     }
 
@@ -82,21 +82,21 @@ namespace HospitalApi.Repositaries
 
         private IQueryable<User> ApplyDatePagination(IQueryable<User> query, PaginationRequest request)
         {
-            if (request.LastModifiedDate == null && request.FirstModifiedDate == null)
+            if (request.LastCreatedDate == null && request.FirstCreatedDate == null)
             {
-                return query.OrderByDescending(u => u.ModifiedDate).Take(request.PageSize);
+                return query.OrderByDescending(u => u.CreatedDate).Take(request.PageSize);
             }
-            else if (request.LastModifiedDate != null)
+            else if (request.LastCreatedDate != null)
             {
-                return query.Where(u => u.ModifiedDate < request.LastModifiedDate)
-                            .OrderByDescending(u => u.ModifiedDate)
+                return query.Where(u => u.CreatedDate < request.LastCreatedDate)
+                            .OrderByDescending(u => u.CreatedDate)
                             .Take(request.PageSize);
             }
-            else if (request.FirstModifiedDate != null)
+            else if (request.FirstCreatedDate != null)
             {
-                return query.Where(u => u.ModifiedDate > request.FirstModifiedDate)
-                            .OrderBy(u => u.ModifiedDate).Take(request.PageSize)
-                            .OrderByDescending(u => u.ModifiedDate);
+                return query.Where(u => u.CreatedDate > request.FirstCreatedDate)
+                            .OrderBy(u => u.CreatedDate).Take(request.PageSize)
+                            .OrderByDescending(u => u.CreatedDate);
             }
             return null;
         }
@@ -120,10 +120,8 @@ namespace HospitalApi.Repositaries
             return user; // Return the updated user
         }
 
-        public async Task DeleteUserAsync(int id)
+        public async Task DeleteUserAsync(User user)
         {
-            User user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
-
             if (user != null)
             {
                 user.Status = false;
@@ -133,9 +131,9 @@ namespace HospitalApi.Repositaries
             }
         }
 
-        public async Task<User?> GetUserByEmailAsync(int hospitalId, string email)
+        public async Task<User?> GetUserByEmailAsync(int hospitalId, bool status, string email)
         {
-            return await _context.Users.Where(u => u.HospitalId == hospitalId && u.Email == email).FirstOrDefaultAsync();
+            return await _context.Users.Where(u => u.HospitalId == hospitalId && u.Status == status && u.Email == email).FirstOrDefaultAsync();
         }
 
 

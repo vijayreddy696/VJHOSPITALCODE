@@ -7,7 +7,7 @@ import { ReloadService } from "@shared/services/reload.service";
 
 
 
-export function getUserFormFields(reloadService: ReloadService) {
+export function getUserFormFields(reloadService: ReloadService,isEditMode:boolean = false) {
     return [
         {
           name: 'fullName',
@@ -57,6 +57,8 @@ export function getUserFormFields(reloadService: ReloadService) {
           label: 'Email',
           type: 'text',
           validators: [Validators.required, Validators.email, Validators.minLength(5)],
+          asyncValidators: isEditMode ? [] : [reloadService.emailExistsValidator()],
+          blur:true
         },
         {
           name: 'dateOfBirth',

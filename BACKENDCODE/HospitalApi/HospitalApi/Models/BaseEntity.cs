@@ -19,8 +19,8 @@
         public int PageNumber { get; set; } = 1;
         public int PageSize { get; set; } = 10;
         public string? SearchValue { get; set; }
-        public DateTime? FirstModifiedDate { get; set; }
-        public DateTime? LastModifiedDate { get; set; }
+        public DateTime? FirstCreatedDate { get; set; }
+        public DateTime? LastCreatedDate { get; set; }
         public bool FullTextSearch { get; set; } = false;
         public int? HospitalId { get; set; }
     }

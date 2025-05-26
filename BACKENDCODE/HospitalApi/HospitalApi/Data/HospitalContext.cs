@@ -30,6 +30,7 @@ namespace HospitalApi.Data
                 }
                 else if (entry.State == EntityState.Modified)
                 {
+                    entry.Property(e => e.CreatedDate).IsModified = false;
                     entry.Entity.ModifiedDate = DateTime.UtcNow;
                 }
 

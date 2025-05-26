@@ -27,7 +27,7 @@ export class AddUserComponent {
   }
 
   addUser(formData: any): Observable<any> {
-    return this.userservice.adduser(formData);
+    return this.userservice.addUser(formData);
   }
 
 }

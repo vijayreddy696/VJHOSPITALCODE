@@ -13,6 +13,7 @@ import { FileUploadComponent } from '../file-upload/file-upload.component';
 import { Observable } from 'rxjs';
 import { ReloadService } from '@shared/services/reload.service';
 import { Router } from '@angular/router';
+import { genericFormField } from '@core/models/genericformfields.interface';
 
 @Component({
   selector: 'app-sharedforms',
@@ -35,7 +36,7 @@ import { Router } from '@angular/router';
 })
 export class SharedformsComponent implements OnInit{
   @Input() loading:boolean =false;
-  @Input() formFields:any[]  = [];
+  @Input() formFields:genericFormField[]  = [];
   @Input() title:any;
   @Input() navigateUrl!: string;
 
@@ -51,14 +52,25 @@ export class SharedformsComponent implements OnInit{
   } 
   ngOnInit(): void {
     this.docForm = this.fb.group({});
-this.formFields.forEach(field => {
-  if (field?.name === 'id') {
-    this.docForm.addControl(field?.name, new FormControl(0, [...field.validators || []]));
-  } else {
-    this.docForm.addControl(field?.name, new FormControl('', field.validators || []));
+  
+    this.formFields.forEach(field => {
+      if (field?.name === 'id') 
+        this.docForm.addControl(field.name, new FormControl(0));
+      else {
+        const controlOptions: any = {
+          validators: field.validators || [],
+          asyncValidators: field.asyncValidators || [],
+        };
+  
+        //  Only add `updateOn: 'blur'` if field.blur === true
+        if (field.blur) {
+          controlOptions.updateOn = 'blur';
+        }
+        this.docForm.addControl(field.name, new FormControl('', controlOptions));
+      }
+    });
   }
-});
-  }
+  
 
 
   getErrorMessage(controlName: string): string | null {
@@ -66,7 +78,9 @@ this.formFields.forEach(field => {
     if (!control || !control.errors) {
       return null; // no error or not touched yet
     }
-  
+    if (control.hasError('emailExists')) {
+      return 'Email already exists';
+    }
     if (control.hasError('required')) 
           return 'This field is required';
   

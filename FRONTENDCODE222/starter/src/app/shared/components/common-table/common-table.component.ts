@@ -7,7 +7,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { CommondeleteComponent } from '../commondelete/commondelete.component';
 import { MatDialog } from '@angular/material/dialog';
 import { PagedRequest } from '@core/models/pagedrequest';
-import { Observable, Subject, take, takeUntil } from 'rxjs';
+import { firstValueFrom, Observable, Subject, take, takeUntil } from 'rxjs';
 import { PagedResult } from '@core/models/pagedresult';
 import { CommonModule, DatePipe, formatDate, NgClass } from '@angular/common';
 import { TableExportUtil } from '@shared/tableExportUtil';
@@ -30,6 +30,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { ReloadService } from '@shared/services/reload.service';
 import Swal from 'sweetalert2';
 import { HttpErrorResponse } from '@angular/common/http';
+import { genericFormField } from '@core/models/genericformfields.interface';
 
 
 @Component({
@@ -74,21 +75,29 @@ export class CommonTableComponent implements OnInit,AfterViewInit,OnDestroy  {
   @ViewChild(MatMenuTrigger) contextMenu?: MatMenuTrigger;
 
 
+
   
   @Input() title:any;
-  @Input() formFields:any;
+  @Input() formFieldsFn!: (params: any) => any[];
   @Input() columnDefinitions: { def: string, label: string, type: string ,visible:boolean}[] = [];
   @Input() loadDataFn!: (request: PagedRequest) => Observable<PagedResult<any>>;
   @Input() addDataFn!: (formData: any) => Observable<any>;
+  @Input() deleteDataFn!: (id: number) => Observable<any>;
 
+
+  formFields!:genericFormField[] 
   contextMenuPosition = { x: '0px', y: '0px' };
   filterValue: string | undefined;
   dataSource = new MatTableDataSource<any>();
   totalCount: number = 0;
-  pageSize: number = 10;
   isLoading: boolean = false;
-  lastItem?: Date;
-  firstItem?: Date;
+  firstItem!:Date;
+  lastItem!:Date;
+  private currentCursor: { firstCreatedDate?: Date, lastCreatedDate?: Date } = {};
+
+  commonPageRequest:PagedRequest={
+    pageSize:10
+  }
 
   @Output() removeSelectedRowsClicked = new EventEmitter<void>();
   @Output() deleteCalled = new EventEmitter<any>();
@@ -105,6 +114,7 @@ export class CommonTableComponent implements OnInit,AfterViewInit,OnDestroy  {
     this.dataSource.sort = this.sort;
   }
   ngOnInit(): void {
+    this.formFields = this.formFieldsFn(true);
     this.loadData();
   }
 
@@ -114,18 +124,47 @@ export class CommonTableComponent implements OnInit,AfterViewInit,OnDestroy  {
   }
   
 
-  loadData(paginationRequest: PagedRequest = {} as PagedRequest): void {
+  loadData(): void {
     this.isLoading = true;
+   // Save current cursor (for refetching same page after delete)
+  this.currentCursor = {
+    firstCreatedDate: this.commonPageRequest.firstCreatedDate,
+    lastCreatedDate: this.commonPageRequest.lastCreatedDate,
+  };
+
+    let paginationRequest:PagedRequest={
+      pageSize:this.commonPageRequest.pageSize,
+      lastCreatedDate:this.commonPageRequest.lastCreatedDate,
+      firstCreatedDate:this.commonPageRequest.firstCreatedDate,
+      searchValue:this.commonPageRequest.searchValue,
+      fullTextSearch:!!this.commonPageRequest.searchValue,
+    }
 
     this.loadDataFn(paginationRequest).pipe(takeUntil(this.destroy$))
   .subscribe({
       next: (data) => {
         const items = data.items || [];
-        this.dataSource.data = items;
+
+        const oldItemsMap = new Map(this.dataSource.data.map(item => [item.id, item]));
+        const updatedItems = items.map(newItem => {
+        const oldItem = oldItemsMap.get(newItem.id);
+        
+        // If ID matches and all values are same, reuse the old object
+        if (oldItem && this.valuesAreEqual(oldItem, newItem)) {
+          return oldItem;
+        }
+      
+        // Else use the new object
+        return newItem;
+        });
+        
+        this.dataSource.data = updatedItems;
+        // this.dataSource.data = items;
         this.totalCount = data.totalCount;
-        this.pageSize = data.pageSize;
-        this.firstItem = items[0]?.modifiedDate;
-        this.lastItem = items[items.length - 1]?.modifiedDate;
+        this.commonPageRequest.pageSize = data.pageSize;
+        this.commonPageRequest.firstCreatedDate = items[0]?.createdDate;
+        this.commonPageRequest.lastCreatedDate = items[items.length - 1]?.createdDate;
+        this.lastItem = items[items.length - 1]?.createdDate;
         this.isLoading = false;
       },
       error: (err) => {
@@ -135,7 +174,15 @@ export class CommonTableComponent implements OnInit,AfterViewInit,OnDestroy  {
     });
   }
 
-
+   valuesAreEqual(obj1: any, obj2: any): boolean {
+    for (const key in obj1) {
+      if (obj1[key] !== obj2[key]) {
+        return false;
+      }
+    }
+    return true;
+  }
+  
 
 
 
@@ -147,11 +194,8 @@ export class CommonTableComponent implements OnInit,AfterViewInit,OnDestroy  {
       .toLowerCase();
       if (this.filterValue === input) return;
       this.filterValue = input;
-    const pagedrequest:PagedRequest={
-      searchValue:this.filterValue
-    }
-    this.paginator.pageIndex = 0; // Reset to first page on filter
-    this.loadData(pagedrequest)
+    this.commonPageRequest.searchValue = this.filterValue
+    this.goToFirstPage();
   }
 
   addNew() {
@@ -171,10 +215,10 @@ export class CommonTableComponent implements OnInit,AfterViewInit,OnDestroy  {
       width: '60vw',
       maxWidth: '100vw',
       data: {
-        data,
-        action,
+        data:data,
+        action:action,
         title: this.title,
-        formFields: this.formFields
+        formFieldsFn: this.formFieldsFn
       },
       direction,
       autoFocus: false
@@ -206,8 +250,10 @@ export class CommonTableComponent implements OnInit,AfterViewInit,OnDestroy  {
   }
   
   private onSuccess(dialogRef: any, action: 'add' | 'edit'): void {
-    this.paginator.pageIndex = 0;
-    this.loadData();
+    if(action == 'add')
+    this.goToFirstPage();
+    else
+   this.refreshCurrentPage();
     dialogRef.close();
   
     this.reloadService.showNotification(
@@ -258,6 +304,7 @@ export class CommonTableComponent implements OnInit,AfterViewInit,OnDestroy  {
  
 
   refresh() {
+    this.refreshCurrentPage()
     this.loadData();
   }
 
@@ -276,7 +323,7 @@ export class CommonTableComponent implements OnInit,AfterViewInit,OnDestroy  {
     const exportData = this.dataSource.filteredData.map((x) => ({
       Name: x.fullName,
       Email: x.email,
-      Date: formatDate(new Date(x.modifiedDate), 'yyyy-MM-dd', 'en') || '',
+      Date: formatDate(new Date(x.createdDate), 'yyyy-MM-dd', 'en') || '',
       phoneNumber: x.phoneNumber,
       Role:x.role
     }));
@@ -298,38 +345,48 @@ export class CommonTableComponent implements OnInit,AfterViewInit,OnDestroy  {
 
 
   deleteItem(row: any) {
-     const dialogRef = this.dialog.open(CommondeleteComponent, {
-       data: row,
-     });
-     dialogRef.afterClosed().pipe(take(1))
-  .subscribe((result) => {
-       if (result) 
-        this.deleteCalled.emit(row)
-     });
+    this.deleteSweetPopup(row.id,row.fullName)
    }
 
+
+  
+deleteSweetPopup(id: number, name: string) {
+  Swal.fire({
+    title: 'Are you sure?',
+    text: `Delete "${name}"?`,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#005cbb',
+    cancelButtonColor: '#005cbb',
+    confirmButtonText: 'Delete',
+    showLoaderOnConfirm: true,
+    preConfirm: async () => {
+      try {
+        await firstValueFrom(this.deleteDataFn(id));  // Convert Observable to Promise
+        Swal.fire('Deleted!', `"${name}" has been deleted.`, 'success');
+       this.goToFirstPage();
+      } catch (error) {
+        Swal.showValidationMessage(`Failed to delete "${name}".`);
+      }
+    },
+    allowOutsideClick: () => !Swal.isLoading()
+  });
+}
+  
+  
+
  onPageChange(event: PageEvent) {
-    if(event.pageSize !== this.pageSize){
-      this.paginator.pageIndex=0;
-      var pagedrequest:PagedRequest={
-      pageSize:event.pageSize,
-      searchValue:this.filterValue,
-      fullTextSearch:!!this.filterValue,
-    }
+    if(event.pageSize !== this.commonPageRequest.pageSize){
+      this.commonPageRequest.pageSize = event.pageSize;
+      this.goToFirstPage();
   }
   else{
     const isNextPage = event.previousPageIndex !== undefined && event.pageIndex > event.previousPageIndex;
-    const isPreviousPage = event.previousPageIndex !== undefined && event.pageIndex < event.previousPageIndex;
-    var pagedrequest:PagedRequest={
-      pageNumber:event.pageIndex,
-      pageSize:event.pageSize,
-      searchValue:this.filterValue,
-      fullTextSearch:!!this.filterValue,
-      lastModifiedDate:isNextPage?this.lastItem:undefined,
-      firstModifiedDate:isPreviousPage?this.firstItem:undefined
-    }
+    if(isNextPage)
+      this.gotoNextPage();
+    else
+    this.goToPreviousPage();
   }
-    this.loadData(pagedrequest)
     // Fetch data for the new page
   }
 
@@ -344,5 +401,31 @@ export class CommonTableComponent implements OnInit,AfterViewInit,OnDestroy  {
         this.contextMenu.menu?.focusFirstItem('mouse');
         this.contextMenu.openMenu();
       }
+    }
+
+
+  
+    
+
+    goToFirstPage(){
+    this.paginator.pageIndex = 0;
+    this.commonPageRequest.firstCreatedDate = undefined;
+    this.commonPageRequest.lastCreatedDate = undefined;
+    this.loadData()
+    }
+
+    refreshCurrentPage(){
+     this.commonPageRequest.firstCreatedDate = this.currentCursor.firstCreatedDate;
+     this.commonPageRequest.lastCreatedDate = this.currentCursor.lastCreatedDate;
+     this.loadData();
+    }
+    gotoNextPage(){
+    this.commonPageRequest.firstCreatedDate = undefined;
+    this.loadData()
+    }
+
+    goToPreviousPage(){
+      this.commonPageRequest.lastCreatedDate =  undefined;
+      this.loadData()
     }
 }

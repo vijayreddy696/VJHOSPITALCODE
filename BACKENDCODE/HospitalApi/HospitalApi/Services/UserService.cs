@@ -10,7 +10,7 @@ namespace HospitalApi.Services
         Task<User> GetUserByIdAsync(int id);
         Task<User> AddOrUpdateUserAsync(User user);
         Task DeleteUserAsync(int id);
-        Task<User?> GetUserByEmailAsync(int hospitalId, string email);
+        Task<User?> GetUserByEmailAsync(int hospitalId, bool status, string email);
 
     }
 
@@ -85,10 +85,10 @@ namespace HospitalApi.Services
         {
             try
             {
-                var existingUser = await _userRepository.GetUserByIdAsync(id);
+                User existingUser = await _userRepository.GetUserByIdAsync(id);
                 if (existingUser != null)
                 {
-                    await _userRepository.DeleteUserAsync(id);
+                    await _userRepository.DeleteUserAsync(existingUser);
                 }
                 else
                 {
@@ -101,11 +101,11 @@ namespace HospitalApi.Services
             }
         }
 
-        public async Task<User> GetUserByEmailAsync(int hospitalId, string email)
+        public async Task<User> GetUserByEmailAsync(int hospitalId,bool status, string email)
         {
             try
             {
-                return await _userRepository.GetUserByEmailAsync(hospitalId,email);
+                return await _userRepository.GetUserByEmailAsync(hospitalId,status, email);
             }
             catch (Exception ex)
             {

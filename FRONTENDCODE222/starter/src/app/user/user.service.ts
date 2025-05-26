@@ -14,13 +14,19 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-  getusers(paginationRequest: PagedRequest): Observable<PagedResult<User>> {
+  getUsers(paginationRequest: PagedRequest): Observable<PagedResult<User>> {
     return this.http.post<PagedResult<User>>('http://localhost:5068/api/Users/getusers',paginationRequest);}
   
 
-  adduser(user:AddUser){
+  addUser(user:AddUser){
     return this.http.post("http://localhost:5068/api/Users/addorupdateuser", user);
   }
+
+  
+  deleteUser(id: number) {
+    return this.http.delete(`http://localhost:5068/api/Users/deleteuserbyid/${id}`);
+  }
+  
   
 
 

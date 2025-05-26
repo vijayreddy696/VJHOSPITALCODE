@@ -272,7 +272,7 @@
               </div>
             </div>
 
-            <mat-paginator #paginator [length]="totalCount" [pageSize]="pageSize"
+            <mat-paginator #paginator [length]="totalCount" [pageSize]="commonPageRequest.pageSize"
             [pageSizeOptions]="[5, 10, 25, 100]" (page)="onPageChange($event)">
           </mat-paginator>
           </div>
