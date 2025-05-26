@@ -85,6 +85,7 @@ export class CommonTableComponent implements OnInit,AfterViewInit,OnDestroy  {
   @Input() deleteDataFn!: (id: number) => Observable<any>;
 
 
+  allCreatedDateStack: Date[]=[]; // Stack to hold last createdDate values
   formFields!:genericFormField[] 
   contextMenuPosition = { x: '0px', y: '0px' };
   filterValue: string | undefined;
@@ -92,7 +93,6 @@ export class CommonTableComponent implements OnInit,AfterViewInit,OnDestroy  {
   totalCount: number = 0;
   isLoading: boolean = false;
   firstItem!:Date;
-  lastItem!:Date;
   private currentCursor: { firstCreatedDate?: Date, lastCreatedDate?: Date } = {};
 
   commonPageRequest:PagedRequest={
@@ -164,7 +164,6 @@ export class CommonTableComponent implements OnInit,AfterViewInit,OnDestroy  {
         this.commonPageRequest.pageSize = data.pageSize;
         this.commonPageRequest.firstCreatedDate = items[0]?.createdDate;
         this.commonPageRequest.lastCreatedDate = items[items.length - 1]?.createdDate;
-        this.lastItem = items[items.length - 1]?.createdDate;
         this.isLoading = false;
       },
       error: (err) => {
@@ -364,7 +363,7 @@ deleteSweetPopup(id: number, name: string) {
       try {
         await firstValueFrom(this.deleteDataFn(id));  // Convert Observable to Promise
         Swal.fire('Deleted!', `"${name}" has been deleted.`, 'success');
-       this.goToFirstPage();
+       this.refreshCurrentPage();
       } catch (error) {
         Swal.showValidationMessage(`Failed to delete "${name}".`);
       }
@@ -415,16 +414,22 @@ deleteSweetPopup(id: number, name: string) {
     }
 
     refreshCurrentPage(){
-     this.commonPageRequest.firstCreatedDate = this.currentCursor.firstCreatedDate;
-     this.commonPageRequest.lastCreatedDate = this.currentCursor.lastCreatedDate;
+    //  this.commonPageRequest.firstCreatedDate = this.currentCursor.firstCreatedDate;
+    //  this.commonPageRequest.lastCreatedDate = this.currentCursor.lastCreatedDate;
+    this.commonPageRequest.lastCreatedDate = this.allCreatedDateStack[this.allCreatedDateStack.length - 1];
+    this.commonPageRequest.firstCreatedDate = undefined;
+
      this.loadData();
     }
     gotoNextPage(){
     this.commonPageRequest.firstCreatedDate = undefined;
+    if (this.commonPageRequest.lastCreatedDate) 
+      this.allCreatedDateStack.push(this.commonPageRequest.lastCreatedDate);
     this.loadData()
     }
 
     goToPreviousPage(){
+      this.allCreatedDateStack.pop();
       this.commonPageRequest.lastCreatedDate =  undefined;
       this.loadData()
     }
