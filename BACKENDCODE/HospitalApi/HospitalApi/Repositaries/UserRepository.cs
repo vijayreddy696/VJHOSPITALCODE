@@ -11,7 +11,11 @@ namespace HospitalApi.Repositaries
         Task<User> AddUserAsync(User user);
         Task<User> UpdateUserAsync(User user);
         Task DeleteUserAsync(User user);
+        Task<List<User>> GetUsersByIdsAsync(List<int> ids);
+        Task DeleteMultipleUsersAsync(List<User> users);
         Task<User?> GetUserByEmailAsync(int hospitalId , bool status, string email);
+        Task ActivateUserAsync(User user);
+
 
     }
 
@@ -120,16 +124,47 @@ namespace HospitalApi.Repositaries
             return user; // Return the updated user
         }
 
+        public async Task ActivateUserAsync(User user)
+        {
+            if (user != null)
+            {
+                user.Status = true; // Mark user as active
+                _context.Users.Update(user);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+
         public async Task DeleteUserAsync(User user)
         {
             if (user != null)
             {
                 user.Status = false;
                 _context.Users.Update(user);
-                //_context.Users.Remove(user);
                 await _context.SaveChangesAsync();
             }
         }
+
+
+        public async Task<List<User>> GetUsersByIdsAsync(List<int> ids)
+        {
+            return await _context.Users
+                .Where(u => ids.Contains(u.Id))
+                .ToListAsync();
+        }
+
+        public async Task DeleteMultipleUsersAsync(List<User> users)
+        {
+            foreach (var user in users)
+            {
+                user.Status = false; // Soft delete
+                _context.Users.Update(user);
+            }
+
+            await _context.SaveChangesAsync();
+        }
+
+
 
         public async Task<User?> GetUserByEmailAsync(int hospitalId, bool status, string email)
         {

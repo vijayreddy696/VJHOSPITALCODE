@@ -88,6 +88,31 @@
         
       ]
     },
+    {
+      "path": "",
+      "title": "Hospital",
+      "iconType": "material-icons-outlined",
+      "icon": "space_dashboard",
+      "class": "menu-toggle",
+      "groupTitle": false,
+      "badge": "",
+      "badgeClass": "",
+      "role": ["SuperAdmin"],
+      "submenu": [
+        {
+          "path": "/hospital/add-hospital",
+          "title": "Add Hospital",
+          "iconType": "",
+          "icon": "",
+          "class": "ml-menu",
+          "groupTitle": false,
+          "badge": "",
+          "badgeClass": "",
+          "role": [""],
+          "submenu": []
+        }
+      ]
+    },
 
     {
       "path": "/doctor/dashboard",

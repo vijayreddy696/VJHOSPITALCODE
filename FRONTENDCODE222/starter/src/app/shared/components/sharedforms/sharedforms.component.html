@@ -19,64 +19,136 @@
                 </div>
                 <div class="body">
                     <div class="row">
-                        <div
-                          *ngFor="let field of formFields"
-                          [ngClass]="{
-                            'col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-5': field.type === 'file' || field.type === 'textarea',
-                            'col-xl-6 col-lg-6 col-md-12 col-sm-12': field.type !== 'file' && field.type !== 'textarea'
-                          }"
-                        >
-                          <ng-container [ngSwitch]="field.type">
-                          
-                            <!-- Text -->
-                            <mat-form-field *ngSwitchCase="'text'" class="example-full-width" appearance="outline">
-                              <mat-label>{{ field.label }}</mat-label>
-                              <input matInput [formControlName]="field.name" />
-                              <mat-error>{{ getErrorMessage(field.name) }}</mat-error>
-                            </mat-form-field>
+                        <ng-container *ngFor="let field of formFields">
                       
-                            <!-- Password -->
-                            <mat-form-field *ngSwitchCase="'password'" class="example-full-width" appearance="outline">
-                              <mat-label>{{ field.label }}</mat-label>
-                              <input matInput type="password" [formControlName]="field.name" />
-                              <mat-error>{{ getErrorMessage(field.name) }}</mat-error>
-                            </mat-form-field>
+                          <!-- Check if the field is a group -->
+                          <div *ngIf="field.type === 'group'" [formGroupName]="field.name" class="nested-group-container">
+                            <h3>{{ field.label }}</h3>
+                            <div class="row">
+                              <!-- Recursive rendering of nested group's fields -->
+                              <ng-container *ngFor="let nestedField of field.fields">
+                                <div
+                                  [ngClass]="{
+                                    'col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-5': nestedField.type === 'file' || nestedField.type === 'textarea',
+                                    'col-xl-6 col-lg-6 col-md-12 col-sm-12': nestedField.type !== 'file' && nestedField.type !== 'textarea'
+                                  }"
+                                >
+                                  <ng-container [ngSwitch]="nestedField.type">
+                                    <!-- Repeat the same switch cases here for nestedField -->
+                                    
+                                    <!-- Text -->
+                                    <mat-form-field *ngSwitchCase="'text'" class="example-full-width" appearance="outline">
+                                      <mat-label>{{ nestedField.label }}</mat-label>
+                                      <input matInput [formControlName]="nestedField.name" />
+                                      <mat-error>{{ getErrorMessage(field.name + '.' + nestedField.name) }}</mat-error>
+                                    </mat-form-field>
                       
-                            <!-- Textarea -->
-                            <mat-form-field *ngSwitchCase="'textarea'" class="example-full-width" appearance="outline">
-                              <mat-label>{{ field.label }}</mat-label>
-                              <textarea matInput [formControlName]="field.name"></textarea>
-                            </mat-form-field>
+                                    <!-- Password -->
+                                    <mat-form-field *ngSwitchCase="'password'" class="example-full-width" appearance="outline">
+                                      <mat-label>{{ nestedField.label }}</mat-label>
+                                      <input matInput type="password" [formControlName]="nestedField.name" />
+                                      <mat-error>{{ getErrorMessage(field.name + '.' + nestedField.name) }}</mat-error>
+                                    </mat-form-field>
                       
-                            <!-- Dropdown -->
-                            <mat-form-field *ngSwitchCase="'dropdown'" class="example-full-width" appearance="outline">
-                              <mat-label>{{ field.label }}</mat-label>
-                              <mat-select [formControlName]="field.name">
-                                <mat-option *ngFor="let option of field.options" [value]="option">
-                                  {{ option }}
-                                </mat-option>
-                              </mat-select>
-                              <mat-error>{{ getErrorMessage(field.name) }}</mat-error>
-                            </mat-form-field>
+                                    <!-- Textarea -->
+                                    <mat-form-field *ngSwitchCase="'textarea'" class="example-full-width" appearance="outline">
+                                      <mat-label>{{ nestedField.label }}</mat-label>
+                                      <textarea matInput [formControlName]="nestedField.name"></textarea>
+                                    </mat-form-field>
                       
-                            <!-- Date -->
-                            <mat-form-field *ngSwitchCase="'date'" class="example-full-width" appearance="outline">
-                              <mat-label>{{ field.label }}</mat-label>
-                              <input matInput [matDatepicker]="picker" [formControlName]="field.name" />
-                              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                              <mat-datepicker #picker></mat-datepicker>
-                              <mat-error>{{ getErrorMessage(field.name) }}</mat-error>
-                            </mat-form-field>
+                                    <!-- Dropdown -->
+                                    <mat-form-field *ngSwitchCase="'dropdown'" class="example-full-width" appearance="outline">
+                                      <mat-label>{{ nestedField.label }}</mat-label>
+                                      <mat-select [formControlName]="nestedField.name">
+                                        <mat-option *ngFor="let option of nestedField.options" [value]="option">
+                                          {{ option }}
+                                        </mat-option>
+                                      </mat-select>
+                                      <mat-error>{{ getErrorMessage(field.name + '.' + nestedField.name) }}</mat-error>
+                                    </mat-form-field>
                       
-                            <!-- File Upload -->
-                            <div *ngSwitchCase="'file'">
-                              <label>{{ field.label }}</label>
-                              <app-file-upload [formControlName]="field.name"></app-file-upload>
+                                    <!-- Date -->
+                                    <mat-form-field *ngSwitchCase="'date'" class="example-full-width" appearance="outline">
+                                      <mat-label>{{ nestedField.label }}</mat-label>
+                                      <input matInput [matDatepicker]="picker" [formControlName]="nestedField.name" />
+                                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                      <mat-datepicker #picker></mat-datepicker>
+                                      <mat-error>{{ getErrorMessage(field.name + '.' + nestedField.name) }}</mat-error>
+                                    </mat-form-field>
+                      
+                                    <!-- File Upload -->
+                                    <div *ngSwitchCase="'file'">
+                                      <label>{{ nestedField.label }}</label>
+                                      <app-file-upload [formControlName]="nestedField.name"></app-file-upload>
+                                    </div>
+                      
+                                  </ng-container>
+                                </div>
+                              </ng-container>
                             </div>
+                          </div>
                       
-                          </ng-container>
-                        </div>
+                          <!-- Normal fields outside the group -->
+                          <div
+                            *ngIf="field.type !== 'group'"
+                            [ngClass]="{
+                              'col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-5': field.type === 'file' || field.type === 'textarea',
+                              'col-xl-6 col-lg-6 col-md-12 col-sm-12': field.type !== 'file' && field.type !== 'textarea'
+                            }"
+                          >
+                            <ng-container [ngSwitch]="field.type">
+                      
+                              <!-- Text -->
+                              <mat-form-field *ngSwitchCase="'text'" class="example-full-width" appearance="outline">
+                                <mat-label>{{ field.label }}</mat-label>
+                                <input matInput [formControlName]="field.name" />
+                                <mat-error>{{ getErrorMessage(field.name) }}</mat-error>
+                              </mat-form-field>
+                      
+                              <!-- Password -->
+                              <mat-form-field *ngSwitchCase="'password'" class="example-full-width" appearance="outline">
+                                <mat-label>{{ field.label }}</mat-label>
+                                <input matInput type="password" [formControlName]="field.name" />
+                                <mat-error>{{ getErrorMessage(field.name) }}</mat-error>
+                              </mat-form-field>
+                      
+                              <!-- Textarea -->
+                              <mat-form-field *ngSwitchCase="'textarea'" class="example-full-width" appearance="outline">
+                                <mat-label>{{ field.label }}</mat-label>
+                                <textarea matInput [formControlName]="field.name"></textarea>
+                              </mat-form-field>
+                      
+                              <!-- Dropdown -->
+                              <mat-form-field *ngSwitchCase="'dropdown'" class="example-full-width" appearance="outline">
+                                <mat-label>{{ field.label }}</mat-label>
+                                <mat-select [formControlName]="field.name">
+                                  <mat-option *ngFor="let option of field.options" [value]="option">
+                                    {{ option }}
+                                  </mat-option>
+                                </mat-select>
+                                <mat-error>{{ getErrorMessage(field.name) }}</mat-error>
+                              </mat-form-field>
+                      
+                              <!-- Date -->
+                              <mat-form-field *ngSwitchCase="'date'" class="example-full-width" appearance="outline">
+                                <mat-label>{{ field.label }}</mat-label>
+                                <input matInput [matDatepicker]="picker" [formControlName]="field.name" />
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                                <mat-error>{{ getErrorMessage(field.name) }}</mat-error>
+                              </mat-form-field>
+                      
+                              <!-- File Upload -->
+                              <div *ngSwitchCase="'file'">
+                                <label>{{ field.label }}</label>
+                                <app-file-upload [formControlName]="field.name"></app-file-upload>
+                              </div>
+                      
+                            </ng-container>
+                          </div>
+                        </ng-container>
                       </div>
+                      
                       
                       
                   

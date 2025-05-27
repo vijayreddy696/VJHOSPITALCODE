@@ -82,8 +82,9 @@ export class CommonTableComponent implements OnInit,AfterViewInit,OnDestroy  {
   @Input() columnDefinitions: { def: string, label: string, type: string ,visible:boolean}[] = [];
   @Input() loadDataFn!: (request: PagedRequest) => Observable<PagedResult<any>>;
   @Input() addDataFn!: (formData: any) => Observable<any>;
+  @Input() activateUserFn!: (id: number) => Observable<any>;
   @Input() deleteDataFn!: (id: number) => Observable<any>;
-
+  @Input() deleteManyDataFn!: (ids: number[]) => Observable<any>;
 
   allCreatedDateStack: Date[]=[]; // Stack to hold last createdDate values
   formFields!:genericFormField[] 
@@ -98,9 +99,6 @@ export class CommonTableComponent implements OnInit,AfterViewInit,OnDestroy  {
   commonPageRequest:PagedRequest={
     pageSize:10
   }
-
-  @Output() removeSelectedRowsClicked = new EventEmitter<void>();
-  @Output() deleteCalled = new EventEmitter<any>();
 
   constructor(
     public dialog: MatDialog,
@@ -249,8 +247,10 @@ export class CommonTableComponent implements OnInit,AfterViewInit,OnDestroy  {
   }
   
   private onSuccess(dialogRef: any, action: 'add' | 'edit'): void {
-    if(action == 'add')
+    if(action == 'add'){
     this.goToFirstPage();
+    this.commonPageRequest.searchValue = undefined;
+    }
     else
    this.refreshCurrentPage();
     dialogRef.close();
@@ -265,7 +265,7 @@ export class CommonTableComponent implements OnInit,AfterViewInit,OnDestroy  {
   
     if (err.status === 409 && err.error?.email) {
       dialogRef.close();
-      this.sweetPopup(err.error?.email,err.error?.fullName)
+      this.activeSweetPopup(err.error?.id,err.error?.email,err.error?.fullName)
       return;
     }
   
@@ -282,24 +282,31 @@ export class CommonTableComponent implements OnInit,AfterViewInit,OnDestroy  {
     return `Error In ${action === 'add' ? 'Adding' : 'Updating'} ${this.title}...!!!`;
   }
 
-  sweetPopup(name:string,email:string) {
+  activeSweetPopup(id: number, name: string, email: string) {
     Swal.fire({
-      title: 'User already exists. Do you want to activate this user?',
-      text: name +"-"+email,
+      title: `${this.title} already exists. Do you want to activate this ${this.title}?`,
+      text: `${name} - ${email}`,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#005cbb',
       cancelButtonColor: '#005cbb',
-      confirmButtonText: 'Active',
-    }).then((result) => {
-      if (result.value) {
-        Swal.fire('Activated!', 'User has been activated.', 'success');
-      }
+      confirmButtonText: 'Activate',
+      showLoaderOnConfirm: true,
+      preConfirm: async () => {
+        try {
+          await firstValueFrom(this.activateUserFn(id));  // Convert Observable to Promise
+          Swal.fire('Activated!', `${this.title} has been activated.`, 'success');
+          this.goToFirstPage();
+          this.commonPageRequest.searchValue = undefined;
+          // Optionally add any refresh or UI update logic here
+        } catch (error) {
+          Swal.showValidationMessage(`Failed to activate ${this.title} "${name}".`);
+        }
+      },
+      allowOutsideClick: () => !Swal.isLoading()
     });
   }
   
-  
-
  
 
   refresh() {
@@ -315,9 +322,34 @@ export class CommonTableComponent implements OnInit,AfterViewInit,OnDestroy  {
 
 
   removeSelectedRows() {
-    this.removeSelectedRowsClicked.emit();
+    const selectedRows = this.selection.selected;
+    if (selectedRows.length === 0) return;
+  
+    const ids = selectedRows.map(row => row.id);
+    const names = selectedRows.map(row => row.fullName).join(', ');
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Delete selected items: "${names}"?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#005cbb',
+      cancelButtonColor: '#005cbb',
+      confirmButtonText: 'Delete',
+      showLoaderOnConfirm: true,
+      preConfirm: async () => {
+        try {
+          await firstValueFrom(this.deleteManyDataFn(ids)); // Calls the @Input() deleteManyDataFn
+          Swal.fire('Deleted!', 'Selected items have been deleted.', 'success');
+          this.refreshCurrentPage();
+          this.selection.clear(); // Clear selection after successful deletion
+        } catch (error) {
+          Swal.showValidationMessage('Failed to delete selected items.');
+        }
+      },
+      allowOutsideClick: () => !Swal.isLoading()
+    });
   }
-
+  
   exportExcel() {
     const exportData = this.dataSource.filteredData.map((x) => ({
       Name: x.fullName,
@@ -363,6 +395,8 @@ deleteSweetPopup(id: number, name: string) {
       try {
         await firstValueFrom(this.deleteDataFn(id));  // Convert Observable to Promise
         Swal.fire('Deleted!', `"${name}" has been deleted.`, 'success');
+        const rowToDelete = this.dataSource.data.find(item => item.id === id);
+        if(rowToDelete)this.selection.deselect(rowToDelete);
        this.refreshCurrentPage();
       } catch (error) {
         Swal.showValidationMessage(`Failed to delete "${name}".`);

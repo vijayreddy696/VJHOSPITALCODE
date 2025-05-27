@@ -79,6 +79,10 @@ namespace HospitalApi.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("HospitalAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("HospitalEmail")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -87,26 +91,20 @@ namespace HospitalApi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Location")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("OwnerEmail")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("OwnerId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("OwnerName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OwnerPhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OwnerId")
+                        .IsUnique()
+                        .HasFilter("[OwnerId] IS NOT NULL");
 
                     b.ToTable("Hospitals", (string)null);
                 });
@@ -178,13 +176,29 @@ namespace HospitalApi.Migrations
                     b.Navigation("Hospital");
                 });
 
+            modelBuilder.Entity("HospitalApi.Models.Hospital", b =>
+                {
+                    b.HasOne("HospitalApi.Models.User", "OwnerDetails")
+                        .WithOne()
+                        .HasForeignKey("HospitalApi.Models.Hospital", "OwnerId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("OwnerDetails");
+                });
+
             modelBuilder.Entity("HospitalApi.Models.User", b =>
                 {
                     b.HasOne("HospitalApi.Models.Hospital", "Hospital")
-                        .WithMany()
-                        .HasForeignKey("HospitalId");
+                        .WithMany("Users")
+                        .HasForeignKey("HospitalId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Hospital");
+                });
+
+            modelBuilder.Entity("HospitalApi.Models.Hospital", b =>
+                {
+                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }

@@ -263,7 +263,7 @@
                 </mat-menu>
                 <!-- context menu end -->
   
-                @if (isLoading) {
+                @if (dataSource.data.length === 0) {
                 <div class="no-results" [style.display]="dataSource.data.length === 0 ? '' : 'none'">
                   No results
                 </div>

@@ -8,4 +8,5 @@ export interface genericFormField {
   asyncValidators?: AsyncValidatorFn[];
   options?: string[];
   blur?: boolean;
+  fields?: genericFormField[];
 }

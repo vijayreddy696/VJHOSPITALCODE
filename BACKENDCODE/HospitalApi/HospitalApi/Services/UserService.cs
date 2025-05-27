@@ -11,6 +11,10 @@ namespace HospitalApi.Services
         Task<User> AddOrUpdateUserAsync(User user);
         Task DeleteUserAsync(int id);
         Task<User?> GetUserByEmailAsync(int hospitalId, bool status, string email);
+        Task DeleteMultipleUsersAsync(List<int> userIds);
+        Task ActivateUserAsync(int id);
+
+
 
     }
 
@@ -81,6 +85,27 @@ namespace HospitalApi.Services
             }
         }
 
+        public async Task ActivateUserAsync(int id)
+        {
+            try
+            {
+                User existingUser = await _userRepository.GetUserByIdAsync(id);
+                if (existingUser != null)
+                {
+                    await _userRepository.ActivateUserAsync(existingUser);
+                }
+                else
+                {
+                    throw new Exception("User not found for activation.");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred while activating the user.", ex);
+            }
+        }
+
+
         public async Task DeleteUserAsync(int id)
         {
             try
@@ -98,6 +123,24 @@ namespace HospitalApi.Services
             catch (Exception ex)
             {
                 throw new Exception("An error occurred while deleting the user.", ex);
+            }
+        }
+
+        public async Task DeleteMultipleUsersAsync(List<int> userIds)
+        {
+            try
+            {
+                var users = await _userRepository.GetUsersByIdsAsync(userIds);
+                if (users == null || !users.Any())
+                {
+                    throw new Exception("No users found for the provided IDs.");
+                }
+
+                await _userRepository.DeleteMultipleUsersAsync(users);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred while deleting multiple users.", ex);
             }
         }
 

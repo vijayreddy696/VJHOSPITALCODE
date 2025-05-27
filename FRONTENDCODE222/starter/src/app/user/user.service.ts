@@ -26,6 +26,15 @@ export class UserService {
   deleteUser(id: number) {
     return this.http.delete(`http://localhost:5068/api/Users/deleteuserbyid/${id}`);
   }
+
+  activateUser(id: number) {
+    return this.http.put(`http://localhost:5068/api/Users/activateuserbyid/${id}`,{});
+  }
+
+  
+  deletemanyUsers(ids: number[]) {
+    return this.http.post(`http://localhost:5068/api/Users/deletemultipleusers`,ids);
+  }
   
   
 

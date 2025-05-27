@@ -17,6 +17,9 @@ namespace HospitalApi.Models
         public int? HospitalId { get; set; }
         public bool Status { get; set; } = true;
         public string Password { get; set; }
+
+
+        [JsonIgnore]
         public Hospital? Hospital { get; set; }
 
     }

@@ -105,6 +105,25 @@ namespace HospitalApi.Controllers
             }
         }
 
+
+        // PUT: api/users/activateuserbyid/{id}
+        [HttpPut("activateuserbyid/{id}")]
+        public async Task<IActionResult> ActivateUser(int id)
+        {
+            try
+            {
+                int hospitalId = int.Parse(_claimsHelper.GetHospitalId());
+
+                await _userService.ActivateUserAsync(id);
+                return Ok(new { message = "User activated successfully." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error activating user: {ex.Message}");
+            }
+        }
+
+
         // DELETE: api/users/deleteuserbyid/{hospitalId}/{userId}
         [HttpDelete("deleteuserbyid/{id}")]
         public async Task<IActionResult> DeleteUser(int id)
@@ -121,5 +140,28 @@ namespace HospitalApi.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Error deleting user: {ex.Message}");
             }
         }
+
+
+        [HttpPost("deletemultipleusers")]
+        public async Task<IActionResult> DeleteMultipleUsers([FromBody] List<int> userIds)
+        {
+            try
+            {
+                int hospitalId = int.Parse(_claimsHelper.GetHospitalId());
+
+                if (userIds == null || !userIds.Any())
+                {
+                    return BadRequest("No user IDs provided for deletion.");
+                }
+
+                await _userService.DeleteMultipleUsersAsync(userIds);
+                return Ok(new { message = "Users deleted successfully." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error deleting users: {ex.Message}");
+            }
+        }
+
     }
 }

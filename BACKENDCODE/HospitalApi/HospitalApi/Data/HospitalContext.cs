@@ -39,6 +39,24 @@ namespace HospitalApi.Data
             return await base.SaveChangesAsync(cancellationToken);
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // Hospital owner one-to-one relationship
+            modelBuilder.Entity<Hospital>()
+                .HasOne(h => h.OwnerDetails)
+                .WithOne()  // no navigation property on User back to Hospital as owner
+                .HasForeignKey<Hospital>(h => h.OwnerId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Many users belong to one hospital
+            modelBuilder.Entity<User>()
+                .HasOne(u => u.Hospital)
+                .WithMany(h => h.Users)
+                .HasForeignKey(u => u.HospitalId)
+                .OnDelete(DeleteBehavior.Cascade);
+        }
+
+
     }
 
 }

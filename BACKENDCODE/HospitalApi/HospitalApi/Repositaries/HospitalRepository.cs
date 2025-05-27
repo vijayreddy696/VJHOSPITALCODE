@@ -25,12 +25,17 @@ namespace HospitalApi.Repositaries
 
         public async Task<PagedResult<Hospital>> GetHospitalsWithPaginationAsync(PaginationRequest paginationRequest)
         {
-            IQueryable<Hospital> query = _context.Hospitals.AsNoTracking();
+            IQueryable<Hospital> query = _context.Hospitals
+                .Include(h => h.OwnerDetails) // Eagerly load OwnerDetails
+                .AsNoTracking();
+
+            query = query.Where(d => d.Status == true);
+
 
             if (!string.IsNullOrEmpty(paginationRequest.SearchValue))
                 query = ApplySearchFilter(query, paginationRequest);
 
-            var filteredQuery = query; // Save for count
+            var filteredQuery = query;
 
             query = ApplyDatePagination(query, paginationRequest);
 
@@ -46,6 +51,8 @@ namespace HospitalApi.Repositaries
             };
         }
 
+       
+
         private IQueryable<Hospital> ApplySearchFilter(IQueryable<Hospital> query, PaginationRequest request)
         {
             if (request.FullTextSearch)
@@ -53,10 +60,7 @@ namespace HospitalApi.Repositaries
                 // Use CONTAINS for more flexible and faster substring searching
                 return query.Where(h =>
                     EF.Functions.Contains(h.HospitalName, $"\"{request.SearchValue}*\"") ||
-                    EF.Functions.Contains(h.HospitalEmail, $"\"{request.SearchValue}*\"") ||
-                    EF.Functions.Contains(h.OwnerEmail, $"\"{request.SearchValue}*\"") ||
-                    EF.Functions.Contains(h.Location, $"\"{request.SearchValue}*\"") ||
-                    EF.Functions.Contains(h.OwnerName, $"\"{request.SearchValue}*\"")
+                    EF.Functions.Contains(h.HospitalEmail, $"\"{request.SearchValue}*\"")
                 );
             }
             else
@@ -71,49 +75,70 @@ namespace HospitalApi.Repositaries
         {
             if (request.LastCreatedDate == null && request.FirstCreatedDate == null)
             {
-                return query.OrderByDescending(h => h.ModifiedDate).Take(request.PageSize);
+                return query.OrderByDescending(u => u.CreatedDate).Take(request.PageSize);
             }
             else if (request.LastCreatedDate != null)
             {
-                return query.Where(h => h.ModifiedDate < request.LastCreatedDate)
-                            .OrderByDescending(h => h.ModifiedDate)
+                return query.Where(u => u.CreatedDate < request.LastCreatedDate)
+                            .OrderByDescending(u => u.CreatedDate)
                             .Take(request.PageSize);
             }
             else if (request.FirstCreatedDate != null)
             {
-                return query.Where(h => h.ModifiedDate > request.FirstCreatedDate).
-                    OrderBy(h => h.ModifiedDate).Take(request.PageSize)
-                            .OrderByDescending(h => h.ModifiedDate);
+                return query.Where(u => u.CreatedDate > request.FirstCreatedDate)
+                            .OrderBy(u => u.CreatedDate).Take(request.PageSize)
+                            .OrderByDescending(u => u.CreatedDate);
             }
             return null;
         }
 
-
         public async Task<Hospital> GetHospitalByIdAsync(int id)
         {
-            return await _context.Hospitals.FindAsync(id);
+            return await _context.Hospitals
+                .Include(h => h.OwnerDetails) // Eagerly load OwnerDetails
+                .FirstOrDefaultAsync(h => h.Id == id);
         }
+
+
+
 
         public async Task<Hospital> AddHospitalAsync(Hospital hospital)
         {
-            await _context.Hospitals.AddAsync(hospital);
+            // 1. Add owner without HospitalId (we’ll set it later)
+            User owner = hospital.OwnerDetails;
+            _context.Users.Add(owner);
+            await _context.SaveChangesAsync(); // Get owner.Id
+
+            // 2. Add hospital and link OwnerId
+            hospital.OwnerId = owner.Id;
+            hospital.OwnerDetails = null; // Prevent EF circular tracking issue
+            _context.Hospitals.Add(hospital);
+            await _context.SaveChangesAsync(); // Get hospital.Id
+
+            // 3. Now update owner with HospitalId
+            owner.HospitalId = hospital.Id;
+            _context.Users.Update(owner);
             await _context.SaveChangesAsync();
-            return hospital; // Return the hospital with generated Id
+
+            return hospital;
         }
+
 
         public async Task<Hospital> UpdateHospitalAsync(Hospital hospital)
         {
             _context.Hospitals.Update(hospital);
+            _context.Users.Update(hospital.OwnerDetails);
             await _context.SaveChangesAsync();
             return hospital; // Return the updated hospital
         }
 
         public async Task DeleteHospitalAsync(int id)
         {
-            var hospital = await _context.Hospitals.FindAsync(id);
+            Hospital hospital = await _context.Hospitals.FindAsync(id);
             if (hospital != null)
             {
-                _context.Hospitals.Remove(hospital);
+                hospital.Status = false;
+                _context.Hospitals.Update(hospital);
                 await _context.SaveChangesAsync();
             }
         }

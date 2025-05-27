@@ -1,16 +1,15 @@
-﻿using System.Text.Json.Serialization;
-
+﻿
 namespace HospitalApi.Models
 {
     public class Hospital: BaseEntity
     {
         public int Id { get; set; }
         public  string HospitalName { get; set; } 
-        public  string Location { get; set; }
+        public  string HospitalAddress { get; set; }
         public  string HospitalEmail { get; set; }
-        public  string OwnerName { get; set; }
-        public  string OwnerPhoneNumber { get; set; }
-        public  string OwnerEmail { get; set; }
-
+        public bool Status { get; set; } = true;
+        public int? OwnerId { get; set; }
+        public User OwnerDetails { get; set; }
+        public ICollection<User>? Users { get; set; }
     }
 }

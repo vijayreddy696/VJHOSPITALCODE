@@ -20,7 +20,7 @@ namespace HospitalApi.Controllers
             _hospitalService = hospitalService;
         }
         // GET: api/hospitals
-        [Authorize(Roles = UserRoles.Owner)]
+        [Authorize(Roles = UserRoles.SuperAdmin)]
 
         [HttpPost("gethospitals")]
         public async Task<IActionResult> GetHospitals([FromBody] PaginationRequest paginationRequest)

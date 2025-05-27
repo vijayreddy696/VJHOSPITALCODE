@@ -64,6 +64,17 @@ export class UserslistComponent {
   deleteUser(id: number): Observable<any> {
     return this.userservice.deleteUser(id);
   }
+
+  
+  activateUser(id: number): Observable<any> {
+    return this.userservice.activateUser(id);
+  }
+
+  deletemanyUsers(ids: number[]): Observable<any> {
+    return this.userservice.deletemanyUsers(ids);
+  }
+
+  
   
  
 }

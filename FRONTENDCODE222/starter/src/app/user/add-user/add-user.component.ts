@@ -22,9 +22,7 @@ export class AddUserComponent {
   readonly title:string = "User";
   readonly formFields = getUserFormFields(this.reloadService);
   
-  constructor(private userservice:UserService,private reloadService:ReloadService) {
-
-  }
+  constructor(private userservice:UserService,private reloadService:ReloadService) { }
 
   addUser(formData: any): Observable<any> {
     return this.userservice.addUser(formData);

@@ -53,46 +53,73 @@ export class SharedformsComponent implements OnInit{
   ngOnInit(): void {
     this.docForm = this.fb.group({});
   
-    this.formFields.forEach(field => {
-      if (field?.name === 'id') 
-        this.docForm.addControl(field.name, new FormControl(0));
-      else {
-        const controlOptions: any = {
-          validators: field.validators || [],
-          asyncValidators: field.asyncValidators || [],
-        };
+    // this.formFields.forEach(field => {
+    //   if (field?.name === 'id') 
+    //     this.docForm.addControl(field.name, new FormControl(0));
+    //   else {
+    //     const controlOptions: any = {
+    //       validators: field.validators || [],
+    //       asyncValidators: field.asyncValidators || [],
+    //     };
   
-        //  Only add `updateOn: 'blur'` if field.blur === true
-        if (field.blur) {
-          controlOptions.updateOn = 'blur';
+    //     //  Only add `updateOn: 'blur'` if field.blur === true
+    //     if (field.blur) {
+    //       controlOptions.updateOn = 'blur';
+    //     }
+    //     this.docForm.addControl(field.name, new FormControl('', controlOptions));
+    //   }
+    // });
+
+   
+
+    const addControls = (fields:any, formGroup: FormGroup) => {
+      fields.forEach((field:any) => {
+        if (field.type === 'group' && field.fields) {
+          // Create nested FormGroup recursively
+          const nestedGroup = this.fb.group({});
+          addControls(field.fields, nestedGroup);
+          formGroup.addControl(field.name, nestedGroup);
+        } else {
+          const controlOptions: any = {
+            validators: field.validators || [],
+            asyncValidators: field.asyncValidators || [],
+          };
+  
+          if (field.blur) {
+            controlOptions.updateOn = 'blur';
+          }
+  
+          formGroup.addControl(field.name, new FormControl('', controlOptions));
         }
-        this.docForm.addControl(field.name, new FormControl('', controlOptions));
-      }
-    });
+      });
+    };
+
+    addControls(this.formFields, this.docForm);
   }
   
 
 
-  getErrorMessage(controlName: string): string | null {
-    const control = this.docForm.get(controlName);
+  getErrorMessage(controlPath: string): string | null {
+    const control = this.docForm.get(controlPath);
     if (!control || !control.errors) {
       return null; // no error or not touched yet
     }
+  
     if (control.hasError('emailExists')) {
       return 'Email already exists';
     }
-    if (control.hasError('required')) 
-          return 'This field is required';
-  
-    if (controlName === 'email' && control.hasError('email')) 
+    if (control.hasError('required')) {
+      return 'This field is required';
+    }
+    if (controlPath.endsWith('email') && control.hasError('email')) {
       return 'Please enter a valid email address';
-  
-    if (controlName === 'conformPassword' && control.hasError('passwordMismatch')) 
+    }
+    if (controlPath.endsWith('conformPassword') && control.hasError('passwordMismatch')) {
       return 'Passwords do not match';
-  
+    }
     return null;
   }
-
+  
  
 
 

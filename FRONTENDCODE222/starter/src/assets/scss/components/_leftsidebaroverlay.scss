@@ -24,7 +24,7 @@
 }
 
 .sidebar {
-  @include mix.transition(all 0.5s);
+  @include mix.transition(all 0.1s);
   font-family: vars.$sidebar-font-family;
   background: #ffffff;
   width: 260px;
