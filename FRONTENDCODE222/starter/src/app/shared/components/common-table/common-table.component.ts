@@ -147,6 +147,7 @@ export class CommonTableComponent implements OnInit,AfterViewInit,OnDestroy  {
         const oldItem = oldItemsMap.get(newItem.id);
         
         // If ID matches and all values are same, reuse the old object
+        let asdf = `vijay ${this.valuesAreEqual(oldItem,newItem)}`
         if (oldItem && this.valuesAreEqual(oldItem, newItem)) {
           return oldItem;
         }
@@ -170,14 +171,38 @@ export class CommonTableComponent implements OnInit,AfterViewInit,OnDestroy  {
     });
   }
 
-   valuesAreEqual(obj1: any, obj2: any): boolean {
-    for (const key in obj1) {
-      if (obj1[key] !== obj2[key]) {
+  valuesAreEqual(obj1: any, obj2: any): boolean {
+    if (obj1 === obj2) return true;
+  
+    if (obj1 == null || obj2 == null) return obj1 === obj2;
+  
+    if (typeof obj1 !== 'object' || typeof obj2 !== 'object') return obj1 === obj2;
+  
+    const keys1 = Object.keys(obj1);
+    const keys2 = Object.keys(obj2);
+  
+    if (keys1.length !== keys2.length) return false;
+  
+    for (const key of keys1) {
+      if (!(key in obj2)) return false;
+  
+      const val1 = obj1[key];
+      const val2 = obj2[key];
+  
+      if (val1 === val2) continue;
+  
+      const isObj = (v: any) => v && typeof v === 'object';
+  
+      if (isObj(val1) && isObj(val2)) {
+        if (!this.valuesAreEqual(val1, val2)) return false;
+      } else {
         return false;
       }
     }
+  
     return true;
   }
+  
   
 
 

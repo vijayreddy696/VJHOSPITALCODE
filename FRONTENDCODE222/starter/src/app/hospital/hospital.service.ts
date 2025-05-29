@@ -17,6 +17,11 @@ export class HospitalService {
     return this.http.post("http://localhost:5068/api/Hospitals/addorupdatehospital", hospital);
   }
 
+  deleteHospital(id:number)
+  {
+    return this.http.delete(`http://localhost:5068/api/Hospitals/harddeletehospitalbyid/${id}`);
+  }
+
   getHospitals(paginationRequest: PagedRequest): Observable<PagedResult<AddHospital>> 
   {
     return this.http.post<PagedResult<AddHospital>>('http://localhost:5068/api/Hospitals/gethospitals',paginationRequest);

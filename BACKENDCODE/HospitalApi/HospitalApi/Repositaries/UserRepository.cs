@@ -8,13 +8,13 @@ namespace HospitalApi.Repositaries
     {
         Task<PagedResult<User>> GetUsersWithPaginationAsync(PaginationRequest paginationRequest);
         Task<User> GetUserByIdAsync(int id);
-        Task<User> AddUserAsync(User user);
-        Task<User> UpdateUserAsync(User user);
-        Task DeleteUserAsync(User user);
+        Task AddUserAsync(User user);
+        Task UpdateUserAsync(User user);
+        Task UpdateManyUsersAsync(IEnumerable<User> users);
         Task<List<User>> GetUsersByIdsAsync(List<int> ids);
-        Task DeleteMultipleUsersAsync(List<User> users);
         Task<User?> GetUserByEmailAsync(int hospitalId , bool status, string email);
-        Task ActivateUserAsync(User user);
+
+        Task HardDeleteUserAsync(User user);
 
 
     }
@@ -110,39 +110,28 @@ namespace HospitalApi.Repositaries
             return await _context.Users.Where(u => u.Id == id).FirstOrDefaultAsync();
         }
 
-        public async Task<User> AddUserAsync(User user)
+        public async Task AddUserAsync(User user)
         {
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
-            return user; // Return the user with generated Id
         }
 
-        public async Task<User> UpdateUserAsync(User user)
+        public async Task UpdateUserAsync(User user)
         {
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
-            return user; // Return the updated user
         }
 
-        public async Task ActivateUserAsync(User user)
+        public async Task HardDeleteUserAsync(User user)
         {
-            if (user != null)
-            {
-                user.Status = true; // Mark user as active
-                _context.Users.Update(user);
-                await _context.SaveChangesAsync();
-            }
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
         }
 
-
-        public async Task DeleteUserAsync(User user)
+        public async Task UpdateManyUsersAsync(IEnumerable<User> users)
         {
-            if (user != null)
-            {
-                user.Status = false;
-                _context.Users.Update(user);
-                await _context.SaveChangesAsync();
-            }
+            _context.Users.UpdateRange(users);
+            await _context.SaveChangesAsync();
         }
 
 
@@ -153,23 +142,13 @@ namespace HospitalApi.Repositaries
                 .ToListAsync();
         }
 
-        public async Task DeleteMultipleUsersAsync(List<User> users)
-        {
-            foreach (var user in users)
-            {
-                user.Status = false; // Soft delete
-                _context.Users.Update(user);
-            }
-
-            await _context.SaveChangesAsync();
-        }
-
-
 
         public async Task<User?> GetUserByEmailAsync(int hospitalId, bool status, string email)
         {
             return await _context.Users.Where(u => u.HospitalId == hospitalId && u.Status == status && u.Email == email).FirstOrDefaultAsync();
         }
+
+       
 
 
     }

@@ -1,4 +1,5 @@
 ﻿using HospitalApi.HardCodeValues;
+using HospitalApi.Helper;
 using HospitalApi.Models;
 using HospitalApi.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -20,7 +21,7 @@ namespace HospitalApi.Controllers
             _hospitalService = hospitalService;
         }
         // GET: api/hospitals
-        [Authorize(Roles = UserRoles.SuperAdmin)]
+        //[Authorize(Roles = UserRoles.SuperAdmin)]
 
         [HttpPost("gethospitals")]
         public async Task<IActionResult> GetHospitals([FromBody] PaginationRequest paginationRequest)
@@ -69,21 +70,52 @@ namespace HospitalApi.Controllers
         }
 
         // DELETE: api/hospitals/5
-        [HttpDelete("deletehospitalbyid/{id}")]
-        public async Task<IActionResult> DeleteHospital(int id)
+        [HttpDelete("softdeletehospitalbyid/{id}")]
+        public async Task<IActionResult> SoftDeleteHospital(int id)
         {
             try
             {
-                await _hospitalService.DeleteHospitalAsync(id);
-                return NoContent(); // 204 No Content for successful deletion
+                await _hospitalService.ActivateorDeactivateHospitalAsync(id,false);
+                return Ok(new { message = "Hospital deleted successfully." });
             }
             catch (Exception ex)
             {
-                return NotFound(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error deleting hospital: {ex.Message}");
             }
         }
 
+
+
+        // DELETE: api/hospitals/5
+        [HttpDelete("harddeletehospitalbyid/{id}")]
+        public async Task<IActionResult> HardDeleteHospital(int id)
+        {
+            try
+            {
+                await _hospitalService.HardDeleteHospitalAsync(id);
+                return Ok(new { message = "Hospital deleted successfully." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error deleting hospital: {ex.Message}");
+            }
+        }
         // PUT api/<HospitalsController>/5
+
+
+        [HttpPut("activatehospitalbyid/{id}")]
+        public async Task<IActionResult> ActivateHospital(int id)
+        {
+            try
+            {
+                await _hospitalService.ActivateorDeactivateHospitalAsync(id, true);
+                return Ok(new { message = "Hospital activated successfully." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error activating user: {ex.Message}");
+            }
+        }
 
     }
 }

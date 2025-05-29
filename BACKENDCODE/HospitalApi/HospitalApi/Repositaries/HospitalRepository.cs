@@ -10,9 +10,9 @@ namespace HospitalApi.Repositaries
     {
         Task<PagedResult<Hospital>> GetHospitalsWithPaginationAsync(PaginationRequest paginationRequest);
         Task<Hospital> GetHospitalByIdAsync(int id);
-        Task<Hospital> AddHospitalAsync(Hospital hospital); // changed return type
-        Task<Hospital> UpdateHospitalAsync(Hospital hospital); // changed return type
-        Task DeleteHospitalAsync(int id);
+        Task AddHospitalAsync(Hospital hospital); // changed return type
+        Task UpdateHospitalAsync(Hospital hospital); // changed return type
+        Task DeleteHospitalAsync(Hospital hospital);
     }
     public class HospitalRepository : IHospitalRepository
     {
@@ -102,45 +102,25 @@ namespace HospitalApi.Repositaries
 
 
 
-        public async Task<Hospital> AddHospitalAsync(Hospital hospital)
+        public async Task AddHospitalAsync(Hospital hospital)
         {
-            // 1. Add owner without HospitalId (we’ll set it later)
-            User owner = hospital.OwnerDetails;
-            _context.Users.Add(owner);
-            await _context.SaveChangesAsync(); // Get owner.Id
-
-            // 2. Add hospital and link OwnerId
-            hospital.OwnerId = owner.Id;
-            hospital.OwnerDetails = null; // Prevent EF circular tracking issue
             _context.Hospitals.Add(hospital);
-            await _context.SaveChangesAsync(); // Get hospital.Id
-
-            // 3. Now update owner with HospitalId
-            owner.HospitalId = hospital.Id;
-            _context.Users.Update(owner);
             await _context.SaveChangesAsync();
-
-            return hospital;
         }
 
 
-        public async Task<Hospital> UpdateHospitalAsync(Hospital hospital)
+        public async Task UpdateHospitalAsync(Hospital hospital)
         {
             _context.Hospitals.Update(hospital);
-            _context.Users.Update(hospital.OwnerDetails);
             await _context.SaveChangesAsync();
-            return hospital; // Return the updated hospital
         }
 
-        public async Task DeleteHospitalAsync(int id)
+        public async Task DeleteHospitalAsync(Hospital existinghospital)
         {
-            Hospital hospital = await _context.Hospitals.FindAsync(id);
-            if (hospital != null)
-            {
-                hospital.Status = false;
-                _context.Hospitals.Update(hospital);
-                await _context.SaveChangesAsync();
-            }
+            _context.Hospitals.Remove(existinghospital);
+            await _context.SaveChangesAsync();
         }
+
+
     }
 }

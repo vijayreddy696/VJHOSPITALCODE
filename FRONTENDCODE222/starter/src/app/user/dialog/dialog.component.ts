@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
-import { FormsModule, ReactiveFormsModule, UntypedFormGroup, UntypedFormBuilder, Validators, UntypedFormControl, AbstractControl, ValidationErrors, FormControl } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, UntypedFormGroup, UntypedFormBuilder, Validators, UntypedFormControl, AbstractControl, ValidationErrors, FormControl, FormGroup } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogContent, MatDialogClose, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -74,18 +74,47 @@ export class DialogComponent implements OnInit {
   }
   ngOnInit(): void {
     this.formFields = this.data.formFieldsFn(this.action === 'edit');
-    this.formFields.forEach(field => {
-      const controlOptions: any = {
-        validators: field.validators || [],
-        asyncValidators: field.asyncValidators || [],
-      };
+   
+    const addControls = (fields: any[], formGroup: FormGroup, isNested = false) => {
+      let idAdded = false;
+    
+      fields.forEach((field: any) => {
+        if (field.type === 'group' && field.fields) {
+          // Create nested FormGroup recursively
+          const nestedGroup = new FormGroup({});
+          
+          // Add 'id' with default 0 in the group first
+          nestedGroup.addControl('id', new FormControl(0));
+    
+          // Recursively add remaining fields
+          addControls(field.fields, nestedGroup, true);
+    
+          formGroup.addControl(field.name, nestedGroup);
+        } else {
+          // For non-group, add 'id' once at the beginning
+          if (!isNested && !idAdded) {
+            formGroup.addControl('id', new FormControl(0));
+            idAdded = true;
+          }
+    
+          // Skip adding 'id' again if it's in fields
+          if (field.name === 'id') return;
+    
+          const controlOptions: any = {
+            validators: field.validators || [],
+            asyncValidators: field.asyncValidators || [],
+          };
+    
+          if (field.blur) {
+            controlOptions.updateOn = 'blur';
+          }
+    
+          formGroup.addControl(field.name, new FormControl('', controlOptions));
+        }
+      });
+    };
 
-      //  Only add `updateOn: 'blur'` if field.blur === true
-      if (field.blur) {
-        controlOptions.updateOn = 'blur';
-      }
-      this.docForm.addControl(field.name, new FormControl('', controlOptions));
-  });
+    addControls(this.formFields, this.docForm);
   if(this.formValue)
     this.docForm.patchValue(this.formValue)
 

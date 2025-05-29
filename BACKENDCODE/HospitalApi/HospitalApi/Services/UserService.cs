@@ -1,6 +1,7 @@
 ﻿using HospitalApi.Models;
 using HospitalApi.Repositaries;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace HospitalApi.Services
 {
@@ -9,12 +10,10 @@ namespace HospitalApi.Services
         Task<PagedResult<User>> GetUsersWithPaginationAsync(PaginationRequest paginationRequest);
         Task<User> GetUserByIdAsync(int id);
         Task<User> AddOrUpdateUserAsync(User user);
-        Task DeleteUserAsync(int id);
         Task<User?> GetUserByEmailAsync(int hospitalId, bool status, string email);
         Task DeleteMultipleUsersAsync(List<int> userIds);
-        Task ActivateUserAsync(int id);
-
-
+        Task ActivateOrDeactivateUserAsync(int id, bool toactivate);
+        Task HardDeleteUserByAsync(User user);
 
     }
 
@@ -57,6 +56,18 @@ namespace HospitalApi.Services
             }
         }
 
+        public async Task HardDeleteUserByAsync(User user)
+        {
+            try
+            {
+                 await _userRepository.HardDeleteUserAsync(user);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"An error occurred while retrieving the user with ID {user.Id}.", ex);
+            }
+        }
+
         public async Task<User> AddOrUpdateUserAsync(User user)
         {
             try
@@ -65,18 +76,18 @@ namespace HospitalApi.Services
                 {
                     throw new ArgumentNullException(nameof(user));
                 }
+                user.Password = _passwordHasher.HashPassword(user, user.Password);
 
                 if (user.Id == 0)
                 {
-                    user.Password = _passwordHasher.HashPassword(user, user.Password);
-                    return await _userRepository.AddUserAsync(user);
+                        await _userRepository.AddUserAsync(user);
+                    return user;
                 }
                 else
                 {
-                    if (user.HospitalId == null)
-                        throw new Exception("Hospital id is required");
-                    user.Password = _passwordHasher.HashPassword(user, user.Password);
-                    return await _userRepository.UpdateUserAsync(user);
+                    
+                    await _userRepository.UpdateUserAsync(user);
+                    return user;
                 }
             }
             catch (Exception ex)
@@ -85,47 +96,42 @@ namespace HospitalApi.Services
             }
         }
 
-        public async Task ActivateUserAsync(int id)
+        public async Task ActivateOrDeactivateUserAsync(int id,bool toactivate)
         {
             try
             {
                 User existingUser = await _userRepository.GetUserByIdAsync(id);
                 if (existingUser != null)
                 {
-                    await _userRepository.ActivateUserAsync(existingUser);
+                    existingUser.Status = toactivate;
+                    await _userRepository.UpdateUserAsync(existingUser);
                 }
                 else
                 {
-                    throw new Exception("User not found for activation.");
+                    throw new Exception("User not found for activation or deactivation.");
                 }
             }
             catch (Exception ex)
             {
-                throw new Exception("An error occurred while activating the user.", ex);
+                throw new Exception("An error occurred while activating or deactivating the user.", ex);
             }
         }
 
 
-        public async Task DeleteUserAsync(int id)
+        public async Task UpdateManyUsersAsync(IEnumerable<User> users)
         {
             try
             {
-                User existingUser = await _userRepository.GetUserByIdAsync(id);
-                if (existingUser != null)
-                {
-                    await _userRepository.DeleteUserAsync(existingUser);
-                }
-                else
-                {
-                    throw new Exception("User not found for deletion.");
-                }
+                await _userRepository.UpdateManyUsersAsync(users);
             }
             catch (Exception ex)
             {
-                throw new Exception("An error occurred while deleting the user.", ex);
+                throw new Exception("An error occurred while updating the users.", ex);
             }
         }
 
+
+       
         public async Task DeleteMultipleUsersAsync(List<int> userIds)
         {
             try
@@ -135,8 +141,11 @@ namespace HospitalApi.Services
                 {
                     throw new Exception("No users found for the provided IDs.");
                 }
-
-                await _userRepository.DeleteMultipleUsersAsync(users);
+                foreach (var user in users)
+                {
+                    user.Status = false; // Soft delete
+                }
+                await _userRepository.UpdateManyUsersAsync(users);
             }
             catch (Exception ex)
             {

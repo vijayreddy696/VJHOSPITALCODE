@@ -72,27 +72,45 @@ export class SharedformsComponent implements OnInit{
 
    
 
-    const addControls = (fields:any, formGroup: FormGroup) => {
-      fields.forEach((field:any) => {
+    const addControls = (fields: any[], formGroup: FormGroup, isNested = false) => {
+      let idAdded = false;
+    
+      fields.forEach((field: any) => {
         if (field.type === 'group' && field.fields) {
           // Create nested FormGroup recursively
-          const nestedGroup = this.fb.group({});
-          addControls(field.fields, nestedGroup);
+          const nestedGroup = new FormGroup({});
+          
+          // Add 'id' with default 0 in the group first
+          nestedGroup.addControl('id', new FormControl(0));
+    
+          // Recursively add remaining fields
+          addControls(field.fields, nestedGroup, true);
+    
           formGroup.addControl(field.name, nestedGroup);
         } else {
+          // For non-group, add 'id' once at the beginning
+          if (!isNested && !idAdded) {
+            formGroup.addControl('id', new FormControl(0));
+            idAdded = true;
+          }
+    
+          // Skip adding 'id' again if it's in fields
+          if (field.name === 'id') return;
+    
           const controlOptions: any = {
             validators: field.validators || [],
             asyncValidators: field.asyncValidators || [],
           };
-  
+    
           if (field.blur) {
             controlOptions.updateOn = 'blur';
           }
-  
+    
           formGroup.addControl(field.name, new FormControl('', controlOptions));
         }
       });
     };
+    
 
     addControls(this.formFields, this.docForm);
   }

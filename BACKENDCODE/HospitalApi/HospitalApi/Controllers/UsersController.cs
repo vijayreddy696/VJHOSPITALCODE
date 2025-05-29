@@ -114,7 +114,7 @@ namespace HospitalApi.Controllers
             {
                 int hospitalId = int.Parse(_claimsHelper.GetHospitalId());
 
-                await _userService.ActivateUserAsync(id);
+                await _userService.ActivateOrDeactivateUserAsync(id,true);
                 return Ok(new { message = "User activated successfully." });
             }
             catch (Exception ex)
@@ -132,7 +132,7 @@ namespace HospitalApi.Controllers
             {
                 int HospitalId = int.Parse(_claimsHelper.GetHospitalId());
 
-                await _userService.DeleteUserAsync(id);
+                await _userService.ActivateOrDeactivateUserAsync(id, false);
                 return Ok(new { message = "User deleted successfully." });
             }
             catch (Exception ex)
