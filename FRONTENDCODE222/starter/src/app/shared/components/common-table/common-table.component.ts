@@ -30,7 +30,6 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { ReloadService } from '@shared/services/reload.service';
 import Swal from 'sweetalert2';
 import { HttpErrorResponse } from '@angular/common/http';
-import { genericFormField } from '@core/models/genericformfields.interface';
 
 
 @Component({
@@ -87,7 +86,7 @@ export class CommonTableComponent implements OnInit,AfterViewInit,OnDestroy  {
   @Input() deleteManyDataFn!: (ids: number[]) => Observable<any>;
 
   allCreatedDateStack: Date[]=[]; // Stack to hold last createdDate values
-  formFields!:genericFormField[] 
+  // formFields!:genericFormField[] 
   contextMenuPosition = { x: '0px', y: '0px' };
   filterValue: string | undefined;
   dataSource = new MatTableDataSource<any>();
@@ -112,7 +111,7 @@ export class CommonTableComponent implements OnInit,AfterViewInit,OnDestroy  {
     this.dataSource.sort = this.sort;
   }
   ngOnInit(): void {
-    this.formFields = this.formFieldsFn(true);
+    // this.formFields = this.formFieldsFn(true);
     this.loadData();
   }
 
@@ -467,4 +466,9 @@ deleteSweetPopup(id: number, name: string) {
       this.commonPageRequest.lastCreatedDate =  undefined;
       this.loadData()
     }
+
+    getNestedValue(obj: any, path: string): any {
+      return path.split('.').reduce((acc, part) => acc && acc[part], obj);
+    }
+    
 }

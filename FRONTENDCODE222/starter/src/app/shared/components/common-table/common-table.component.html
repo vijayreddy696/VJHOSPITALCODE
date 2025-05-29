@@ -94,11 +94,11 @@
                             <mat-header-cell *matHeaderCellDef mat-sort-header>
                               <span class="truncate-text">{{ column.label }}</span>
                             </mat-header-cell>
-                            <mat-cell *matCellDef="let row" (contextmenu)="onContextMenu($event, row)" [matTooltip]="row.name">
+                            <mat-cell *matCellDef="let row" (contextmenu)="onContextMenu($event, row)" [matTooltip]="getNestedValue(row, column.def)">
                               <span class="mobile-label">{{ column.label }}:</span>
                               <img [src]="row.img" class="table-img" alt="image" />
                               <span class="truncate-text">
-                                {{ row.fullName }}
+                                {{ getNestedValue(row, column.def) }}
                               </span>
                             </mat-cell>
                         </ng-container>
@@ -107,11 +107,11 @@
                             <mat-header-cell *matHeaderCellDef mat-sort-header>
                               <span class="truncate-text">{{ column.label }}</span>
                             </mat-header-cell>
-                            <mat-cell *matCellDef="let row" (contextmenu)="onContextMenu($event, row)">
+                            <mat-cell *matCellDef="let row" (contextmenu)="onContextMenu($event, row)" [matTooltip]="getNestedValue(row, column.def)">
                               <span class="mobile-label">{{ column.label }}:</span><mat-icon
                                 class="tbl-icon material-icons-outlined col-brown">today</mat-icon>
                               <span class="truncate-text">
-                                {{ row[column.def] | date: 'MMMM d, y' }}
+                                {{ getNestedValue(row, column.def) | date: 'MMMM d, y' }}
                               </span>
                             </mat-cell>
                           </ng-container>
@@ -121,10 +121,10 @@
                               <span class="truncate-text">{{ column.label }}</span>
                             </mat-header-cell>
                             <mat-cell *matCellDef="let row" (contextmenu)="onContextMenu($event, row)"
-                              [matTooltip]="row[column.def]">
+                              [matTooltip]="getNestedValue(row, column.def)">
                               <span class="mobile-label">{{ column.label }}:</span> <mat-icon
                                 class="tbl-icon material-icons-outlined col-green">call</mat-icon><span class="truncate-text">
-                                {{ row[column.def] }}</span></mat-cell>
+                                {{ getNestedValue(row, column.def) }}</span></mat-cell>
                           </ng-container>
 
                           <ng-container *ngSwitchCase="'email'" [matColumnDef]="column.def">
@@ -132,10 +132,10 @@
                               <span class="truncate-text">{{ column.label }}</span>
                             </mat-header-cell>
                             <mat-cell *matCellDef="let row" (contextmenu)="onContextMenu($event, row)"
-                              [matTooltip]="row[column.def]">
+                              [matTooltip]="getNestedValue(row, column.def)">
                               <span class="mobile-label">{{ column.label }}:</span> <mat-icon
                                 class="tbl-icon material-icons-outlined col-red">mail</mat-icon><span class="truncate-text">
-                                {{ row[column.def] }}</span></mat-cell>
+                                {{ getNestedValue(row, column.def) }}</span></mat-cell>
                           </ng-container>
 
                           <ng-container *ngSwitchCase="'address'" [matColumnDef]="column.def">
@@ -143,10 +143,10 @@
                               <span class="truncate-text">{{ column.label }}</span>
                             </mat-header-cell>
                             <mat-cell *matCellDef="let row" (contextmenu)="onContextMenu($event, row)"
-                              [matTooltip]="row[column.def]">
+                              [matTooltip]="getNestedValue(row, column.def)">
                               <span class="mobile-label">{{ column.label }}:</span> <mat-icon
                                 class="tbl-icon material-icons-outlined col-blue">place</mat-icon><span class="truncate-text">
-                                {{ row[column.def] }}</span></mat-cell>
+                                {{ getNestedValue(row, column.def) }}</span></mat-cell>
                           </ng-container>
 
                           <ng-container *ngSwitchCase="'gender'" [matColumnDef]="column.def">
@@ -155,15 +155,15 @@
                             <mat-cell *matCellDef="let row" (contextmenu)="onContextMenu($event, row)">
                               <span class="mobile-label">{{ column.label }}:</span>
                               <div>
-                                @switch (row.gender) {
+                                @switch (getNestedValue(row, column.def)) {
                                 @case ('Male') {
                                 <div>
-                                  <span class="badge badge-solid-green">{{ row.gender }}</span>
+                                  <span class="badge badge-solid-green">{{ getNestedValue(row, column.def) }}</span>
                                 </div>
                                 }
                                 @case ('Female') {
                                 <div>
-                                  <span class="badge badge-solid-purple">{{ row.gender }}</span>
+                                  <span class="badge badge-solid-purple">{{ getNestedValue(row, column.def) }}</span>
                                 </div>
                                 }
                                 }
@@ -175,9 +175,9 @@
                             <mat-header-cell *matHeaderCellDef mat-sort-header>
                               <span class="truncate-text">{{ column.label }}</span>
                             </mat-header-cell>
-                            <mat-cell *matCellDef="let row" (contextmenu)="onContextMenu($event, row)">
+                            <mat-cell *matCellDef="let row" (contextmenu)="onContextMenu($event, row)" [matTooltip]="getNestedValue(row, column.def)">
                               <span class="mobile-label">{{ column.label }}:</span>
-                              <span class="truncate-text">{{ row[column.def] }}</span>
+                              <span class="truncate-text">{{ getNestedValue(row, column.def) }}</span>
                             </mat-cell>
                           </ng-container>
                         

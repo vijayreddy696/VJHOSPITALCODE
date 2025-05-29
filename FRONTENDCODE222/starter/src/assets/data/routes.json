@@ -110,6 +110,18 @@
           "badgeClass": "",
           "role": [""],
           "submenu": []
+        },
+        {
+          "path": "/hospital/hospitals-list",
+          "title": "Hospitals",
+          "iconType": "",
+          "icon": "",
+          "class": "ml-menu",
+          "groupTitle": false,
+          "badge": "",
+          "badgeClass": "",
+          "role": [""],
+          "submenu": []
         }
       ]
     },
