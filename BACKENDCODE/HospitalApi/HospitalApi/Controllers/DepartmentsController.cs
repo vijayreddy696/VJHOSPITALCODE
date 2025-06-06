@@ -1,4 +1,5 @@
-﻿using HospitalApi.Models;
+﻿using HospitalApi.Helper;
+using HospitalApi.Models;
 using HospitalApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,10 +12,13 @@ namespace HospitalApi.Controllers
     public class DepartmentsController : ControllerBase
     {
         private readonly IDepartmentService _departmentService;
+        private readonly ClaimsHelper _claimsHelper;
 
-        public DepartmentsController(IDepartmentService departmentService)
+
+        public DepartmentsController(IDepartmentService departmentService, ClaimsHelper claimsHelper)
         {
             _departmentService = departmentService;
+            _claimsHelper = claimsHelper;
         }
 
         // GET: api/departments
@@ -23,7 +27,8 @@ namespace HospitalApi.Controllers
         {
             try
             {
-                var departments = await _departmentService.GetDepartmentsWithPaginationAsync(paginationRequest);
+                paginationRequest.HospitalId = int.Parse(_claimsHelper.GetHospitalId());
+                PagedResult<Department> departments = await _departmentService.GetDepartmentsWithPaginationAsync(paginationRequest);
                 return Ok(departments);
             }
             catch (Exception ex)
@@ -33,8 +38,8 @@ namespace HospitalApi.Controllers
         }
 
         // GET: api/departments/5
-        [HttpGet("getdepartmentbyid/{hospitalId}/{id}")]
-        public async Task<IActionResult> GetDepartment(int hospitalId, int id)
+        [HttpGet("getdepartmentbyid/{id}")]
+        public async Task<IActionResult> GetDepartment(int id)
         {
             try
             {
@@ -62,6 +67,8 @@ namespace HospitalApi.Controllers
                     return BadRequest("Department data is required.");
                 }
 
+                department.HospitalId = int.Parse(_claimsHelper.GetHospitalId());
+
                 Department result = await _departmentService.AddOrUpdateDepartmentAsync(department);
                 if (result == null)
                 {
@@ -77,8 +84,8 @@ namespace HospitalApi.Controllers
         }
 
         // DELETE: api/departments
-        [HttpDelete("deletedepartmentbyid/{hospitalId}/{departmentId}")]
-        public async Task<IActionResult> DeleteDepartment(int hospitalId, int departmentId)
+        [HttpDelete("deletedepartmentbyid/{departmentId}")]
+        public async Task<IActionResult> DeleteDepartment(int departmentId)
         {
             try
             {
@@ -88,6 +95,27 @@ namespace HospitalApi.Controllers
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Error deleting department: {ex.Message}");
+            }
+        }
+
+        [HttpPost("deletemultipledepartments")]
+        public async Task<IActionResult> DeleteMultipleDepartments([FromBody] List<int> departmentIds)
+        {
+            try
+            {
+                int hospitalId = int.Parse(_claimsHelper.GetHospitalId());
+
+                if (departmentIds == null || !departmentIds.Any())
+                {
+                    return BadRequest("No department IDs provided for deletion.");
+                }
+
+                await _departmentService.DeleteMultipleDepartmentsAsync(departmentIds);
+                return Ok(new { message = "Departments deleted successfully." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error deleting departments: {ex.Message}");
             }
         }
     }

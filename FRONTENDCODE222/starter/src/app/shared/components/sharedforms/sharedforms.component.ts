@@ -11,7 +11,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
 import { FileUploadComponent } from '../file-upload/file-upload.component';
 import { Observable } from 'rxjs';
-import { ReloadService } from '@shared/services/reload.service';
+import { ReloadService } from '@shared/shared-services/reload.service';
 import { Router } from '@angular/router';
 import { genericFormField } from '@core/models/genericformfields.interface';
 
@@ -155,7 +155,7 @@ export class SharedformsComponent implements OnInit{
           'snackbar-success',
           this.title + ' Added Successfully...!!!'
         );
-        this.router.navigate([this.navigateUrl]);
+        // this.router.navigate([this.navigateUrl]);
       },
       error: (error) => {
         console.error('Error:', error);

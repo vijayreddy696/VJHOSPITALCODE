@@ -28,7 +28,7 @@ namespace HospitalApi.Controllers
             {
                 paginationRequest.HospitalId = int.Parse(_claimsHelper.GetHospitalId());
 
-                var users = await _userService.GetUsersWithPaginationAsync(paginationRequest);
+                PagedResult<User> users = await _userService.GetUsersWithPaginationAsync(paginationRequest);
                 return Ok(users);
             }
             catch (Exception ex)

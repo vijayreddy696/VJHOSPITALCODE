@@ -9,10 +9,11 @@ namespace HospitalApi.Repositaries
     {
         Task<PagedResult<Department>> GetDepartmentsWithPaginationAsync(PaginationRequest paginationRequest);
         Task<Department> GetDepartmentByIdAsync(int id);
-
-        Task<Department> AddDepartmentAsync(Department department);
-        Task<Department> UpdateDepartmentAsync(Department department);
-        Task DeleteDepartmentAsync(int departmentId);
+        Task<List<Department>> GetDepartmentsByIdsAsync(List<int> ids);
+        Task AddDepartmentAsync(Department department);
+        Task UpdateDepartmentAsync(Department department);
+        Task DeleteDepartmentAsync(Department department);
+        Task DeleteManyDepartmentsAsync(IEnumerable<Department> departments);
 
     }
     public class DepartmentRepository : IDepartmentRepository
@@ -27,9 +28,6 @@ namespace HospitalApi.Repositaries
         public async Task<PagedResult<Department>> GetDepartmentsWithPaginationAsync(PaginationRequest paginationRequest)
         {
             IQueryable<Department> query = _context.Departments.AsNoTracking();
-
-           
-
 
             if (paginationRequest.HospitalId > 0)
             {
@@ -83,54 +81,52 @@ namespace HospitalApi.Repositaries
 
         private IQueryable<Department> ApplyDatePagination(IQueryable<Department> query, PaginationRequest request)
         {
-            if (request.LastCreatedDate == null && request.FirstCreatedDate == null)
+            if (request.LastCreatedDate == null)
             {
-                return query.OrderByDescending(d => d.ModifiedDate).Take(request.PageSize);
+                return query.OrderByDescending(u => u.CreatedDate).Take(request.PageSize);
             }
             else if (request.LastCreatedDate != null)
             {
-                return query.Where(d => d.ModifiedDate < request.LastCreatedDate)
-                            .OrderByDescending(d => d.ModifiedDate)
+                return query.Where(u => request.LastCreatedDate > u.CreatedDate)
+                            .OrderByDescending(u => u.CreatedDate)
                             .Take(request.PageSize);
-            }
-            else if (request.FirstCreatedDate != null)
-            {
-                return query.Where(d => d.ModifiedDate > request.FirstCreatedDate)
-                            .OrderBy(d => d.ModifiedDate).Take(request.PageSize)
-                            .OrderByDescending(d => d.ModifiedDate);
             }
             return null;
         }
-
         public async Task<Department> GetDepartmentByIdAsync(int id)
         {
             return await _context.Departments.Where(d => d.Id == id).FirstOrDefaultAsync();
         }
 
-        public async Task<Department> AddDepartmentAsync(Department department)
+        public async Task<List<Department>> GetDepartmentsByIdsAsync(List<int> ids)
+        {
+            return await _context.Departments
+                .Where(u => ids.Contains(u.Id))
+                .ToListAsync();
+        }
+
+        public async Task AddDepartmentAsync(Department department)
         {
             await _context.Departments.AddAsync(department);
             await _context.SaveChangesAsync();
-            return department; // Return the department with generated Id
         }
 
-        public async Task<Department> UpdateDepartmentAsync(Department department)
+        public async Task UpdateDepartmentAsync(Department department)
         {
             _context.Departments.Update(department);
             await _context.SaveChangesAsync();
-            return department; // Return the updated department
         }
 
-        public async Task DeleteDepartmentAsync(int departmentId)
+        public async Task DeleteDepartmentAsync(Department department)
         {
-            var department = await _context.Departments
-                                           .FirstOrDefaultAsync(d => d.Id == departmentId);
+            _context.Departments.Remove(department);
+            await _context.SaveChangesAsync();
+        }
 
-            if (department != null)
-            {
-                _context.Departments.Remove(department);
-                await _context.SaveChangesAsync();
-            }
+        public async Task DeleteManyDepartmentsAsync(IEnumerable<Department> departments)
+        {
+            _context.Departments.RemoveRange(departments);
+            await _context.SaveChangesAsync();
         }
 
     }

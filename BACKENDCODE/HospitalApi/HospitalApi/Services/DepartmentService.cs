@@ -10,11 +10,12 @@ namespace HospitalApi.Services
         Task<Department> GetDepartmentByIdAsync(int id);
         Task<Department> AddOrUpdateDepartmentAsync(Department department);
         Task DeleteDepartmentAsync(int departmentId);
+        Task DeleteMultipleDepartmentsAsync(List<int> departmentIds);
+
     }
     public class DepartmentService : IDepartmentService
     {
         private readonly IDepartmentRepository _departmentRepository;
-
         public DepartmentService(IDepartmentRepository departmentRepository)
         {
             _departmentRepository = departmentRepository;
@@ -56,14 +57,16 @@ namespace HospitalApi.Services
 
                 if (department.Id == 0)
                 {
-                    return await _departmentRepository.AddDepartmentAsync(department);
+                     await _departmentRepository.AddDepartmentAsync(department);
+                    return department;
                 }
                 else
                 {
                     if (department.HospitalId == null)
                         throw new Exception("Hospital id is required");
 
-                        return await _departmentRepository.UpdateDepartmentAsync(department);
+                        await _departmentRepository.UpdateDepartmentAsync(department);
+                    return department;
                     
                 }
             }
@@ -77,10 +80,10 @@ namespace HospitalApi.Services
         {
             try
             {
-                var existingDepartment = await _departmentRepository.GetDepartmentByIdAsync(departmentId);
+                Department existingDepartment = await _departmentRepository.GetDepartmentByIdAsync(departmentId);
                 if (existingDepartment != null)
                 {
-                    await _departmentRepository.DeleteDepartmentAsync( departmentId);
+                    await _departmentRepository.DeleteDepartmentAsync(existingDepartment);
                 }
                 else
                 {
@@ -90,6 +93,23 @@ namespace HospitalApi.Services
             catch (Exception ex)
             {
                 throw new Exception("An error occurred while deleting the department.", ex);
+            }
+        }
+
+        public async Task DeleteMultipleDepartmentsAsync(List<int> departmentIds)
+        {
+            try
+            {
+                IEnumerable<Department> departments = await _departmentRepository.GetDepartmentsByIdsAsync(departmentIds);
+                if (departments == null || !departments.Any())
+                {
+                    throw new Exception("No departments found for the provided IDs.");
+                }
+                await _departmentRepository.DeleteManyDepartmentsAsync(departments);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred while deleting multiple departments.", ex);
             }
         }
     }

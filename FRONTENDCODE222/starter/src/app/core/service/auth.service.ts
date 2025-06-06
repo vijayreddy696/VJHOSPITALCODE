@@ -24,7 +24,7 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
-  login(email: string, password: string, hospitalId: number = 6): Observable<User> {
+  login(email: string, password: string, hospitalId: number = 23): Observable<User> {
     const loginPayload = { hospitalId, email, password };
   
     return this.http.post<{ token: string }>("http://localhost:5068/api/Auth/login", loginPayload).pipe(

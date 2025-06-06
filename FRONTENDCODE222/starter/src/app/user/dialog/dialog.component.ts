@@ -10,10 +10,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { UserService } from '../user.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { FileUploadComponent } from '@shared/components/file-upload/file-upload.component';
 import { Router } from '@angular/router';
-import { ReloadService } from '@shared/services/reload.service';
+import { ReloadService } from '@shared/shared-services/reload.service';
 import { genericFormField } from '@core/models/genericformfields.interface';
+import { debounceTime, distinctUntilChanged, of, startWith, Subject, switchMap, tap } from 'rxjs';
 
 
 export interface DialogData {
@@ -38,7 +40,8 @@ export interface DialogData {
     MatDatepickerModule,
     MatDialogClose,
     MatProgressSpinnerModule,
-    FileUploadComponent
+    FileUploadComponent,
+    MatAutocompleteModule
 ],
   templateUrl: './dialog.component.html',
   styleUrl: './dialog.component.scss'
@@ -53,6 +56,8 @@ export class DialogComponent implements OnInit {
   title!:string;
   @Output() formemitter = new EventEmitter<any>();
   formFields :genericFormField[]=[];
+  private searchTextSubjects: { [key: string]: Subject<string> } = {};
+  filteredOptions: { [key: string]: any } = {}; // already defined, keep it for observables
 
   constructor(
     public dialogRef: MatDialogRef<DialogComponent>,
@@ -69,11 +74,13 @@ export class DialogComponent implements OnInit {
       'id',
       new FormControl(0) // Add validators here manually if needed
     );
+
     
    
   }
   ngOnInit(): void {
     this.formFields = this.data.formFieldsFn(this.action === 'edit');
+
    
     const addControls = (fields: any[], formGroup: FormGroup, isNested = false) => {
       let idAdded = false;
@@ -115,11 +122,61 @@ export class DialogComponent implements OnInit {
     };
 
     addControls(this.formFields, this.docForm);
-  if(this.formValue)
+  if(this.formValue){
+    
     this.docForm.patchValue(this.formValue)
+    this.formFields.forEach(field => {
+      if (field.type === 'autocomplete' && typeof field.autoOptions === 'function') {
+        const control = this.docForm.get(field.name);
+        const idFromFormValue = this.formValue[field.name]; // This is departmentId (e.g., 5)
+        const nestedEntity = this.formValue[field.name.replace('Id', '')]; // this.formValue.department
+  
+        // Option 1: If object is present, patch directly
+        if (nestedEntity && nestedEntity.id === idFromFormValue) {
+          control?.setValue({
+            label: nestedEntity.departmentName,
+            value: nestedEntity.id
+          });
+        }
+      
+      }
+    });
+  }
+
+
+   // After you build your form controls
+   this.formFields.forEach(field => {
+    if (field.type === 'autocomplete' && typeof field.autoOptions === 'function') {
+      const optionsFn = field.autoOptions;
+
+    this.searchTextSubjects[field.name] = new Subject<string>();
+
+    this.filteredOptions[field.name] = this.searchTextSubjects[field.name].pipe(
+      startWith(''),
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap(searchText => {
+        if (!searchText || searchText.trim() === '') {
+          return of([]);
+        }
+        return optionsFn(searchText);
+      }),
+      tap(results => console.log(`Results for ${field.name}:`, results))  // <--- log here
+    );
+  
+      this.searchTextSubjects[field.name].next('');
+    }
+  });
+  
+
 
   }
 
+
+  onSearchTextChanged(fieldName: string, event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.searchTextSubjects[fieldName].next(input.value);
+  }
   
  
 
@@ -146,14 +203,32 @@ export class DialogComponent implements OnInit {
   }
 
   onSubmit() {
+    
     if(this.docForm.invalid)
       return;
-    this.formemitter.emit(this.docForm.value);
-    console.log('Form Value', this.docForm.value);
+    const formValue = { ...this.docForm.value };
+
+  // For each autocomplete field, replace the whole object with just its .value
+  this.formFields.forEach(field => {
+    if (field.type === 'autocomplete') {
+      const val = formValue[field.name];
+      if (val && typeof val === 'object' && 'value' in val) {
+        formValue[field.name] = val.value;
+      }
+    }
+  });
+    this.formemitter.emit(formValue);
+    console.log('Form Value', formValue);
   }
 
   onNoClick(): void {
     this.dialogRef.close(); // Close dialog without any action
   }
+
+  displayFn(option: any): string {
+    return option?.label || '';
+  }
+  
+  
 
 }

@@ -14,13 +14,16 @@ namespace HospitalApi.Controllers
     public class AuthController : ControllerBase
     {
         private readonly JwtTokenService _jwtTokenService;
+        private readonly IHospitalService _hospitalService;
+
         private readonly IUserService _userService;
         private readonly IPasswordHasher<User> _passwordHasher; // Use IPasswordHasher for password hashing
 
-        public AuthController(JwtTokenService jwtTokenService, IUserService userService, IPasswordHasher<User> passwordHasher)
+        public AuthController(JwtTokenService jwtTokenService, IUserService userService, IHospitalService hospitalService, IPasswordHasher<User> passwordHasher)
         {
             _jwtTokenService = jwtTokenService;
             _userService = userService;
+            _hospitalService = hospitalService;
             _passwordHasher = passwordHasher;
         }
         [AllowAnonymous]
@@ -31,6 +34,10 @@ namespace HospitalApi.Controllers
             {
                 return BadRequest(new { message = "Invalid login request." });
             }
+            Hospital hospital = await _hospitalService.GetHospitalByIdAsync(request.HospitalId);
+            if(hospital.Status == false)
+                return Unauthorized(new { message = "Hospital was In active." });
+
 
             User user = await _userService.GetUserByEmailAsync(request.HospitalId,true, request.Email);
             if (user == null)

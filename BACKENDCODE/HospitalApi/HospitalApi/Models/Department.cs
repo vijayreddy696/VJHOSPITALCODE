@@ -12,7 +12,7 @@
         public string? Description { get; set; }
 
         // Optional: status of the department (active/inactive)
-        public bool Status { get; set; }
+        public bool Status { get; set; } = true;
         // Department head details
         public string DepartmentHeadName { get; set; }  // Name of the department head
         public string DepartmentHeadEmail { get; set; }  // Email of the department head

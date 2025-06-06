@@ -1,5 +1,5 @@
 import { Validators } from "@angular/forms";
-import { ReloadService } from "@shared/services/reload.service";
+import { ReloadService } from "@shared/shared-services/reload.service";
 import { getUserFormFields } from "./user-form-fields.config";
 
 

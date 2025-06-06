@@ -125,7 +125,26 @@
                 </mat-select>
                 <mat-error>{{ getErrorMessage(field.name) }}</mat-error>
               </mat-form-field>
-      
+
+              <mat-form-field *ngSwitchCase="'autocomplete'" class="example-full-width">
+                <mat-label>{{ field.label }}</mat-label>
+                <input
+                  type="text"
+                  matInput
+                  [formControlName]="field.name"
+                  [matAutocomplete]="auto"
+                  (input)="onSearchTextChanged(field.name, $event)"
+                />
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                  <mat-option *ngFor="let option of filteredOptions[field.name] | async" [value]="option">
+                    {{ option.label }}
+                  </mat-option>
+                </mat-autocomplete>
+                <mat-error>{{ getErrorMessage(field.name) }}</mat-error>
+              </mat-form-field>
+              
+              
+              
               <!-- Date -->
               <mat-form-field *ngSwitchCase="'date'" class="example-full-width" appearance="outline">
                 <mat-label>{{ field.label }}</mat-label>

@@ -107,7 +107,7 @@
                             <mat-header-cell *matHeaderCellDef mat-sort-header>
                               <span class="truncate-text">{{ column.label }}</span>
                             </mat-header-cell>
-                            <mat-cell *matCellDef="let row" (contextmenu)="onContextMenu($event, row)" [matTooltip]="getNestedValue(row, column.def)">
+                            <mat-cell *matCellDef="let row" (contextmenu)="onContextMenu($event, row)" [matTooltip]="getNestedValue(row, column.def) |  date: 'MMMM d, y'">
                               <span class="mobile-label">{{ column.label }}:</span><mat-icon
                                 class="tbl-icon material-icons-outlined col-brown">today</mat-icon>
                               <span class="truncate-text">

@@ -127,6 +127,56 @@
     },
 
     {
+      "path": "",
+      "title": "Department",
+      "iconType": "material-icons-outlined",
+      "icon": "space_dashboard",
+      "class": "menu-toggle",
+      "groupTitle": false,
+      "badge": "",
+      "badgeClass": "",
+      "role": ["SuperAdmin"],
+      "submenu": [
+        {
+          "path": "/department/add-department",
+          "title": "Add Department",
+          "iconType": "",
+          "icon": "",
+          "class": "ml-menu",
+          "groupTitle": false,
+          "badge": "",
+          "badgeClass": "",
+          "role": [""],
+          "submenu": []
+        },
+        {
+          "path": "/department/departments-list",
+          "title": "Departments",
+          "iconType": "",
+          "icon": "",
+          "class": "ml-menu",
+          "groupTitle": false,
+          "badge": "",
+          "badgeClass": "",
+          "role": [""],
+          "submenu": []
+        },
+        {
+          "path": "/department/specializations-list",
+          "title": "Specializations",
+          "iconType": "",
+          "icon": "",
+          "class": "ml-menu",
+          "groupTitle": false,
+          "badge": "",
+          "badgeClass": "",
+          "role": [""],
+          "submenu": []
+        }
+      ]
+    },
+
+    {
       "path": "/doctor/dashboard",
       "title": "MENUITEMS.DASHBOARD.LIST.DOCTOR-DASHBOARD",
       "iconType": "material-icons-outlined",

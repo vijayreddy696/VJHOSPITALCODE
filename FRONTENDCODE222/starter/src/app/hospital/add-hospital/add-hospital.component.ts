@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { SharedformsComponent } from '@shared/components/sharedforms/sharedforms.component';
 import { getHospitalFormFields } from '@shared/form-fields/hospital-form-fields.config';
-import { ReloadService } from '@shared/services/reload.service';
+import { ReloadService } from '@shared/shared-services/reload.service';
 import { HospitalService } from '../hospital.service';
 import { Observable } from 'rxjs';
 

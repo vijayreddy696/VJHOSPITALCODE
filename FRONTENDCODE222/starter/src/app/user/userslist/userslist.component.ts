@@ -5,7 +5,7 @@ import { map, Observable, Subject } from 'rxjs';
 import { User } from '@core/models/user';
 import { PagedRequest } from '@core/models/pagedrequest';
 import { PagedResult } from '@core/models/pagedresult';
-import { ReloadService } from '@shared/services/reload.service';
+import { ReloadService } from '@shared/shared-services/reload.service';
 import { getUserFormFields } from '@shared/form-fields/user-form-fields.config';
 import { CommonTableComponent } from '@shared/components/common-table/common-table.component';
 
@@ -44,7 +44,7 @@ export class UserslistComponent {
   
   constructor(private userservice:UserService,private reloadService:ReloadService ){ }
  
-  loadUsers(paginationRequest: PagedRequest): Observable<PagedResult<User>> {
+  loadData(paginationRequest: PagedRequest): Observable<PagedResult<User>> {
     return this.userservice.getUsers(paginationRequest).pipe(
       map(data => ({
         ...data,
@@ -56,12 +56,12 @@ export class UserslistComponent {
     );
   }
   
-  addUser(formData: any): Observable<any> {
+  addData(formData: any): Observable<any> {
     return this.userservice.addUser(formData);
   }
 
 
-  deleteUser(id: number): Observable<any> {
+  deleteData(id: number): Observable<any> {
     return this.userservice.deleteUser(id);
   }
 
@@ -70,11 +70,9 @@ export class UserslistComponent {
     return this.userservice.activateUser(id);
   }
 
-  deletemanyUsers(ids: number[]): Observable<any> {
+  deleteManyData(ids: number[]): Observable<any> {
     return this.userservice.deletemanyUsers(ids);
   }
-
-  
   
  
 }

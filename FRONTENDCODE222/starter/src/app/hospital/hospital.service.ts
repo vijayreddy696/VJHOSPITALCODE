@@ -26,6 +26,4 @@ export class HospitalService {
   {
     return this.http.post<PagedResult<AddHospital>>('http://localhost:5068/api/Hospitals/gethospitals',paginationRequest);
   }
-
-    
 }

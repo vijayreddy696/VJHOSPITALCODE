@@ -65,7 +65,7 @@ namespace HospitalApi.Migrations
 
                     b.HasIndex("HospitalId");
 
-                    b.ToTable("Departments", (string)null);
+                    b.ToTable("Departments");
                 });
 
             modelBuilder.Entity("HospitalApi.Models.Hospital", b =>
@@ -106,7 +106,41 @@ namespace HospitalApi.Migrations
                         .IsUnique()
                         .HasFilter("[OwnerId] IS NOT NULL");
 
-                    b.ToTable("Hospitals", (string)null);
+                    b.ToTable("Hospitals");
+                });
+
+            modelBuilder.Entity("HospitalApi.Models.Specialization", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("HospitalId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("SpecializationName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.ToTable("Specialization");
                 });
 
             modelBuilder.Entity("HospitalApi.Models.User", b =>
@@ -162,7 +196,7 @@ namespace HospitalApi.Migrations
 
                     b.HasIndex("HospitalId");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("HospitalApi.Models.Department", b =>
@@ -184,6 +218,17 @@ namespace HospitalApi.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("OwnerDetails");
+                });
+
+            modelBuilder.Entity("HospitalApi.Models.Specialization", b =>
+                {
+                    b.HasOne("HospitalApi.Models.Department", "Department")
+                        .WithMany()
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Department");
                 });
 
             modelBuilder.Entity("HospitalApi.Models.User", b =>

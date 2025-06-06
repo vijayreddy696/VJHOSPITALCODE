@@ -27,7 +27,7 @@ import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
 import { FeatherIconsComponent } from '../feather-icons/feather-icons.component';
 import { rowsAnimation } from '@shared';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { ReloadService } from '@shared/services/reload.service';
+import { ReloadService } from '@shared/shared-services/reload.service';
 import Swal from 'sweetalert2';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -125,14 +125,12 @@ export class CommonTableComponent implements OnInit,AfterViewInit,OnDestroy  {
     this.isLoading = true;
    // Save current cursor (for refetching same page after delete)
   this.currentCursor = {
-    firstCreatedDate: this.commonPageRequest.firstCreatedDate,
     lastCreatedDate: this.commonPageRequest.lastCreatedDate,
   };
 
     let paginationRequest:PagedRequest={
       pageSize:this.commonPageRequest.pageSize,
       lastCreatedDate:this.commonPageRequest.lastCreatedDate,
-      firstCreatedDate:this.commonPageRequest.firstCreatedDate,
       searchValue:this.commonPageRequest.searchValue,
       fullTextSearch:!!this.commonPageRequest.searchValue,
     }
@@ -160,7 +158,6 @@ export class CommonTableComponent implements OnInit,AfterViewInit,OnDestroy  {
         // this.dataSource.data = items;
         this.totalCount = data.totalCount;
         this.commonPageRequest.pageSize = data.pageSize;
-        this.commonPageRequest.firstCreatedDate = items[0]?.createdDate;
         this.commonPageRequest.lastCreatedDate = items[items.length - 1]?.createdDate;
         this.isLoading = false;
       },
@@ -466,21 +463,16 @@ deleteSweetPopup(id: number, name: string) {
 
     goToFirstPage(){
     this.paginator.pageIndex = 0;
-    this.commonPageRequest.firstCreatedDate = undefined;
     this.commonPageRequest.lastCreatedDate = undefined;
     this.loadData()
     }
 
     refreshCurrentPage(){
-    //  this.commonPageRequest.firstCreatedDate = this.currentCursor.firstCreatedDate;
-    //  this.commonPageRequest.lastCreatedDate = this.currentCursor.lastCreatedDate;
     this.commonPageRequest.lastCreatedDate = this.allCreatedDateStack[this.allCreatedDateStack.length - 1];
-    this.commonPageRequest.firstCreatedDate = undefined;
 
      this.loadData();
     }
     gotoNextPage(){
-    this.commonPageRequest.firstCreatedDate = undefined;
     if (this.commonPageRequest.lastCreatedDate) 
       this.allCreatedDateStack.push(this.commonPageRequest.lastCreatedDate);
     this.loadData()
@@ -488,7 +480,7 @@ deleteSweetPopup(id: number, name: string) {
 
     goToPreviousPage(){
       this.allCreatedDateStack.pop();
-      this.commonPageRequest.lastCreatedDate =  undefined;
+    this.commonPageRequest.lastCreatedDate = this.allCreatedDateStack[this.allCreatedDateStack.length - 1];
       this.loadData()
     }
 

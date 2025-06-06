@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { AddHospital } from '@core/models/hospital';
 import { PagedRequest } from '@core/models/pagedrequest';
 import { PagedResult } from '@core/models/pagedresult';
-import { ReloadService } from '@shared/services/reload.service';
+import { ReloadService } from '@shared/shared-services/reload.service';
 import { map, Observable } from 'rxjs';
 import { HospitalService } from '../hospital.service';
 import { CommonTableComponent } from '@shared/components/common-table/common-table.component';
@@ -22,7 +22,6 @@ export class HospitalsListComponent {
   
 
   readonly columnDefinitions = [
-    { def: 'select', label: 'Checkbox', type: 'check', visible: true },
     { def: 'ownerDetails.fullName', label: 'Full Name', type: 'fullName', visible: true },
     { def: 'hospitalName', label: 'Hospital Name', type: 'text', visible: true },
     { def: 'id', label: 'Hospital ID', type: 'text', visible: true },
@@ -30,7 +29,7 @@ export class HospitalsListComponent {
     { def: 'ownerDetails.email', label: 'Email', type: 'email', visible: true },
     { def: 'ownerDetails.phoneNumber', label: 'Phone Number', type: 'phone', visible: true },
     { def: 'ownerDetails.gender', label: 'Gender', type: 'gender', visible: true },
-    { def: 'modifiedDate', label: 'Last Modified ON', type: 'date', visible: true },
+    { def: 'createdDate', label: 'Created Date', type: 'date', visible: true },
     { def: 'actions', label: 'Actions', type: 'actionBtn', visible: true },
   ];
   

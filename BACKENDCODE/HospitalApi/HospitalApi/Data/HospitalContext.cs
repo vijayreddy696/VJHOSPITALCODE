@@ -14,6 +14,7 @@ namespace HospitalApi.Data
 
         public DbSet<User> Users { get; set; }
 
+        public DbSet<Specialization> Specialization { get; set; }
 
         // Add other entities here
 
