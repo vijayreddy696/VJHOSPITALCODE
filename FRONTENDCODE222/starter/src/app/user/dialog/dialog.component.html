@@ -63,6 +63,25 @@
                       </mat-select>
                       <mat-error>{{ getErrorMessage(field.name + '.' + nestedField.name) }}</mat-error>
                     </mat-form-field>
+
+                    
+              <mat-form-field *ngSwitchCase="'autocomplete'" class="example-full-width">
+                <mat-label>{{ nestedField.label }}</mat-label>
+                <input
+                  type="text"
+                  matInput
+                  [formControlName]="nestedField.name"
+                  [matAutocomplete]="auto"
+                  (input)="onSearchTextChanged(field.name + '.' + nestedField.name, $event)"
+                />
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                  <mat-option *ngFor="let option of filteredOptions[field.name + '.' + nestedField.name] | async" [value]="option">
+                    {{ option.valuetoShow }}
+                  </mat-option>
+                </mat-autocomplete>
+                <mat-error>{{ getErrorMessage(field.name + '.' + nestedField.name) }}</mat-error>
+              </mat-form-field>
+              
       
                     <!-- Date -->
                     <mat-form-field *ngSwitchCase="'date'" class="example-full-width" appearance="outline">
@@ -90,7 +109,7 @@
             *ngIf="field.type !== 'group'"
             [ngClass]="{
               'col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-5': field.type === 'file' || field.type === 'textarea',
-              'col-xl-6 col-lg-6 col-md-12 col-sm-12': field.type !== 'file' && field.type !== 'textarea'
+              'col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-1': field.type !== 'file' && field.type !== 'textarea'
             }"
           >
             <ng-container [ngSwitch]="field.type">
@@ -98,7 +117,8 @@
               <!-- Text -->
               <mat-form-field *ngSwitchCase="'text'" class="example-full-width" appearance="outline">
                 <mat-label>{{ field.label }}</mat-label>
-                <input matInput [formControlName]="field.name" />
+                <input matInput [formControlName]="field.name" [readonly]="field.isreadonly"/>
+                <mat-hint *ngIf="field.isreadonly">This field is non-editable.</mat-hint>
                 <mat-error>{{ getErrorMessage(field.name) }}</mat-error>
               </mat-form-field>
       

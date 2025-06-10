@@ -136,7 +136,7 @@ namespace HospitalApi.Services
         {
             try
             {
-                var users = await _userRepository.GetUsersByIdsAsync(userIds);
+                var users = await _userRepository.GetManyUsersByIdsAsync(userIds);
                 if (users == null || !users.Any())
                 {
                     throw new Exception("No users found for the provided IDs.");

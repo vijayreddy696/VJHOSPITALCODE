@@ -35,8 +35,7 @@ namespace HospitalApi.Repositaries
 
             if (paginationRequest.HospitalId > 0)
             {
-                query = query.Where(s => s.Department.HospitalId == paginationRequest.HospitalId);
-                query = query.Where(s => s.Department.Status == true); // Assuming Department has Status
+                query = query.Where(s => s.HospitalId == paginationRequest.HospitalId);
             }
 
             else
@@ -54,7 +53,22 @@ namespace HospitalApi.Repositaries
             query = ApplyDatePagination(query, paginationRequest);
 
             var totalCount = await filteredQuery.CountAsync();
-            var pagedSpecializations = await query.ToListAsync();
+            //var pagedSpecializations = await query.ToListAsync();
+
+            var pagedSpecializations = await query
+            .Select(s => new Specialization
+            {
+                Id = s.Id,
+                SpecializationName = s.SpecializationName,
+                CreatedDate = s.CreatedDate,
+                HospitalId = s.HospitalId,
+                DepartmentId = s.DepartmentId,
+                Department = new Department
+                {
+                    Id = s.Department.Id,
+                    DepartmentName = s.Department.DepartmentName
+                }
+            }).ToListAsync();
 
             return new PagedResult<Specialization>
             {

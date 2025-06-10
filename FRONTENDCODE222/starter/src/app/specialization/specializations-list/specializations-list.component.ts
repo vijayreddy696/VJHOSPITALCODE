@@ -7,6 +7,7 @@ import { map, Observable } from 'rxjs';
 import { PagedResult } from '@core/models/pagedresult';
 import { Specialization } from '@core/models/specialization';
 import { CommonTableComponent } from '@shared/components/common-table/common-table.component';
+import { ReloadService } from '@shared/shared-services/reload.service';
 
 @Component({
   selector: 'app-specializations-list',
@@ -23,9 +24,9 @@ export class SpecializationsListComponent {
       { def: 'actions', label: 'Actions', type: 'actionBtn', visible: true },
     ];
     readonly title = "Specialization";
-    readonly formFields = (params: any) => getSpecializationFormFields(this.departmentService, params);
+    readonly formFields = (params: any) => getSpecializationFormFields(this.departmentService,this.reloadService, params);
     
-    constructor(private specializationService:SpecializationService,private departmentService:DepartmentService ){ }
+    constructor(private specializationService:SpecializationService,private reloadService:ReloadService, private departmentService:DepartmentService ){ }
    
     loadData(paginationRequest: PagedRequest): Observable<PagedResult<Specialization>> {
       return this.specializationService.getSpecializations(paginationRequest);

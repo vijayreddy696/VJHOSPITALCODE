@@ -11,7 +11,7 @@ namespace HospitalApi.Repositaries
         Task AddUserAsync(User user);
         Task UpdateUserAsync(User user);
         Task UpdateManyUsersAsync(IEnumerable<User> users);
-        Task<List<User>> GetUsersByIdsAsync(List<int> ids);
+        Task<List<User>> GetManyUsersByIdsAsync(List<int> ids);
         Task<User?> GetUserByEmailAsync(int hospitalId , bool status, string email);
 
         Task HardDeleteUserAsync(User user);
@@ -129,7 +129,7 @@ namespace HospitalApi.Repositaries
         }
 
 
-        public async Task<List<User>> GetUsersByIdsAsync(List<int> ids)
+        public async Task<List<User>> GetManyUsersByIdsAsync(List<int> ids)
         {
             return await _context.Users
                 .Where(u => ids.Contains(u.Id))

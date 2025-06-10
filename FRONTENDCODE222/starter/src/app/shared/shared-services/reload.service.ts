@@ -61,4 +61,16 @@ export class ReloadService {
     };
   }
 
+   requireAutocompleteObject(control: AbstractControl): ValidationErrors | null {
+      const value = control.value;
+      // If value is a string (not an object), it's invalid
+      if (typeof value === 'string' || !value) {
+        return { notSelectedFromDropdown: true };
+      }
+      return null;
+  }
+
+
+  
+
 }

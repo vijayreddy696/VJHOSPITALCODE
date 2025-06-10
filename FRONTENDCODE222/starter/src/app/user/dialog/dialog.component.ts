@@ -58,6 +58,7 @@ export class DialogComponent implements OnInit {
   formFields :genericFormField[]=[];
   private searchTextSubjects: { [key: string]: Subject<string> } = {};
   filteredOptions: { [key: string]: any } = {}; // already defined, keep it for observables
+  
 
   constructor(
     public dialogRef: MatDialogRef<DialogComponent>,
@@ -121,78 +122,94 @@ export class DialogComponent implements OnInit {
       });
     };
 
+   
+    
     addControls(this.formFields, this.docForm);
   if(this.formValue){
-    
     this.docForm.patchValue(this.formValue)
-    this.formFields.forEach(field => {
-      if (field.type === 'autocomplete' && typeof field.autoOptions === 'function') {
-        const control = this.docForm.get(field.name);
-        const idFromFormValue = this.formValue[field.name]; // This is departmentId (e.g., 5)
-        const nestedEntity = this.formValue[field.name.replace('Id', '')]; // this.formValue.department
+  }
+
+
+   // Now bind all autocomplete logic
+   this.buildAutocompleteLogic(this.formFields);
+ 
   
-        // Option 1: If object is present, patch directly
-        if (nestedEntity && nestedEntity.id === idFromFormValue) {
-          control?.setValue({
-            label: nestedEntity.departmentName,
-            value: nestedEntity.id
-          });
-        }
-      
+
+  }
+
+  buildAutocompleteLogic(fields: genericFormField[], parentPath: string = '') {
+    
+    fields.forEach(field => {
+      const controlPath = parentPath ? `${parentPath}.${field.name}` : field.name;
+  
+      if (field.type === 'autocomplete' && typeof field.autoOptions === 'function') {
+        const optionsFn = field.autoOptions;
+        const control = this.docForm.get(controlPath);
+  
+        this.searchTextSubjects[controlPath] = new Subject<string>();
+  
+        this.filteredOptions[controlPath] = this.searchTextSubjects[controlPath].pipe(
+          startWith(''),
+          debounceTime(300),
+          distinctUntilChanged(),
+          switchMap(searchText => optionsFn(searchText)),
+        );
+  
+        // Trigger initial fetch
+        this.searchTextSubjects[controlPath].next('');
+  
+        // Handle patching logic when an option is selected
+        control?.valueChanges.pipe(distinctUntilChanged()).subscribe(selectedOption => {
+          if (selectedOption && field.patchto && selectedOption.valueToPatch !== undefined) {
+            const patchControlPath = field.patchto;
+            const patchControl = this.docForm.get(patchControlPath);
+            if (patchControl) {
+              patchControl.patchValue(selectedOption.valueToPatch);
+            } else {
+              console.warn(`FormControl ${patchControlPath} not found.`);
+            }
+          }
+        });
+      }
+  
+      // Recursively process nested groups
+      if (field.type === 'group' && Array.isArray(field.fields)) {
+        const nextPath = parentPath ? `${parentPath}.${field.name}` : field.name;
+        this.buildAutocompleteLogic(field.fields, nextPath);
       }
     });
   }
 
 
-   // After you build your form controls
-   this.formFields.forEach(field => {
-    if (field.type === 'autocomplete' && typeof field.autoOptions === 'function') {
-      const optionsFn = field.autoOptions;
-
-    this.searchTextSubjects[field.name] = new Subject<string>();
-
-    this.filteredOptions[field.name] = this.searchTextSubjects[field.name].pipe(
-      startWith(''),
-      debounceTime(300),
-      distinctUntilChanged(),
-      switchMap(searchText => {
-        if (!searchText || searchText.trim() === '') {
-          return of([]);
-        }
-        return optionsFn(searchText);
-      }),
-      tap(results => console.log(`Results for ${field.name}:`, results))  // <--- log here
-    );
-  
-      this.searchTextSubjects[field.name].next('');
-    }
-  });
-  
-
-
-  }
-
-
-  onSearchTextChanged(fieldName: string, event: Event) {
+  onSearchTextChanged(controlPath: string, event: Event) {
     const input = event.target as HTMLInputElement;
-    this.searchTextSubjects[fieldName].next(input.value);
+    if (this.searchTextSubjects[controlPath]) {
+      this.searchTextSubjects[controlPath].next(input.value);
+    } else {
+      console.warn(`No subject found for path: ${controlPath}`);
+    }
   }
   
  
 
 
   getErrorMessage(controlName: string): string | null {
+    
     const control = this.docForm.get(controlName);
     if (!control || !control.errors) {
       return null; // no error or not touched yet
     }
+    if (control.hasError('required')) 
+      return 'This field is required';
+
     if (control.hasError('emailExists')) {
       return 'Email already exists';
     }
+    if (control.hasError('notSelectedFromDropdown')) {
+      return 'Only values from options are allowed';
+    }
   
-    if (control.hasError('required')) 
-          return 'This field is required';
-  
+    
     if (controlName === 'email' && control.hasError('email')) 
       return 'Please enter a valid email address';
   
@@ -208,15 +225,6 @@ export class DialogComponent implements OnInit {
       return;
     const formValue = { ...this.docForm.value };
 
-  // For each autocomplete field, replace the whole object with just its .value
-  this.formFields.forEach(field => {
-    if (field.type === 'autocomplete') {
-      const val = formValue[field.name];
-      if (val && typeof val === 'object' && 'value' in val) {
-        formValue[field.name] = val.value;
-      }
-    }
-  });
     this.formemitter.emit(formValue);
     console.log('Form Value', formValue);
   }
@@ -226,7 +234,7 @@ export class DialogComponent implements OnInit {
   }
 
   displayFn(option: any): string {
-    return option?.label || '';
+    return option?.valuetoShow || '';
   }
   
   

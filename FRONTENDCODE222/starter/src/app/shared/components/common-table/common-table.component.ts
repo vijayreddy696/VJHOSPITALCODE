@@ -164,6 +164,9 @@ export class CommonTableComponent implements OnInit,AfterViewInit,OnDestroy  {
       error: (err) => {
         console.error('Error loading data:', err);
         this.isLoading = false;
+        this.reloadService.showNotification(
+          'snackbar-danger',
+          'Error loading data. Please refresh or contact support if the issue persists.');
       }
     });
   }
@@ -332,7 +335,6 @@ export class CommonTableComponent implements OnInit,AfterViewInit,OnDestroy  {
 
   refresh() {
     this.refreshCurrentPage()
-    this.loadData();
   }
 
   getDisplayedColumns(): string[] {
@@ -469,7 +471,6 @@ deleteSweetPopup(id: number, name: string) {
 
     refreshCurrentPage(){
     this.commonPageRequest.lastCreatedDate = this.allCreatedDateStack[this.allCreatedDateStack.length - 1];
-
      this.loadData();
     }
     gotoNextPage(){
