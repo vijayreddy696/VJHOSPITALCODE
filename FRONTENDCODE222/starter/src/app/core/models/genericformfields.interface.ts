@@ -8,15 +8,14 @@ export interface genericFormField {
   validators?: ValidatorFn[];
   asyncValidators?: AsyncValidatorFn[];
   options?: string[];
-  autoOptions?: ((search: string) => Observable<AutoOptions[]>); // <-- fixed
+  autoOptions?: ((search: string) => Observable<any>); // <-- fixed
   patchto?:string;
+  valuetoShow?: string;
+  valueToPatch?:string
   blur?: boolean;
   fields?: genericFormField[];
   linkField?:string;
   isreadonly?:boolean;
 }
 
-export interface AutoOptions {
-  valuetoShow: string;
-  valueToPatch: any;
-}
+

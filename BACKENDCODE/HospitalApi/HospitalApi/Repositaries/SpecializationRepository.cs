@@ -131,6 +131,7 @@ namespace HospitalApi.Repositaries
 
         public async Task AddAsync(Specialization specialization)
         {
+
             _context.Specialization.Add(specialization);
             await _context.SaveChangesAsync();
         }

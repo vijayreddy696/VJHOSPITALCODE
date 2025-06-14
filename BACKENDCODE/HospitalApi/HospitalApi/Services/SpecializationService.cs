@@ -66,7 +66,10 @@ namespace HospitalApi.Services
             try
             {
                 if (specialization.Id == 0)
+                {
+                    specialization.Department = null;
                     await _specializationRepository.AddAsync(specialization);
+                }
                 else
                     await _specializationRepository.UpdateAsync(specialization);
 

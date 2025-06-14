@@ -15,7 +15,7 @@ import { FileUploadComponent } from '@shared/components/file-upload/file-upload.
 import { Router } from '@angular/router';
 import { ReloadService } from '@shared/shared-services/reload.service';
 import { genericFormField } from '@core/models/genericformfields.interface';
-import { debounceTime, distinctUntilChanged, of, startWith, Subject, switchMap, tap } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map, of, startWith, Subject, switchMap, tap } from 'rxjs';
 
 
 export interface DialogData {
@@ -126,17 +126,16 @@ export class DialogComponent implements OnInit {
     
     addControls(this.formFields, this.docForm);
   if(this.formValue){
+    debugger;
     this.docForm.patchValue(this.formValue)
   }
-
+  
 
    // Now bind all autocomplete logic
    this.buildAutocompleteLogic(this.formFields);
- 
-  
 
   }
-
+ 
   buildAutocompleteLogic(fields: genericFormField[], parentPath: string = '') {
     
     fields.forEach(field => {
@@ -152,7 +151,9 @@ export class DialogComponent implements OnInit {
           startWith(''),
           debounceTime(300),
           distinctUntilChanged(),
-          switchMap(searchText => optionsFn(searchText)),
+          switchMap(searchText => optionsFn(searchText).pipe(
+            map((response:any) => response.items || [])
+          )),
         );
   
         // Trigger initial fetch
@@ -160,16 +161,17 @@ export class DialogComponent implements OnInit {
   
         // Handle patching logic when an option is selected
         control?.valueChanges.pipe(distinctUntilChanged()).subscribe(selectedOption => {
-          if (selectedOption && field.patchto && selectedOption.valueToPatch !== undefined) {
+          if (selectedOption && field.patchto && field.valueToPatch) {
             const patchControlPath = field.patchto;
             const patchControl = this.docForm.get(patchControlPath);
-            if (patchControl) {
-              patchControl.patchValue(selectedOption.valueToPatch);
+            if (patchControl && selectedOption[field.valueToPatch] !== undefined) {
+              patchControl.patchValue(selectedOption[field.valueToPatch]);
             } else {
-              console.warn(`FormControl ${patchControlPath} not found.`);
+              console.warn(`FormControl ${patchControlPath} not found or valueToPatch is invalid.`);
             }
           }
         });
+        
       }
   
       // Recursively process nested groups
@@ -179,6 +181,9 @@ export class DialogComponent implements OnInit {
       }
     });
   }
+
+
+  
 
 
   onSearchTextChanged(controlPath: string, event: Event) {
@@ -233,9 +238,34 @@ export class DialogComponent implements OnInit {
     this.dialogRef.close(); // Close dialog without any action
   }
 
-  displayFn(option: any): string {
-    return option?.valuetoShow || '';
+  displayFnFactory(fieldPath: string, valueToShow: string): (option: any) => string {
+    return (option: any) => {
+      if (!option) return '';
+      let abc = option
+       return option[valueToShow] ?? '';
+    };
   }
+  
+
+
+  findFieldByPath(path: string, fields: genericFormField[]): genericFormField | undefined {
+    const parts = path.split('.');
+    let currentFields = fields;
+    let foundField: genericFormField | undefined;
+  
+    for (const part of parts) {
+      foundField = currentFields.find(f => f.name === part);
+      if (!foundField) return undefined;
+      if (foundField.type === 'group' && foundField.fields) {
+        currentFields = foundField.fields;
+      } else {
+        break;
+      }
+    }
+  
+    return foundField;
+  }
+  
   
   
 

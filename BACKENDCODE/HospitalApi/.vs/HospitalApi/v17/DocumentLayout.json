@@ -3,8 +3,24 @@
   "WorkspaceRootPath": "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|c:\\vijayreddy\\hospitalcode\\backendcode\\hospitalapi\\hospitalapi\\services\\specializationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|solutionrelative:hospitalapi\\services\\specializationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|c:\\vijayreddy\\hospitalcode\\backendcode\\hospitalapi\\hospitalapi\\repositaries\\specializationrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|solutionrelative:hospitalapi\\repositaries\\specializationrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|c:\\vijayreddy\\hospitalcode\\backendcode\\hospitalapi\\hospitalapi\\controllers\\specializationscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|solutionrelative:hospitalapi\\controllers\\specializationscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|c:\\vijayreddy\\hospitalcode\\backendcode\\hospitalapi\\hospitalapi\\models\\hospital.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|solutionrelative:hospitalapi\\models\\hospital.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|c:\\vijayreddy\\hospitalcode\\backendcode\\hospitalapi\\hospitalapi\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|solutionrelative:hospitalapi\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|c:\\vijayreddy\\hospitalcode\\backendcode\\hospitalapi\\hospitalapi\\controllers\\hospitalscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -17,10 +33,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|c:\\vijayreddy\\hospitalcode\\backendcode\\hospitalapi\\hospitalapi\\models\\department.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|solutionrelative:hospitalapi\\models\\department.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|c:\\vijayreddy\\hospitalcode\\backendcode\\hospitalapi\\hospitalapi\\repositaries\\specializationrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|solutionrelative:hospitalapi\\repositaries\\specializationrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|c:\\vijayreddy\\hospitalcode\\backendcode\\hospitalapi\\hospitalapi\\repositaries\\userrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -37,14 +49,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|c:\\vijayreddy\\hospitalcode\\backendcode\\hospitalapi\\hospitalapi\\controllers\\departmentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|solutionrelative:hospitalapi\\controllers\\departmentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|c:\\vijayreddy\\hospitalcode\\backendcode\\hospitalapi\\hospitalapi\\controllers\\specializationscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|solutionrelative:hospitalapi\\controllers\\specializationscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|c:\\vijayreddy\\hospitalcode\\backendcode\\hospitalapi\\hospitalapi\\services\\specializationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|solutionrelative:hospitalapi\\services\\specializationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|c:\\vijayreddy\\hospitalcode\\backendcode\\hospitalapi\\hospitalapi\\services\\hospitalservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -69,10 +73,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|c:\\vijayreddy\\hospitalcode\\backendcode\\hospitalapi\\hospitalapi\\data\\hospitalcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|solutionrelative:hospitalapi\\data\\hospitalcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|c:\\vijayreddy\\hospitalcode\\backendcode\\hospitalapi\\hospitalapi\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|solutionrelative:hospitalapi\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A14252B4-5B73-449A-AEAF-AD526E694772}|HospitalApi\\HospitalApi.csproj|c:\\vijayreddy\\hospitalcode\\backendcode\\hospitalapi\\hospitalapi\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -195,63 +195,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Specialization.cs",
-              "DocumentMoniker": "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Models\\Specialization.cs",
-              "RelativeDocumentMoniker": "HospitalApi\\Models\\Specialization.cs",
-              "ToolTip": "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Models\\Specialization.cs",
-              "RelativeToolTip": "HospitalApi\\Models\\Specialization.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAoAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-04T18:02:39.318Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 7,
-              "Title": "DepartmentRepository.cs",
-              "DocumentMoniker": "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Repositaries\\DepartmentRepository.cs",
-              "RelativeDocumentMoniker": "HospitalApi\\Repositaries\\DepartmentRepository.cs",
-              "ToolTip": "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Repositaries\\DepartmentRepository.cs",
-              "RelativeToolTip": "HospitalApi\\Repositaries\\DepartmentRepository.cs",
-              "ViewState": "AgIAABsAAAAAAAAAAIA7wA4AAAA6AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-29T13:36:37.107Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "HospitalRepository.cs",
-              "DocumentMoniker": "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Repositaries\\HospitalRepository.cs",
-              "RelativeDocumentMoniker": "HospitalApi\\Repositaries\\HospitalRepository.cs",
-              "ToolTip": "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Repositaries\\HospitalRepository.cs",
-              "RelativeToolTip": "HospitalApi\\Repositaries\\HospitalRepository.cs",
-              "ViewState": "AgIAAA8AAAAAAAAAAAAowHgAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-28T07:15:52.386Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "UserRepository.cs",
-              "DocumentMoniker": "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Repositaries\\UserRepository.cs",
-              "RelativeDocumentMoniker": "HospitalApi\\Repositaries\\UserRepository.cs",
-              "ToolTip": "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Repositaries\\UserRepository.cs",
-              "RelativeToolTip": "HospitalApi\\Repositaries\\UserRepository.cs",
-              "ViewState": "AgIAABcAAAAAAAAAAEArwIMAAAAtAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-30T07:35:34.994Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
               "Title": "Department.cs",
               "DocumentMoniker": "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Models\\Department.cs",
               "RelativeDocumentMoniker": "HospitalApi\\Models\\Department.cs",
@@ -259,12 +207,11 @@
               "RelativeToolTip": "HospitalApi\\Models\\Department.cs",
               "ViewState": "AgIAAAIAAAAAAAAAAAAxwAUAAAAkAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-29T14:55:54.671Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-29T14:55:54.671Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 5,
               "Title": "HospitalsController.cs",
               "DocumentMoniker": "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Controllers\\HospitalsController.cs",
               "RelativeDocumentMoniker": "HospitalApi\\Controllers\\HospitalsController.cs",
@@ -277,20 +224,119 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 3,
               "Title": "Hospital.cs",
               "DocumentMoniker": "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Models\\Hospital.cs",
               "RelativeDocumentMoniker": "HospitalApi\\Models\\Hospital.cs",
               "ToolTip": "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Models\\Hospital.cs",
               "RelativeToolTip": "HospitalApi\\Models\\Hospital.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAARAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAwAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-04-27T18:44:49.128Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "User.cs",
+              "DocumentMoniker": "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Models\\User.cs",
+              "RelativeDocumentMoniker": "HospitalApi\\Models\\User.cs",
+              "ToolTip": "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Models\\User.cs",
+              "RelativeToolTip": "HospitalApi\\Models\\User.cs",
+              "ViewState": "AgIAAAcAAAAAAAAAAAAQwAQAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-30T05:52:44.442Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "SpecializationsController.cs",
+              "DocumentMoniker": "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Controllers\\SpecializationsController.cs",
+              "RelativeDocumentMoniker": "HospitalApi\\Controllers\\SpecializationsController.cs",
+              "ToolTip": "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Controllers\\SpecializationsController.cs",
+              "RelativeToolTip": "HospitalApi\\Controllers\\SpecializationsController.cs",
+              "ViewState": "AgIAACAAAACAmZmZmVklwC4AAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-04T18:53:48.716Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "SpecializationService.cs",
+              "DocumentMoniker": "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Services\\SpecializationService.cs",
+              "RelativeDocumentMoniker": "HospitalApi\\Services\\SpecializationService.cs",
+              "ToolTip": "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Services\\SpecializationService.cs",
+              "RelativeToolTip": "HospitalApi\\Services\\SpecializationService.cs",
+              "ViewState": "AgIAADwAAAAAAAAAAAAlwEwAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-04T18:49:34.778Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "SpecializationRepository.cs",
+              "DocumentMoniker": "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Repositaries\\SpecializationRepository.cs",
+              "RelativeDocumentMoniker": "HospitalApi\\Repositaries\\SpecializationRepository.cs",
+              "ToolTip": "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Repositaries\\SpecializationRepository.cs",
+              "RelativeToolTip": "HospitalApi\\Repositaries\\SpecializationRepository.cs",
+              "ViewState": "AgIAAH0AAAAAAAAAAAAawIUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-04T18:11:55.5Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 8,
+              "Title": "UserRepository.cs",
+              "DocumentMoniker": "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Repositaries\\UserRepository.cs",
+              "RelativeDocumentMoniker": "HospitalApi\\Repositaries\\UserRepository.cs",
+              "ToolTip": "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Repositaries\\UserRepository.cs",
+              "RelativeToolTip": "HospitalApi\\Repositaries\\UserRepository.cs",
+              "ViewState": "AgIAABcAAAAAAAAAAEArwIMAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-30T07:35:34.994Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "HospitalRepository.cs",
+              "DocumentMoniker": "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Repositaries\\HospitalRepository.cs",
+              "RelativeDocumentMoniker": "HospitalApi\\Repositaries\\HospitalRepository.cs",
+              "ToolTip": "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Repositaries\\HospitalRepository.cs",
+              "RelativeToolTip": "HospitalApi\\Repositaries\\HospitalRepository.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAowHgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-28T07:15:52.386Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "DepartmentRepository.cs",
+              "DocumentMoniker": "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Repositaries\\DepartmentRepository.cs",
+              "RelativeDocumentMoniker": "HospitalApi\\Repositaries\\DepartmentRepository.cs",
+              "ToolTip": "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Repositaries\\DepartmentRepository.cs",
+              "RelativeToolTip": "HospitalApi\\Repositaries\\DepartmentRepository.cs",
+              "ViewState": "AgIAABsAAAAAAAAAAIA7wA4AAAA6AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-29T13:36:37.107Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Specialization.cs",
+              "DocumentMoniker": "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Models\\Specialization.cs",
+              "RelativeDocumentMoniker": "HospitalApi\\Models\\Specialization.cs",
+              "ToolTip": "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Models\\Specialization.cs",
+              "RelativeToolTip": "HospitalApi\\Models\\Specialization.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAoAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-04T18:02:39.318Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
               "Title": "DepartmentsController.cs",
               "DocumentMoniker": "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Controllers\\DepartmentsController.cs",
               "RelativeDocumentMoniker": "HospitalApi\\Controllers\\DepartmentsController.cs",
@@ -298,37 +344,11 @@
               "RelativeToolTip": "HospitalApi\\Controllers\\DepartmentsController.cs",
               "ViewState": "AgIAAGMAAAAAZmZmZmb4v2QAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-29T13:33:40.68Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-29T13:33:40.68Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "SpecializationRepository.cs",
-              "DocumentMoniker": "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Repositaries\\SpecializationRepository.cs",
-              "RelativeDocumentMoniker": "HospitalApi\\Repositaries\\SpecializationRepository.cs",
-              "ToolTip": "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Repositaries\\SpecializationRepository.cs",
-              "RelativeToolTip": "HospitalApi\\Repositaries\\SpecializationRepository.cs",
-              "ViewState": "AgIAAFEAAAAAAAAAAAAIwH0AAABPAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-04T18:11:55.5Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "SpecializationService.cs",
-              "DocumentMoniker": "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Services\\SpecializationService.cs",
-              "RelativeDocumentMoniker": "HospitalApi\\Services\\SpecializationService.cs",
-              "ToolTip": "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Services\\SpecializationService.cs",
-              "RelativeToolTip": "HospitalApi\\Services\\SpecializationService.cs",
-              "ViewState": "AgIAADMAAAAAAAAAAAA3wD8AAAAqAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-04T18:49:34.778Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 13,
               "Title": "UsersController.cs",
               "DocumentMoniker": "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Controllers\\UsersController.cs",
               "RelativeDocumentMoniker": "HospitalApi\\Controllers\\UsersController.cs",
@@ -340,7 +360,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 12,
               "Title": "HospitalService.cs",
               "DocumentMoniker": "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Services\\HospitalService.cs",
               "RelativeDocumentMoniker": "HospitalApi\\Services\\HospitalService.cs",
@@ -352,20 +372,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "SpecializationsController.cs",
-              "DocumentMoniker": "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Controllers\\SpecializationsController.cs",
-              "RelativeDocumentMoniker": "HospitalApi\\Controllers\\SpecializationsController.cs",
-              "ToolTip": "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Controllers\\SpecializationsController.cs",
-              "RelativeToolTip": "HospitalApi\\Controllers\\SpecializationsController.cs",
-              "ViewState": "AgIAACAAAACAmZmZmVklwCsAAABNAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-04T18:53:48.716Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 14,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Program.cs",
               "RelativeDocumentMoniker": "HospitalApi\\Program.cs",
@@ -377,7 +384,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 15,
               "Title": "DepartmentService.cs",
               "DocumentMoniker": "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Services\\DepartmentService.cs",
               "RelativeDocumentMoniker": "HospitalApi\\Services\\DepartmentService.cs",
@@ -389,7 +396,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 16,
               "Title": "BaseEntity.cs",
               "DocumentMoniker": "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Models\\BaseEntity.cs",
               "RelativeDocumentMoniker": "HospitalApi\\Models\\BaseEntity.cs",
@@ -401,7 +408,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 17,
               "Title": "HospitalContext.cs",
               "DocumentMoniker": "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Data\\HospitalContext.cs",
               "RelativeDocumentMoniker": "HospitalApi\\Data\\HospitalContext.cs",
@@ -425,18 +432,6 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
-              "Title": "User.cs",
-              "DocumentMoniker": "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Models\\User.cs",
-              "RelativeDocumentMoniker": "HospitalApi\\Models\\User.cs",
-              "ToolTip": "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Models\\User.cs",
-              "RelativeToolTip": "HospitalApi\\Models\\User.cs",
-              "ViewState": "AgIAAAgAAAAAAAAAAAA3wAQAAAARAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-30T05:52:44.442Z"
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 18,
               "Title": "AuthController.cs",
               "DocumentMoniker": "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\Controllers\\AuthController.cs",
@@ -457,8 +452,7 @@
               "RelativeToolTip": "HospitalApi\\Services\\UserService.cs",
               "ViewState": "AgIAAHQAAAAAMzMzMzMswEYAAAAgAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-30T07:37:11.342Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-30T07:37:11.342Z"
             },
             {
               "$type": "Document",

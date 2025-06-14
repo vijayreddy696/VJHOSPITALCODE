@@ -74,13 +74,19 @@
                   [matAutocomplete]="auto"
                   (input)="onSearchTextChanged(field.name + '.' + nestedField.name, $event)"
                 />
-                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-                  <mat-option *ngFor="let option of filteredOptions[field.name + '.' + nestedField.name] | async" [value]="option">
-                    {{ option.valuetoShow }}
-                  </mat-option>
-                </mat-autocomplete>
-                <mat-error>{{ getErrorMessage(field.name + '.' + nestedField.name) }}</mat-error>
-              </mat-form-field>
+                <mat-autocomplete
+                #auto="matAutocomplete"
+                [displayWith]="displayFnFactory(field.name + '.' + nestedField.name, nestedField.valuetoShow??'')">
+                <mat-option
+                  *ngFor="let option of filteredOptions[field.name + '.' + nestedField.name] | async"
+                  [value]="option">
+                  <!-- {{ option }} -->
+                  {{ nestedField.valuetoShow?option[nestedField.valuetoShow]:"" }}
+                </mat-option>
+              </mat-autocomplete>
+              <mat-error>{{ getErrorMessage(field.name + '.' + nestedField.name) }}</mat-error>
+              </mat-form-field>   
+              {{this.docForm.value | json}}           
               
       
                     <!-- Date -->
@@ -155,14 +161,14 @@
                   [matAutocomplete]="auto"
                   (input)="onSearchTextChanged(field.name, $event)"
                 />
-                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFnFactory(field.name,field.valuetoShow??'')">
                   <mat-option *ngFor="let option of filteredOptions[field.name] | async" [value]="option">
-                    {{ option.label }}
+                  {{ field.valuetoShow?option[field.valuetoShow]:"" }}
+
                   </mat-option>
                 </mat-autocomplete>
                 <mat-error>{{ getErrorMessage(field.name) }}</mat-error>
-              </mat-form-field>
-              
+              </mat-form-field> 
               
               
               <!-- Date -->

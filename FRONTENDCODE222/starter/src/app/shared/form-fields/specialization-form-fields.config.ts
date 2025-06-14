@@ -28,30 +28,37 @@ export function getSpecializationFormFields(departmentService:DepartmentService,
       type: 'text',
       validators: [Validators.required],
     },
-    
-
     {
       name: 'department',
-      label: 'Department',
-      type: 'group',
-      fields:[
-        {
-          name: 'departmentName',
-          label: 'Department Name',
-          type: 'autocomplete',
-          validators: [Validators.required,reloadService.requireAutocompleteObject],
-          autoOptions: (search: string) => departmentService.getDepartments({ searchValue : search }).pipe(
-            map(result => result.items.map(item => ({
-              valuetoShow: item.departmentName,
-              valueToPatch: item.id
-            })))
-          ),
-          patchto:'departmentId'
-        },
-      
-      
-      ]
+      label: 'Department Name',
+      type: 'autocomplete',
+      validators: [Validators.required,reloadService.requireAutocompleteObject],
+      autoOptions: (search: string) => departmentService.getDepartments({ searchValue : search }),
+      patchto:'departmentId',
+      valuetoShow: 'departmentName',
+      valueToPatch: 'id'
     },
+    
+
+    // {
+    //   name: 'department',
+    //   label: 'Department',
+    //   type: 'group',
+    //   fields:[
+    //     {
+    //       name: 'departmentName',
+    //       label: 'Department Name',
+    //       type: 'autocomplete',
+    //       validators: [Validators.required,reloadService.requireAutocompleteObject],
+    //       autoOptions: (search: string) => departmentService.getDepartments({ searchValue : search }),
+    //       patchto:'departmentId',
+    //       valuetoShow: 'departmentName',
+    //       valueToPatch: 'id'
+    //     },
+      
+      
+    //   ]
+    // },
     
   ];
 }
