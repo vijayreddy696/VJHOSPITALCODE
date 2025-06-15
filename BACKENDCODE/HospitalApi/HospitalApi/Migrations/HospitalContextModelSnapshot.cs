@@ -68,6 +68,61 @@ namespace HospitalApi.Migrations
                     b.ToTable("Departments");
                 });
 
+            modelBuilder.Entity("HospitalApi.Models.Doctor", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Experience")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Gender")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("HospitalId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("QualificationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SpecializationId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HospitalId");
+
+                    b.HasIndex("QualificationId");
+
+                    b.HasIndex("SpecializationId");
+
+                    b.ToTable("Doctor");
+                });
+
             modelBuilder.Entity("HospitalApi.Models.Hospital", b =>
                 {
                     b.Property<int>("Id")
@@ -109,6 +164,38 @@ namespace HospitalApi.Migrations
                     b.ToTable("Hospitals");
                 });
 
+            modelBuilder.Entity("HospitalApi.Models.Qualification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FullForm")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("HospitalId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HospitalId");
+
+                    b.ToTable("Qualifications");
+                });
+
             modelBuilder.Entity("HospitalApi.Models.Specialization", b =>
                 {
                     b.Property<int>("Id")
@@ -120,7 +207,7 @@ namespace HospitalApi.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("DepartmentId")
+                    b.Property<int?>("DepartmentId")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
@@ -210,6 +297,31 @@ namespace HospitalApi.Migrations
                     b.Navigation("Hospital");
                 });
 
+            modelBuilder.Entity("HospitalApi.Models.Doctor", b =>
+                {
+                    b.HasOne("HospitalApi.Models.Hospital", "Hospital")
+                        .WithMany()
+                        .HasForeignKey("HospitalId");
+
+                    b.HasOne("HospitalApi.Models.Qualification", "Qualification")
+                        .WithMany()
+                        .HasForeignKey("QualificationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HospitalApi.Models.Specialization", "Specialization")
+                        .WithMany()
+                        .HasForeignKey("SpecializationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Hospital");
+
+                    b.Navigation("Qualification");
+
+                    b.Navigation("Specialization");
+                });
+
             modelBuilder.Entity("HospitalApi.Models.Hospital", b =>
                 {
                     b.HasOne("HospitalApi.Models.User", "OwnerDetails")
@@ -220,13 +332,20 @@ namespace HospitalApi.Migrations
                     b.Navigation("OwnerDetails");
                 });
 
+            modelBuilder.Entity("HospitalApi.Models.Qualification", b =>
+                {
+                    b.HasOne("HospitalApi.Models.Hospital", "Hospital")
+                        .WithMany()
+                        .HasForeignKey("HospitalId");
+
+                    b.Navigation("Hospital");
+                });
+
             modelBuilder.Entity("HospitalApi.Models.Specialization", b =>
                 {
                     b.HasOne("HospitalApi.Models.Department", "Department")
                         .WithMany()
-                        .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("DepartmentId");
 
                     b.Navigation("Department");
                 });

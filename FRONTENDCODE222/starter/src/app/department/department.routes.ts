@@ -3,6 +3,7 @@ import { AddDepartmentComponent } from "./add-department/add-department.componen
 import { Route } from "@angular/router";
 import { DepartmentsListComponent } from "./departments-list/departments-list.component";
 import { SpecializationsListComponent } from "app/specialization/specializations-list/specializations-list.component";
+import { QualificationsListComponent } from "app/qualificaton/qualifications-list/qualifications-list.component";
 
 
 
@@ -20,5 +21,9 @@ export const DEPARTMENT_ROUTE: Route[] = [
         path: "specializations-list",
         component: SpecializationsListComponent,
     },
+    {
+      path: "qualifications-list",
+      component: QualificationsListComponent,
+  },
     { path: "**", component: Page404Component }
   ];

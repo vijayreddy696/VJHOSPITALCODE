@@ -16,6 +16,7 @@ export interface genericFormField {
   fields?: genericFormField[];
   linkField?:string;
   isreadonly?:boolean;
+  hidden?: boolean, // always hidden
 }
 
 

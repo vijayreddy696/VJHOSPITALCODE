@@ -261,6 +261,8 @@ export class CommonTableComponent implements OnInit,AfterViewInit,OnDestroy  {
     action: 'add' | 'edit'
   ): void {
     component.loading = true;
+
+   
   
     this.addDataFn(formData)
       .pipe(takeUntil(this.destroy$))

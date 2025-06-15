@@ -16,6 +16,11 @@ namespace HospitalApi.Data
 
         public DbSet<Specialization> Specialization { get; set; }
 
+        public DbSet<Qualification> Qualifications { get; set; }
+
+        public DbSet<Doctor> Doctor { get; set; }
+
+
         // Add other entities here
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

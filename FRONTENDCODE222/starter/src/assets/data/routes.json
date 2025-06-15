@@ -172,6 +172,47 @@
           "badgeClass": "",
           "role": [""],
           "submenu": []
+        },
+        {
+          "path": "/department/qualifications-list",
+          "title": "Qualifications",
+          "iconType": "",
+          "icon": "",
+          "class": "ml-menu",
+          "groupTitle": false,
+          "badge": "",
+          "badgeClass": "",
+          "role": [""],
+          "submenu": []
+        }
+
+      ]
+    },
+
+
+    {
+      "path": "",
+      "title": "Doctor",
+      "iconType": "material-icons-outlined",
+      "icon": "space_dashboard",
+      "class": "menu-toggle",
+      "groupTitle": false,
+      "badge": "",
+      "badgeClass": "",
+      "role": ["SuperAdmin"],
+      "submenu": [
+      
+        {
+          "path": "/doctor/doctors-list",
+          "title": "Doctors",
+          "iconType": "",
+          "icon": "",
+          "class": "ml-menu",
+          "groupTitle": false,
+          "badge": "",
+          "badgeClass": "",
+          "role": [""],
+          "submenu": []
         }
       ]
     },

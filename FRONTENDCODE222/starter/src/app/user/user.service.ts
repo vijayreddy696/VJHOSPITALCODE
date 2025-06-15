@@ -10,7 +10,6 @@ import { catchError, Observable, throwError } from 'rxjs';
   providedIn: 'root'
 })
 export class UserService {
-  private readonly API_URL = 'assets/data/doctors.json';
 
   constructor(private http: HttpClient) { }
 

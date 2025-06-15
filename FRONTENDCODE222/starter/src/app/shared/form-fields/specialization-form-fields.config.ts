@@ -2,7 +2,6 @@ import { Validators } from "@angular/forms";
 import { genericFormField } from "@core/models/genericformfields.interface";
 import { ReloadService } from "@shared/shared-services/reload.service";
 import { DepartmentService } from "app/department/department.service";
-import { map } from "rxjs";
 
 
 
@@ -15,7 +14,16 @@ export function getSpecializationFormFields(departmentService:DepartmentService,
       validators: [Validators.required],
     },
    
-
+    {
+      name: 'department',
+      label: 'Department Name',
+      type: 'autocomplete',
+      validators: [Validators.required,reloadService.requireAutocompleteObject],
+      autoOptions: (search: string) => departmentService.getDepartments({ searchValue : search }),
+      patchto:'departmentId',
+      valuetoShow: 'departmentName',
+      valueToPatch: 'id'
+    },
     {
       name: 'description',
       label: 'Description',
@@ -27,38 +35,11 @@ export function getSpecializationFormFields(departmentService:DepartmentService,
       label: 'DepartmentId',
       type: 'text',
       validators: [Validators.required],
-    },
-    {
-      name: 'department',
-      label: 'Department Name',
-      type: 'autocomplete',
-      validators: [Validators.required,reloadService.requireAutocompleteObject],
-      autoOptions: (search: string) => departmentService.getDepartments({ searchValue : search }),
-      patchto:'departmentId',
-      valuetoShow: 'departmentName',
-      valueToPatch: 'id'
+      hidden: true, // always hidden
     },
     
 
-    // {
-    //   name: 'department',
-    //   label: 'Department',
-    //   type: 'group',
-    //   fields:[
-    //     {
-    //       name: 'departmentName',
-    //       label: 'Department Name',
-    //       type: 'autocomplete',
-    //       validators: [Validators.required,reloadService.requireAutocompleteObject],
-    //       autoOptions: (search: string) => departmentService.getDepartments({ searchValue : search }),
-    //       patchto:'departmentId',
-    //       valuetoShow: 'departmentName',
-    //       valueToPatch: 'id'
-    //     },
-      
-      
-    //   ]
-    // },
+    
     
   ];
 }

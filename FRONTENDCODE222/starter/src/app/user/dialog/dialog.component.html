@@ -86,7 +86,6 @@
               </mat-autocomplete>
               <mat-error>{{ getErrorMessage(field.name + '.' + nestedField.name) }}</mat-error>
               </mat-form-field>   
-              {{this.docForm.value | json}}           
               
       
                     <!-- Date -->
@@ -121,12 +120,14 @@
             <ng-container [ngSwitch]="field.type">
       
               <!-- Text -->
+              <ng-container *ngIf="!field.hidden">
               <mat-form-field *ngSwitchCase="'text'" class="example-full-width" appearance="outline">
                 <mat-label>{{ field.label }}</mat-label>
                 <input matInput [formControlName]="field.name" [readonly]="field.isreadonly"/>
                 <mat-hint *ngIf="field.isreadonly">This field is non-editable.</mat-hint>
                 <mat-error>{{ getErrorMessage(field.name) }}</mat-error>
               </mat-form-field>
+              </ng-container>
       
               <!-- Password -->
               <mat-form-field *ngSwitchCase="'password'" class="example-full-width" appearance="outline">
@@ -160,16 +161,14 @@
                   [formControlName]="field.name"
                   [matAutocomplete]="auto"
                   (input)="onSearchTextChanged(field.name, $event)"
-                />
+                  [placeholder]="'...Start typing to see ' + field.label.toLowerCase() + ' suggestions...'"/>
                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFnFactory(field.name,field.valuetoShow??'')">
                   <mat-option *ngFor="let option of filteredOptions[field.name] | async" [value]="option">
                   {{ field.valuetoShow?option[field.valuetoShow]:"" }}
-
                   </mat-option>
                 </mat-autocomplete>
                 <mat-error>{{ getErrorMessage(field.name) }}</mat-error>
               </mat-form-field> 
-              
               
               <!-- Date -->
               <mat-form-field *ngSwitchCase="'date'" class="example-full-width" appearance="outline">

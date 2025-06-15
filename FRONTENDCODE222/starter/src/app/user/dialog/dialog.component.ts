@@ -228,10 +228,13 @@ export class DialogComponent implements OnInit {
     
     if(this.docForm.invalid)
       return;
-    const formValue = { ...this.docForm.value };
-
-    this.formemitter.emit(formValue);
-    console.log('Form Value', formValue);
+    this.formFields.forEach(field => {
+      if (field.type === 'autocomplete') {
+        const control = this.docForm.get(field.name);
+        if (control) control.setValue(null);
+      }
+    });
+    this.formemitter.emit(this.docForm.value);
   }
 
   onNoClick(): void {
