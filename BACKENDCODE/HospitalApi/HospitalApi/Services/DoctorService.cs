@@ -9,6 +9,7 @@ namespace HospitalApi.Services
     {
         Task<Doctor?> GetDoctorByIdAsync(int id);
         Task<List<Doctor>> GetDoctorsByIdsAsync(List<int> ids);
+        Task AddOrUpdateDoctorAsync(Doctor doctor);
         Task AddDoctorAsync(Doctor doctor);
         Task UpdateDoctorAsync(Doctor doctor);
         Task DeleteDoctorAsync(int id);
@@ -19,10 +20,13 @@ namespace HospitalApi.Services
     public class DoctorService : IDoctorService
     {
         private readonly IDoctorRepository _doctorRepository;
+        private readonly IUserService _userService;
 
-        public DoctorService(IDoctorRepository doctorRepository)
+
+        public DoctorService(IDoctorRepository doctorRepository, IUserService userService)
         {
             _doctorRepository = doctorRepository;
+            _userService = userService;
         }
 
         public async Task<Doctor?> GetDoctorByIdAsync(int id)
@@ -46,6 +50,36 @@ namespace HospitalApi.Services
             catch (Exception ex)
             {
                 throw new Exception("Error retrieving multiple doctors.", ex);
+            }
+        }
+
+
+        public async Task AddOrUpdateDoctorAsync(Doctor doctor)
+        {
+            if (doctor == null)
+                throw new ArgumentNullException(nameof(doctor));
+
+            try
+            {
+                doctor.PersonalDetails.HospitalId = doctor.HospitalId;
+                doctor.PersonalDetails.Role = Role.Doctor;
+                bool userUpdated = await _userService.AddOrUpdateUserAsync(doctor.PersonalDetails);
+
+                if (!userUpdated)
+                    throw new Exception("Failed to add or update user details.");
+
+                if (doctor.Id == 0)
+                {
+                    await AddDoctorAsync(doctor);
+                }
+                else
+                {
+                    await UpdateDoctorAsync(doctor);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error adding or updating doctor.", ex);
             }
         }
 

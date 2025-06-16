@@ -20,19 +20,15 @@ export class DoctorsListComponent {
 
   readonly title = "Doctor";
   
-  readonly formFields = (params: any) => getDoctorFormFields(this.qualificationService,this.specializationService,this.reloadService);
+  readonly formFields = (params: any) => getDoctorFormFields(this.qualificationService,this.specializationService,this.reloadService,params);
 
   readonly columnDefinitions = [
-    { def: 'fullName', label: 'Full Name', type: 'fullName', visible: true },
-    { def: 'email', label: 'Email', type: 'email', visible: true },
-    { def: 'phoneNumber', label: 'Phone Number', type: 'phone', visible: true },
-    { def: 'gender', label: 'Gender', type: 'gender', visible: true },
+    { def: 'personalDetails.fullName', label: 'Doctor Name', type: 'fullName', visible: true },
+    { def: 'personalDetails.email', label: 'Email', type: 'email', visible: true },
     { def: 'qualification.code', label: 'Qualification', type: 'text', visible: true },
     { def: 'specialization.specializationName', label: 'Specialization', type: 'text', visible: true },
     { def: 'specialization.department.departmentName', label: 'Department', type: 'text', visible: true },
-    { def: 'experience', label: 'Experience (yrs)', type: 'number', visible: true },
     { def: 'createdDate', label: 'Created Date', type: 'date', visible: true },
-    { def: 'isActive', label: 'Active', type: 'boolean', visible: true },
     { def: 'actions', label: 'Actions', type: 'actionBtn', visible: true },
   ];
   
@@ -56,6 +52,10 @@ export class DoctorsListComponent {
       
       deleteData(id: number): Observable<any> {
         return this.doctorService.deleteDoctor(id);
+      }
+
+      getDataById(id: number): Observable<any> {
+        return this.doctorService.getDoctorById(id);
       }
   
       deleteManyData(ids: number[]) {

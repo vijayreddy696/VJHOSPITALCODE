@@ -1,4 +1,5 @@
-﻿using HospitalApi.Helper;
+﻿using HospitalApi.Dtos;
+using HospitalApi.Helper;
 using HospitalApi.Models;
 using HospitalApi.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -28,7 +29,7 @@ namespace HospitalApi.Controllers
             try
             {
                 paginationRequest.HospitalId = int.Parse(_claimsHelper.GetHospitalId());
-                PagedResult<Department> departments = await _departmentService.GetDepartmentsWithPaginationAsync(paginationRequest);
+                PagedResult<DepartmentDto> departments = await _departmentService.GetDepartmentsWithPaginationAsync(paginationRequest);
                 return Ok(departments);
             }
             catch (Exception ex)

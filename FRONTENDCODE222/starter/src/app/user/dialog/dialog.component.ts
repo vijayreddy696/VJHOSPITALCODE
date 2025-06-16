@@ -213,12 +213,10 @@ export class DialogComponent implements OnInit {
     if (control.hasError('notSelectedFromDropdown')) {
       return 'Only values from options are allowed';
     }
-  
-    
-    if (controlName === 'email' && control.hasError('email')) 
+    if (control.hasError('email')) 
       return 'Please enter a valid email address';
   
-    if (controlName === 'conformPassword' && control.hasError('passwordMismatch')) 
+    if (control.hasError('passwordMismatch')) 
       return 'Passwords do not match';
   
     return null;

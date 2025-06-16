@@ -1,4 +1,5 @@
 ﻿using HospitalApi.Data;
+using HospitalApi.Dtos;
 using HospitalApi.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,7 +8,7 @@ namespace HospitalApi.Repositaries
 
     public interface IDepartmentRepository
     {
-        Task<PagedResult<Department>> GetDepartmentsWithPaginationAsync(PaginationRequest paginationRequest);
+        Task<PagedResult<DepartmentDto>> GetDepartmentsWithPaginationAsync(PaginationRequest paginationRequest);
         Task<Department> GetDepartmentByIdAsync(int id);
         Task<List<Department>> GetDepartmentsByIdsAsync(List<int> ids);
         Task AddDepartmentAsync(Department department);
@@ -25,7 +26,7 @@ namespace HospitalApi.Repositaries
             _context = context;
         }
 
-        public async Task<PagedResult<Department>> GetDepartmentsWithPaginationAsync(PaginationRequest paginationRequest)
+        public async Task<PagedResult<DepartmentDto>> GetDepartmentsWithPaginationAsync(PaginationRequest paginationRequest)
         {
             IQueryable<Department> query = _context.Departments.AsNoTracking();
 
@@ -49,9 +50,16 @@ namespace HospitalApi.Repositaries
             query = ApplyDatePagination(query, paginationRequest);
 
             var totalCount = await filteredQuery.CountAsync();
-            var pagedDepartments = await query.ToListAsync();
+            var pagedDepartments = await query
+                .Select(d=>new DepartmentDto
+                {
+                    Id = d.Id,
+                    DepartmentHeadName = d.DepartmentHeadName,
+                    DepartmentName = d.DepartmentName,
+                    Status = d.Status
+                }).ToListAsync();
 
-            return new PagedResult<Department>
+            return new PagedResult<DepartmentDto>
             {
                 TotalCount = totalCount,
                 PageNumber = paginationRequest.PageNumber,

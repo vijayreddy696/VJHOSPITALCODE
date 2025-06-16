@@ -1,11 +1,12 @@
-﻿using HospitalApi.Models;
+﻿using HospitalApi.Dtos;
+using HospitalApi.Models;
 using HospitalApi.Repositaries;
 
 namespace HospitalApi.Services
 {
     public interface IHospitalService
     {
-        Task<PagedResult<Hospital>> GetHospitalsWithPaginationAsync(PaginationRequest paginationRequest);
+        Task<PagedResult<HospitalDto>> GetHospitalsWithPaginationAsync(PaginationRequest paginationRequest);
         Task<Hospital> GetHospitalByIdAsync(int id);
         Task<Hospital> AddOrUpdateHospitalAsync(Hospital hospital);
         Task ActivateorDeactivateHospitalAsync(int id, bool toactivate);
@@ -23,7 +24,7 @@ namespace HospitalApi.Services
             _hospitalRepository = hospitalRepository;
         }
 
-        public async Task<PagedResult<Hospital>> GetHospitalsWithPaginationAsync(PaginationRequest paginationRequest)
+        public async Task<PagedResult<HospitalDto>> GetHospitalsWithPaginationAsync(PaginationRequest paginationRequest)
         {
             try
             {

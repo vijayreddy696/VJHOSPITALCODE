@@ -91,7 +91,7 @@ namespace HospitalApi.Controllers
                     if (existingUser != null)
                         return Conflict(existingUser);
                 }
-                User result = await _userService.AddOrUpdateUserAsync(user);
+                bool result = await _userService.AddOrUpdateUserAsync(user);
                 if (result == null)
                 {
                     return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while saving the user data.");

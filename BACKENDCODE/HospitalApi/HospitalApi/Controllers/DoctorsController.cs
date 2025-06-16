@@ -54,15 +54,7 @@ namespace HospitalApi.Controllers
                 // Set hospital ID from claims
                 doctor.HospitalId = int.Parse(_claimsHelper.GetHospitalId());
 
-                // Check if it's an add or update based on Id
-                if (doctor.Id == 0)
-                {
-                    await _doctorService.AddDoctorAsync(doctor);
-                }
-                else
-                {
-                    await _doctorService.UpdateDoctorAsync(doctor);
-                }
+                    await _doctorService.AddOrUpdateDoctorAsync(doctor);
 
                 return Ok(new { message = "Doctor saved successfully." });
             }

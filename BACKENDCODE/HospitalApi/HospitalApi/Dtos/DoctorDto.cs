@@ -3,40 +3,33 @@
     public class DoctorDto
     {
         public int Id { get; set; }
-        public string FullName { get; set; } = null!;
-        public string Email { get; set; }
-        public string PhoneNumber { get; set; }
-        public string Gender { get; set; }
-        public int HospitalId { get; set; }
-        public int QualificationId { get; set; }
-        public int SpecializationId { get; set; }
         public DateTime CreatedDate { get; set; }
-        public int Experience { get; set; }
-        public bool IsActive { get; set; }
+        public NestedQualificationDto Qualification { get; set; }
+        public NestedSpecializationDto Specialization { get; set; }
 
-        public QualificationDto Qualification { get; set; }
-        public SpecializationDto Specialization { get; set; }
+        public PersonalDetailsDto PersonalDetails { get; set; }
     }
 
-    public class QualificationDto
+    public class NestedQualificationDto
     {
-        public int Id { get; set; }
         public string Code { get; set; } = null!;
     }
 
-    public class SpecializationDto
+    public class NestedSpecializationDto
     {
-        public int Id { get; set; }
         public string SpecializationName { get; set; } = null!;
-        public int DepartmentId { get; set; }
-
-        public DepartmentDto Department { get; set; }
+        public NestedDepartmentDto Department { get; set; }
     }
 
-    public class DepartmentDto
+    public class NestedDepartmentDto
     {
-        public int Id { get; set; }
         public string DepartmentName { get; set; } = null!;
+    }
+
+    public class PersonalDetailsDto
+    {
+        public string FullName { get; set; }
+        public string Email { get; set; }
     }
 
 }

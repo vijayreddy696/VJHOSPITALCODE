@@ -9,7 +9,7 @@ namespace HospitalApi.Services
     {
         Task<PagedResult<User>> GetUsersWithPaginationAsync(PaginationRequest paginationRequest);
         Task<User> GetUserByIdAsync(int id);
-        Task<User> AddOrUpdateUserAsync(User user);
+        Task<bool> AddOrUpdateUserAsync(User user);
         Task<User?> GetUserByEmailAsync(int hospitalId, bool status, string email);
         Task DeleteMultipleUsersAsync(List<int> userIds);
         Task ActivateOrDeactivateUserAsync(int id, bool toactivate);
@@ -68,7 +68,7 @@ namespace HospitalApi.Services
             }
         }
 
-        public async Task<User> AddOrUpdateUserAsync(User user)
+        public async Task<bool> AddOrUpdateUserAsync(User user)
         {
             try
             {
@@ -81,18 +81,18 @@ namespace HospitalApi.Services
                 if (user.Id == 0)
                 {
                         await _userRepository.AddUserAsync(user);
-                    return user;
                 }
                 else
                 {
                     
                     await _userRepository.UpdateUserAsync(user);
-                    return user;
                 }
+                return true;
             }
             catch (Exception ex)
             {
                 throw new Exception("An error occurred while adding or updating the user.", ex);
+                return false;
             }
         }
 

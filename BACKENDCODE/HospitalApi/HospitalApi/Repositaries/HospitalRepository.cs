@@ -1,5 +1,6 @@
 ﻿using Azure.Core;
 using HospitalApi.Data;
+using HospitalApi.Dtos;
 using HospitalApi.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Buffers;
@@ -8,7 +9,7 @@ namespace HospitalApi.Repositaries
 {
     public interface IHospitalRepository
     {
-        Task<PagedResult<Hospital>> GetHospitalsWithPaginationAsync(PaginationRequest paginationRequest);
+        Task<PagedResult<HospitalDto>> GetHospitalsWithPaginationAsync(PaginationRequest paginationRequest);
         Task<Hospital> GetHospitalByIdAsync(int id);
         Task AddHospitalAsync(Hospital hospital); // changed return type
         Task UpdateHospitalAsync(Hospital hospital); // changed return type
@@ -23,7 +24,7 @@ namespace HospitalApi.Repositaries
             _context = context;
         }
 
-        public async Task<PagedResult<Hospital>> GetHospitalsWithPaginationAsync(PaginationRequest paginationRequest)
+        public async Task<PagedResult<HospitalDto>> GetHospitalsWithPaginationAsync(PaginationRequest paginationRequest)
         {
             IQueryable<Hospital> query = _context.Hospitals
                 .Include(h => h.OwnerDetails) // Eagerly load OwnerDetails
@@ -40,9 +41,23 @@ namespace HospitalApi.Repositaries
             query = ApplyDatePagination(query, paginationRequest);
 
             var totalCount = await filteredQuery.CountAsync();
-            var pagedHospitals = await query.ToListAsync();
+            var pagedHospitals = await query
+                .Select(h => new HospitalDto
+                {
+                    Id = h.Id,
+                    HospitalName = h.HospitalName,
+                    HospitalAddress = h.HospitalAddress,
+                    HospitalEmail = h.HospitalEmail,
+                    OwnerDetails = h.OwnerDetails == null ? null : new OwnerDto
+                    {
+                        Id = h.OwnerDetails.Id,
+                        FullName = h.OwnerDetails.FullName,
+                        Email = h.OwnerDetails.Email
+                    }
+                })
+                .ToListAsync();
 
-            return new PagedResult<Hospital>
+            return new PagedResult<HospitalDto>
             {
                 TotalCount = totalCount,
                 PageNumber = paginationRequest.PageNumber,
@@ -60,7 +75,8 @@ namespace HospitalApi.Repositaries
                 // Use CONTAINS for more flexible and faster substring searching
                 return query.Where(h =>
                     EF.Functions.Contains(h.HospitalName, $"\"{request.SearchValue}*\"") ||
-                    EF.Functions.Contains(h.HospitalEmail, $"\"{request.SearchValue}*\"")
+                    EF.Functions.Contains(h.HospitalEmail, $"\"{request.SearchValue}*\"") ||
+                    EF.Functions.Contains(h.OwnerDetails.FullName, $"\"{request.SearchValue}*\"")
                 );
             }
             else

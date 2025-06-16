@@ -84,6 +84,8 @@ export class CommonTableComponent implements OnInit,AfterViewInit,OnDestroy  {
   @Input() activateUserFn!: (id: number) => Observable<any>;
   @Input() deleteDataFn!: (id: number) => Observable<any>;
   @Input() deleteManyDataFn!: (ids: number[]) => Observable<any>;
+  @Input() getDataByIdFn!: (id: number) => Observable<any>;
+
 
   allCreatedDateStack: Date[]=[]; // Stack to hold last createdDate values
   // formFields!:genericFormField[] 
@@ -93,6 +95,7 @@ export class CommonTableComponent implements OnInit,AfterViewInit,OnDestroy  {
   totalCount: number = 0;
   isLoading: boolean = false;
   firstItem!:Date;
+  individualFullData:any;
   private currentCursor: { firstCreatedDate?: Date, lastCreatedDate?: Date } = {};
 
   commonPageRequest:PagedRequest={
@@ -224,7 +227,10 @@ export class CommonTableComponent implements OnInit,AfterViewInit,OnDestroy  {
   }
 
   editCall(row: any) {
-    this.openDialog('edit', row);
+    this.getDataByIdFn(row.id).subscribe((res)=>{
+      if(res)
+    this.openDialog('edit', res);
+    })
   }
 
 

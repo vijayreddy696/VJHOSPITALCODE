@@ -3,38 +3,16 @@ import { genericFormField } from "@core/models/genericformfields.interface";
 import { ReloadService } from "@shared/shared-services/reload.service";
 import { QualificationService } from "app/qualificaton/qualification.service";
 import { SpecializationService } from "app/specialization/specialization.service";
+import { getUserFormFields } from "./user-form-fields.config";
 
 export function getDoctorFormFields(
     qualificationService: QualificationService,
     specializationService: SpecializationService,
     reloadService: ReloadService,
+    isEditMode: boolean = false
   ): genericFormField[] {
     return [
-      {
-        name: 'fullName',
-        label: 'Full Name',
-        type: 'text',
-        validators: [Validators.required],
-      },
-      {
-        name: 'email',
-        label: 'Email',
-        type: 'text',
-        validators: [Validators.required, Validators.email],
-      },
-      {
-        name: 'phoneNumber',
-        label: 'Phone Number',
-        type: 'text',
-        validators: [Validators.required],
-      },
-        {
-            name: 'gender',
-            label: 'Gender',
-            type: 'dropdown',
-            options: ['Male', 'Female'],
-            validators: [Validators.required],
-        },
+     
       {
         name: 'qualification',
         label: 'Qualification',
@@ -75,5 +53,11 @@ export function getDoctorFormFields(
         hidden: true,
         validators: [Validators.required],
       },
+    {
+            name: 'personalDetails',  // Nested group for user fields
+            label: 'Personal Details',
+            type: 'group',
+            fields: getUserFormFields(reloadService, isEditMode),
+        },
     ];
   }

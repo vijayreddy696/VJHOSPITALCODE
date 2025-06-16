@@ -30,7 +30,8 @@ namespace HospitalApi.Repositaries
 
             if (paginationRequest.HospitalId > 0)
             {
-                query = query.Where(d => d.HospitalId == paginationRequest.HospitalId);
+                query = query.Where(d => d.HospitalId == paginationRequest.HospitalId &&
+                 d.PersonalDetails.HospitalId == paginationRequest.HospitalId && d.PersonalDetails.Status == true);
             }
             else
             {
@@ -46,37 +47,28 @@ namespace HospitalApi.Repositaries
             query = ApplyDatePagination(query, paginationRequest);
 
             var totalCount = await filteredQuery.CountAsync();
+
             IEnumerable<DoctorDto> pagedDoctors = await query.Select(d => new DoctorDto
-      {
-          Id = d.Id,
-          FullName = d.FullName,
-          Email = d.Email,
-          PhoneNumber = d.PhoneNumber,
-          Gender = d.Gender,
-          HospitalId = d.HospitalId??0,
-          QualificationId = d.QualificationId,
-          SpecializationId = d.SpecializationId,
-          CreatedDate = d.CreatedDate,
-          Experience = d.Experience??0,
-          IsActive = d.IsActive,
-          Qualification = d.Qualification != null ? new QualificationDto
-          {
-              Id = d.Qualification.Id,
-              Code = d.Qualification.Code
-          } : null,
-          Specialization = d.Specialization != null ? new SpecializationDto
-          {
-              Id = d.Specialization.Id,
-              SpecializationName = d.Specialization.SpecializationName,
-              DepartmentId = d.Specialization.DepartmentId??0,
-              Department = d.Specialization.Department != null ? new DepartmentDto
-              {
-                  Id = d.Specialization.Department.Id,
-                  DepartmentName = d.Specialization.Department.DepartmentName
-              } : null
-          } : null
-      })
-      .ToListAsync();
+            {
+                Id = d.Id,
+                CreatedDate = d.CreatedDate,
+                Qualification = d.Qualification == null ? null : new NestedQualificationDto
+                {
+                    Code = d.Qualification.Code
+                },
+                Specialization = d.Specialization == null ? null : new NestedSpecializationDto
+                {
+                    SpecializationName = d.Specialization.SpecializationName,
+                    Department = d.Specialization.Department == null ? null : new NestedDepartmentDto
+                    {
+                        DepartmentName = d.Specialization.Department.DepartmentName
+                    }
+                },
+                PersonalDetails = d.PersonalDetails == null ? null : new PersonalDetailsDto
+                {
+                    FullName = d.PersonalDetails.FullName,
+                    Email = d.PersonalDetails.Email,
+                }}).ToListAsync();
 
             return new PagedResult<DoctorDto>
             {
@@ -90,7 +82,8 @@ namespace HospitalApi.Repositaries
         private IQueryable<Doctor> ApplyDoctorSearchFilter(IQueryable<Doctor> query, PaginationRequest request)
         {
             return query.Where(d =>
-                EF.Functions.Contains(d.FullName, $"\"{request.SearchValue}*\"")
+                EF.Functions.Contains(d.PersonalDetails.FullName, $"\"{request.SearchValue}*\"") ||
+                EF.Functions.Contains(d.PersonalDetails.Email, $"\"{request.SearchValue}*\"")
             );
         }
 
@@ -115,6 +108,7 @@ namespace HospitalApi.Repositaries
                 .Include(d => d.Qualification)
                 .Include(d => d.Specialization)
                 .ThenInclude(s => s.Department)
+                .Include(d=>d.PersonalDetails)
                 .FirstOrDefaultAsync(d => d.Id == id);
         }
 

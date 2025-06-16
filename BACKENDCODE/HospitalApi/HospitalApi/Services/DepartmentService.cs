@@ -1,4 +1,5 @@
-﻿using HospitalApi.Models;
+﻿using HospitalApi.Dtos;
+using HospitalApi.Models;
 using HospitalApi.Repositaries;
 
 namespace HospitalApi.Services
@@ -6,7 +7,7 @@ namespace HospitalApi.Services
 
     public interface IDepartmentService
     {
-        Task<PagedResult<Department>> GetDepartmentsWithPaginationAsync(PaginationRequest paginationRequest);
+        Task<PagedResult<DepartmentDto>> GetDepartmentsWithPaginationAsync(PaginationRequest paginationRequest);
         Task<Department> GetDepartmentByIdAsync(int id);
         Task<Department> AddOrUpdateDepartmentAsync(Department department);
         Task DeleteDepartmentAsync(int departmentId);
@@ -21,7 +22,7 @@ namespace HospitalApi.Services
             _departmentRepository = departmentRepository;
         }
 
-        public async Task<PagedResult<Department>> GetDepartmentsWithPaginationAsync(PaginationRequest paginationRequest)
+        public async Task<PagedResult<DepartmentDto>> GetDepartmentsWithPaginationAsync(PaginationRequest paginationRequest)
         {
             try
             {

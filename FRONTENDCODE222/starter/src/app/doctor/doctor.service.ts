@@ -22,6 +22,12 @@ export class DoctorService {
     {
       return this.http.delete(`http://localhost:5068/api/Doctors/deletedoctorbyid/${id}`);
     }
+
+    getDoctorById(id:number)
+    {
+      return this.http.get(`http://localhost:5068/api/Doctors/getdoctorbyid/${id}`);
+    }
+    
     
     getDoctors(paginationRequest: PagedRequest): Observable<PagedResult<Doctor>> 
     {
