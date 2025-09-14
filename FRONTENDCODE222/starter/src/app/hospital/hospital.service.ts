@@ -26,4 +26,10 @@ export class HospitalService {
   {
     return this.http.post<PagedResult<AddHospital>>('http://localhost:5068/api/Hospitals/gethospitals',paginationRequest);
   }
+
+  getHospitalById(id:number)
+    {
+    return this.http.get(`http://localhost:5068/api/Hospitals/gethospitalbyid/${id}`);
+    }
+    
 }

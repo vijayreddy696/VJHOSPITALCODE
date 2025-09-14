@@ -1,5 +1,6 @@
 using HospitalApi.Data;
 using HospitalApi.Helper;
+using HospitalApi.Middlewares;
 using HospitalApi.Models;
 using HospitalApi.Repositaries;
 using HospitalApi.Services;
@@ -118,6 +119,7 @@ if (app.Environment.IsDevelopment())
 app.UseRouting();
 app.UseCors("AllowAllOrigins"); // Apply the CORS policy globally
 
+app.UseMiddleware<TokenRefreshMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
 // Set up routing for the API controllers

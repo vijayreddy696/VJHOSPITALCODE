@@ -21,6 +21,11 @@ export class DepartmentService {
   {
     return this.http.delete(`http://localhost:5068/api/Departments/deletedepartmentbyid/${id}`);
   }
+
+  getDeartmentById(id:number)
+  {
+    return this.http.get(`http://localhost:5068/api/Departments/getdepartmentbyid/${id}`);
+  }
   
   getDepartments(paginationRequest: PagedRequest): Observable<PagedResult<Department>> 
   {

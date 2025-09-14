@@ -73,6 +73,9 @@ export class UserslistComponent {
   deleteManyData(ids: number[]): Observable<any> {
     return this.userservice.deletemanyUsers(ids);
   }
-  
+
+  getDataById(id: number): Observable<any> {
+    return this.userservice.getUserById(id);
+  }
  
 }

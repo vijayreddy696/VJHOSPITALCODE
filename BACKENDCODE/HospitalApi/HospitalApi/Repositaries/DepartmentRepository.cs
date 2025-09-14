@@ -56,7 +56,9 @@ namespace HospitalApi.Repositaries
                     Id = d.Id,
                     DepartmentHeadName = d.DepartmentHeadName,
                     DepartmentName = d.DepartmentName,
-                    Status = d.Status
+                    Status = d.Status,
+                    DepartmentHeadEmail = d.DepartmentHeadEmail,
+                    DepartmentHeadPhoneNumber = d.DepartmentHeadPhoneNumber,
                 }).ToListAsync();
 
             return new PagedResult<DepartmentDto>

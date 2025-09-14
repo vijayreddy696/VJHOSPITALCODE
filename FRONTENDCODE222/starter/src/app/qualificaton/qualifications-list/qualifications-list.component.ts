@@ -43,7 +43,9 @@ export class QualificationsListComponent {
     deleteManyData(ids: number[]) {
       return this.qualificationService.deletemanyQualifications(ids);
     }
-  
-    
+
+     getDataById(id: number): Observable<any> {
+        return this.qualificationService.GetQualificationById(id);
+    }
 
 }

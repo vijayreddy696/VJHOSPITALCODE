@@ -56,4 +56,8 @@ export class DepartmentsListComponent {
       return this.departmentService.deletemanyDepartments(ids);
     }
 
+    getDataById(id: number): Observable<any> {
+          return this.departmentService.getDeartmentById(id);
+      }
+
 }

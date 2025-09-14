@@ -48,4 +48,8 @@ export class SpecializationsListComponent {
       return this.specializationService.deletemanySpecialization(ids);
     }
 
+    getDataById(id: number): Observable<any> {
+          return this.specializationService.getSpecialization(id);
+      }
+ 
 }

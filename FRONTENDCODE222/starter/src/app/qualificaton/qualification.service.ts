@@ -30,6 +30,11 @@ export class QualificationService {
     deletemanyQualifications(ids: number[]) {
       return this.http.post(`http://localhost:5068/api/Qualifications/deletemultiplequalifications`,ids);
     }
+    
+    GetQualificationById(id:number)
+    {
+      return this.http.get(`http://localhost:5068/api/Qualifications/getqualificationbyid/${id}`);
+    }
 
     
 }

@@ -10,6 +10,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
+import Swal from 'sweetalert2';
+import { ReloadService } from '@shared/shared-services/reload.service';
 
 @Component({
     selector: 'app-signin',
@@ -40,7 +42,9 @@ export class SigninComponent
     private formBuilder: UntypedFormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private reloadService:ReloadService
+
   ) {
     super();
   }
@@ -97,6 +101,11 @@ export class SigninComponent
             }
           },
           error: (error) => {
+        if (error.status === 401) {
+           this.reloadService.showNotification(
+          'snackbar-danger',
+          'Invalid credentials. Try again..');
+        }
             this.error = error;
             this.submitted = false;
             this.loading = false;
@@ -104,4 +113,5 @@ export class SigninComponent
         });
     }
   }
+ 
 }

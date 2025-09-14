@@ -96,7 +96,6 @@ export class CommonTableComponent implements OnInit,AfterViewInit,OnDestroy  {
   isLoading: boolean = false;
   firstItem!:Date;
   individualFullData:any;
-  private currentCursor: { firstCreatedDate?: Date, lastCreatedDate?: Date } = {};
 
   commonPageRequest:PagedRequest={
     pageSize:10
@@ -126,10 +125,6 @@ export class CommonTableComponent implements OnInit,AfterViewInit,OnDestroy  {
 
   loadData(): void {
     this.isLoading = true;
-   // Save current cursor (for refetching same page after delete)
-  this.currentCursor = {
-    lastCreatedDate: this.commonPageRequest.lastCreatedDate,
-  };
 
     let paginationRequest:PagedRequest={
       pageSize:this.commonPageRequest.pageSize,
@@ -148,7 +143,6 @@ export class CommonTableComponent implements OnInit,AfterViewInit,OnDestroy  {
         const oldItem = oldItemsMap.get(newItem.id);
         
         // If ID matches and all values are same, reuse the old object
-        let asdf = `vijay ${this.valuesAreEqual(oldItem,newItem)}`
         if (oldItem && this.valuesAreEqual(oldItem, newItem)) {
           return oldItem;
         }

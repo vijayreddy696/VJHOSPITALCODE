@@ -8128,23 +8128,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\vijayreddy\\.nuget\\packages\\": {},
+    "C:\\Users\\mulap\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\HospitalApi.csproj",
+      "projectUniqueName": "C:\\Users\\mulap\\OneDrive\\Desktop\\VIJAY REDDY\\HOSPITALCODEFROMGIT\\VJHOSPITALCODE\\BACKENDCODE\\HospitalApi\\HospitalApi\\HospitalApi.csproj",
       "projectName": "HospitalApi",
-      "projectPath": "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\HospitalApi.csproj",
-      "packagesPath": "C:\\Users\\vijayreddy\\.nuget\\packages\\",
-      "outputPath": "C:\\vijayreddy\\HospitalCode\\BACKENDCODE\\HospitalApi\\HospitalApi\\obj\\",
+      "projectPath": "C:\\Users\\mulap\\OneDrive\\Desktop\\VIJAY REDDY\\HOSPITALCODEFROMGIT\\VJHOSPITALCODE\\BACKENDCODE\\HospitalApi\\HospitalApi\\HospitalApi.csproj",
+      "packagesPath": "C:\\Users\\mulap\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\mulap\\OneDrive\\Desktop\\VIJAY REDDY\\HOSPITALCODEFROMGIT\\VJHOSPITALCODE\\BACKENDCODE\\HospitalApi\\HospitalApi\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\vijayreddy\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\mulap\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -8153,6 +8153,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -8165,13 +8166,7 @@
         "warnAsError": [
           "NU1605"
         ]
-      },
-      "restoreAuditProperties": {
-        "enableAudit": "true",
-        "auditLevel": "low",
-        "auditMode": "direct"
-      },
-      "SdkAnalysisLevel": "9.0.200"
+      }
     },
     "frameworks": {
       "net8.0": {
@@ -8235,7 +8230,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.203/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

@@ -27,9 +27,6 @@ export class HospitalsListComponent {
     { def: 'id', label: 'Hospital ID', type: 'text', visible: true },
     { def: 'ownerDetails.id', label: 'Owner ID', type: 'text', visible: true },
     { def: 'ownerDetails.email', label: 'Email', type: 'email', visible: true },
-    { def: 'ownerDetails.phoneNumber', label: 'Phone Number', type: 'phone', visible: true },
-    { def: 'ownerDetails.gender', label: 'Gender', type: 'gender', visible: true },
-    { def: 'createdDate', label: 'Created Date', type: 'date', visible: true },
     { def: 'actions', label: 'Actions', type: 'actionBtn', visible: true },
   ];
   
@@ -56,5 +53,8 @@ export class HospitalsListComponent {
       return this.hospitalService.deleteHospital(id);
     }
     
+    getDataById(id: number): Observable<any> {
+          return this.hospitalService.getHospitalById(id);
+        }
 
 }

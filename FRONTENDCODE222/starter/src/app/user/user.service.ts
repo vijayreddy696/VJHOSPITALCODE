@@ -30,6 +30,9 @@ export class UserService {
     return this.http.put(`http://localhost:5068/api/Users/activateuserbyid/${id}`,{});
   }
 
+  getUserById(id: number) {
+    return this.http.get(`http://localhost:5068/api/Users/getuserbyid/${id}`);
+  }
   
   deletemanyUsers(ids: number[]) {
     return this.http.post(`http://localhost:5068/api/Users/deletemultipleusers`,ids);
